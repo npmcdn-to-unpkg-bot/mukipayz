@@ -1,0 +1,30 @@
+{
+  "name": "mukipayz",
+  "version": "1.0.0",
+  "description": "awesomeness",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mukipuz/mukipayz.git"
+  },
+  "author": "D. Dwyer, J. Thorsten, M. Hottman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mukipuz/mukipayz/issues"
+  },
+  "homepage": "https://github.com/mukipuz/mukipayz#readme",
+  "dependencies": {
+    "dotenv": "^2.0.0",
+    "ejs": "^2.4.2",
+    "express": "^4.14.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-compass": "^2.1.0",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-util": "^3.0.7",
+    "morgan": "^1.7.0"
+  }
+}
