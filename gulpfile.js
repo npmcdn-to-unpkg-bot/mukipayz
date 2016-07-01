@@ -8,18 +8,21 @@ var compass = require('gulp-compass'),
    minifycss  = require('gulp-cssnano'),
    gutil = require('gulp-util');
 
+
 const CSS_BUILD_DIR = path.resolve(__dirname, './public/css');
+const CSS_SOURCE_DIR = './styles/**/*.scss';
+
 
 gulp.task('watch', ['dev'], function() {
-   gulp.watch('./src/styles/**/*',  ['dev']);
+   gulp.watch(CSS_SOURCE_DIR,  ['dev']);
 });
 gulp.task('dev', function() {
-   return gulp.src('./src/styles/**/*.scss')
+   return gulp.src(CSS_SOURCE_DIR)
       .pipe(compass({
-         sass     : './src/styles',
-         css      : CSS_BUILD_DIR,
-         logging  : true,
-         comments : true,
+        sass     : './styles',
+        css      : CSS_BUILD_DIR,
+        logging  : true,
+        comments : true,
       }))
       .on('error', function(err) {
          gutil.log("[production]", err.toString());
@@ -29,9 +32,9 @@ gulp.task('dev', function() {
       .pipe(gulp.dest(CSS_BUILD_DIR));
 });
 gulp.task('production', function() {
-   return gulp.src(['./styles/**/*.scss'])
+   return gulp.src([CSS_SOURCE_DIR])
       .pipe(compass({
-         sass     : './src/styles',
+         sass     : './styles',
          css      : CSS_BUILD_DIR,
          logging  : false,
          comments : false,
