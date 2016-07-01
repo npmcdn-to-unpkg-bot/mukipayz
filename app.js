@@ -6,13 +6,7 @@ require('dotenv').config();
 //main app
 var express = require('express'),
     app = express(),
-    logger = require('morgan'),
-    path = require('path');
-
-//setup views
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
+    logger = require('morgan');
 
 //required routes
 var routes = {
@@ -26,8 +20,7 @@ app.use(express.static(__dirname+'/public'));
 
 
 //routes middleware
-app.use('/', routes.index);
-
+app.use('/', routes.landing);
 
 // app.use('/auth', routes.auth);
 app.use('/auth/dwolla', routes.dwolla);
