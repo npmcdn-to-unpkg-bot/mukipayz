@@ -10,7 +10,8 @@ var express = require('express'),
 
 //required routes
 var routes = {
-    landing: require('./routes/landing')
+    landing: require('./routes/landing'),
+    dwolla: require('./payments/dwolla_auth')
 };
 
 //app middleware
@@ -20,6 +21,10 @@ app.use(express.static(__dirname+'/public'));
 
 //routes middleware
 // app.use('/', routes.landing);
+
+// app.use('/auth', routes.auth);
+app.use('/auth/dwolla', routes.dwolla);
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, function() {
