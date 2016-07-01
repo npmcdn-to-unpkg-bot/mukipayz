@@ -19,10 +19,10 @@ app.use(express.static(__dirname+'/public'));
 
 
 //routes middleware
-app.use('/', routes.landing);
+// app.use('/', routes.landing);
 
 const port = process.env.PORT || 3000;
 app.listen(port, function() {
     console.log("listening on", port);
-    console.log("All other groups in the q2 project suck.");
+    console.log("All other groups ain't got nuthin' on mukipayz!");
 });
