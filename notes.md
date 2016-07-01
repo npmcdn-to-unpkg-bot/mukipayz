@@ -14,6 +14,7 @@
 * https://certbot.eff.org/#osx-other
 
 
+
 ### WIRE FRAMES
 -- Login
 https://wireframe.cc/eMjre1
@@ -39,3 +40,9 @@ if you invite users you will get a form to invite users.
 --header
 
 I did not make a wireframe for this yet but it will be a hidden menu bar that can be clicked in via a hamburger button or other option.
+
+##Colors
+* color 1: R0 G117 B225
+* color2: R173 G203 B225
+* color3: R224 G253 B255
+>>>>>>> 1b5729ee1a6e13f4eff32a8abec8cfe4d535d83a
