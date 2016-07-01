@@ -6,17 +6,11 @@ require('dotenv').config();
 //main app
 var express = require('express'),
     app = express(),
-    logger = require('morgan'),
-    path = require('path');
-
-//setup views
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
+    logger = require('morgan');
 
 //required routes
 var routes = {
-    index: require('./routes/index')
+    landing: require('./routes/landing')
 };
 
 //app middleware
@@ -25,8 +19,7 @@ app.use(express.static(__dirname+'/public'));
 
 
 //routes middleware
-app.use('/', routes.index);
-
+app.use('/', routes.landing);
 
 const port = process.env.PORT || 3000;
 app.listen(port, function() {
