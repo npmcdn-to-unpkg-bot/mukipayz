@@ -1,0 +1,14 @@
+/* line 1, ../../styles/_global.scss */
+* {
+  box-sizing: border-box;
+}
+
+/* line 5, ../../styles/_global.scss */
+body {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+}
