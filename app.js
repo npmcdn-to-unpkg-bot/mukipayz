@@ -20,7 +20,7 @@ app.use(express.static(__dirname+'/public'));
 
 
 //routes middleware
-app.use('/', routes.landing);
+app.use('/', routes.index);
 app.set('view engine', 'ejs');
 const port = process.env.PORT || 3000;
 app.listen(port, function() {
