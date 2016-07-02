@@ -7,7 +7,8 @@ require('dotenv').config();
 var express = require('express'),
     app = express(),
     logger = require('morgan'),
-    path = require('path');
+    path = require('path'),
+   methodOverride = require('method-override');
 
 //setup views
 app.set('views', path.join(__dirname, 'views'));
@@ -22,7 +23,7 @@ var routes = {
 //app middleware
 app.use(logger('dev'));
 app.use(express.static(__dirname+'/public'));
-
+app.use(methodOverride('_method'));
 
 //routes middleware
 app.use('/', routes.index);
