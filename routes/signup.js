@@ -22,8 +22,8 @@ router.get('/', function(req, res, next) {
 //by using a required promise.
 router.post('/', function(req, res, next) {
   // req.body is undefined for some reason (?)
-  // console.log(req.body);
-promise_result.hash(req.body.password).then(function(result){
+
+promise_result(req.body.password).then(function(result){
 
             knex('users').insert({
                 first_name: req.body.first_name,

@@ -18,34 +18,38 @@ router.get('/', function(req, res, next) {
 });
 
 //using bcrypt compare we check that the login password matches/info matches the Database
-router.post('/user', function (req, res, next){
-  knex('users').select('first_name', 'email').where({
-    first_name:req.body.first_name
+router.post('/', function (req, res, next){
+  console.log(req.body);
+  knex('users').select('email', 'password').where({
+    email:req.body.email
   }).then(function(data){
     console.log(data);
     if (data.length === 1){
       bcrypt.compare(req.body.password, data[0].password, function(err, result){
         if(result){
-          res.render('user', {
-            err:undefined,
-            email:data[0].email,
-            password:data[0].password
-          });
+          res.send('login match');
+          // res.render('user', {
+          //   err:undefined,
+          //   email:data[0].email,
+          //   password:data[0].password
+          // });
         } else {
-          res.render('user', {
-            //should change this to a redirect with error message for actual site but sometimes it is easer to see
-            //this way
-            err: 'email and passwords do not match'
-          });
+          res.send('err');
+          // res.render('user', {
+          //   //should change this to a redirect with error message for actual site but sometimes it is easer to see
+          //   //this way
+          //   err: 'email and passwords do not match'
+          // });
         }
       });
     }
     else {
-      res.render('user', {
-        //should change this to a redirect for actual site but sometimes it is easer to see
-        //this way
-        err: 'log in error'
-      });
+      res.send('not a user');
+      // res.render('user', {
+      //   //should change this to a redirect for actual site but sometimes it is easer to see
+      //   //this way
+      //   err: 'log in error'
+      // });
     }
   }).catch(next);
 });

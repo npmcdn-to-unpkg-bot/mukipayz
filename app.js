@@ -28,12 +28,12 @@ var routes = {
 app.use(logger('dev'));
 app.use(express.static(__dirname+'/public'));
 app.use(methodOverride('_method'));
-
+app.use(bodyParser.urlencoded({extended: true}));
 //routes middleware
 app.use('/signup', routes.signup);
 app.use('/login', routes.login);
 app.use('/', routes.index);
-app.use(bodyParser.urlencoded({extended: true}));
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, function() {
