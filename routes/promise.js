@@ -21,4 +21,4 @@ function hash (password) {
   });
 }
 
-module.exports= {hash: hash};
+module.exports= hash;
