@@ -2,24 +2,26 @@
 
 var express = require('express');
 var router = express.Router();
-var bcrypt = require('bcrypt');
+// var bcrypt = require('bcrypt');
 var knex = require('../db/knex');
-var saltHash= require('./promise');
+var promise_result= require('./promise');
 
 router.get('/', function(req, res, next) {
   knex('users').then(function(data){
-    res.render('users', {
-      data:data
-    });
+    res.render('pages/login', { title: 'hmm' });
+    //res.send(data);
+    // res.render('/login', {
+    //   data:data
+    // });
   }). catch(next);
 
 });
 //things to pass along to team
 //in ejs input fields we need name to equal first_name, last_name and
-// email to match this.  
-router.post('/', function(req, res, next) {
-
-saltHash.hash(req.body.password).then(function(result){
+// email to match this.
+router.post('pages/login', function(req, res, next) {
+console.log(req.body);
+promise_result.hash(req.body.password).then(function(result){
 
             knex('users').insert({
                 first_name: req.body.first_name,
@@ -28,11 +30,11 @@ saltHash.hash(req.body.password).then(function(result){
                 email: req.body.email,
 
             }).then(function(data){
-                res.redirect('/home');
+                res.redirect('/index');
             }).catch(next);
         });
     });
 
 
 
-module.exports=router;
+module.exports = router;

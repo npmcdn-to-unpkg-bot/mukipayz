@@ -1,5 +1,14 @@
-//things to pass along to team
-//in ejs input fields we need name to equal first_name, last_name and
-// email to match this.
+
 
 <%- include('../partials/header') %>
+
+<form action='/login' method='post'>
+  <input type='text' name='first_name' placeholder="first name"/>
+  <%# <input type='text' name='last_name' placeholder="last name"/>%>
+  <%# <input type='text' name='email' placeholder="email"/>%>
+  <input type='text' name='password' placeholder="password"/>
+  <input type="submit" value=login>
+</form>
+
+
+<%- include('../partials/footer') %>

@@ -20,7 +20,7 @@ app.set('view engine', 'ejs');
 var routes = {
     landing: require('./routes/landing'),
     index: require('./routes/index'),
-    login:require('./routes/login')
+    login : require('./routes/login')
 };
 
 //app middleware
@@ -29,8 +29,8 @@ app.use(express.static(__dirname+'/public'));
 app.use(methodOverride('_method'));
 
 //routes middleware
+app.use('/login', routes.login);
 app.use('/', routes.index);
-app.use('/', routes.login);
 app.set('view engine', 'ejs');
 const port = process.env.PORT || 3000;
 app.listen(port, function() {
