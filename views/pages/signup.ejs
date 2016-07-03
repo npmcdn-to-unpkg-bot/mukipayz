@@ -1,0 +1,16 @@
+<%# this is very poorly done but I wanted to see some of the routes
+I was making so I just made VERY basic. Sorry for taking some of
+your job. Please redue any/all of this without feeling bad%>
+
+<%- include('../partials/header') %>
+
+<body>
+<form action='/signup' method='post'>
+  <input type="text" name="first_name" placeholder="first name"/>
+  <input type="text"  name="last_name" placeholder="last name"/>
+  <input type="text"  name="email" placeholder="E-mail"/>
+  <input type="text" id="password" name="password" placeholder="password"/>
+  <input type="submit" value="Add User"/>
+</form>
+
+<%- include('../partials/footer') %>
