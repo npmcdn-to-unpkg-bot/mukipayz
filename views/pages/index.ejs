@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%# <!DOCTYPE html>
 <html>
 
 <head>
@@ -9,9 +9,12 @@
 
 <body>
     <header>
-        <h1>Mukipayz</h1>
-        <h3>A Peer to Peer Payment Sharing Program</h3>
-    </header>
+
+      <h1>Mukipayz</h1>
+      <h3>A Peer to Peer Payment Sharing Program</h3>
+    </header>%>
+  <%- include('../partials/header') %>
+
     <div>
         <input type="button" onclick="location.href='#USERLOGIN';" value="----   Existing User Log In   ----" />
     </div>
@@ -26,10 +29,5 @@
             <p>When chosing who to partner with to conduct peer to peer transactions we </p>
         </div>
     </section>
-    <footer>
-      <a href="https://github.com/mukipuz/mukipayz">GitHub</a> 
-      <a href="https://www.dwolla.com/">Dwolla</a>
-    </footer>
-</body>
 
-</html>
+    <%- include('../partials/footer') %>
