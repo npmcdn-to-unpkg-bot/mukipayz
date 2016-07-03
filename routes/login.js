@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
 });
 //things to pass along to team
 //in ejs input fields we need name to equal first_name, last_name and
-// email to match this.  
+// email to match this.
 router.post('/', function(req, res, next) {
 
 saltHash.hash(req.body.password).then(function(result){
