@@ -8,6 +8,7 @@ var promise_result= require('../promise');
 // get login page
 
 router.get('/', function(req, res, next) {
+
   knex('users').then(function(data){
     res.render('pages/signup', {
       data: data
@@ -21,6 +22,7 @@ router.get('/', function(req, res, next) {
 //by using a required promise.
 router.post('/', function(req, res, next) {
   // req.body is undefined for some reason (?)
+  // console.log(req.body);
 promise_result.hash(req.body.password).then(function(result){
 
             knex('users').insert({
