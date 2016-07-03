@@ -5,18 +5,11 @@ your job. Please redue any/all of this without feeling bad%>
 <%- include('../partials/header') %>
 
 <body>
-<form action='/login' method='post'>
-  <label for="username">First name:</label>
-  <input type="text" id="username" name="first_name"/>
-  <form action='/login' method='post'>
-    <label for="username">Last Name :</label>
-    <input type="text"  name="last_name"/>
-    <form action='/login' method='post'>
-      <label for="username">e-mail:</label>
-      <input type="text"  name="email"/>
-
-  <label for="username">Password:</label>
-  <input type="text" id="password" name="password"/>
+<form action='/signup' method='post'>
+  <input type="text" name="first_name" placeholder="first name"/>
+  <input type="text"  name="last_name" placeholder="last name"/>
+  <input type="text"  name="email" placeholder="E-mail"/>
+  <input type="text" id="password" name="password" placeholder="password"/>
   <input type="submit" value="Add User"/>
 </form>
 
