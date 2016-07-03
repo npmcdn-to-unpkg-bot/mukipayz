@@ -1,14 +1,22 @@
-
+<%# this is very poorly done but I wanted to see some of the routes 
+I was making so I just made VERY basic. Sorry for taking some of
+your job. Please redue any/all of this without feeling bad%>
 
 <%- include('../partials/header') %>
 
+
 <form action='/login' method='post'>
-  <input type='text' name='first_name' placeholder="first name"/>
-  <%# <input type='text' name='last_name' placeholder="last name"/>%>
-  <%# <input type='text' name='email' placeholder="email"/>%>
-  <input type='text' name='password' placeholder="password"/>
-  <input type="submit" value=login>
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="first_name"/>
+
+  <label for="username">Password:</label>
+  <input type="text" id="password" name="password"/>
+  <input type="submit" value="Check User Password"/>
 </form>
+
+
+
+</body>
 
 
 <%- include('../partials/footer') %>
