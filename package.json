@@ -27,6 +27,7 @@
     "gulp-util": "^3.0.7",
     "morgan": "^1.7.0",
     "passport": "^0.3.2",
-    "passport-dwolla": "^1.0.0"
+    "passport-dwolla": "^1.0.0",
+    "pg": "^6.0.1"
   }
 }

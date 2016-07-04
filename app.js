@@ -7,18 +7,30 @@ require('dotenv').config();
 var express = require('express'),
     app = express(),
     logger = require('morgan'),
+    path = require('path'),
+    methodOverride = require('method-override'),
+    bodyParser = require('body-parser'),
     passport = require('passport'),
-    cookieSession = require('cookie-session');
+    cookieSession = require("cookie-session");
+//setup views
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 
 //required routes
 var routes = {
-    dwolla: require('./payments/dwolla_auth'),
-    index: require('./routes/index')
+    landing: require('./routes/landing'),
+    index: require('./routes/index'),
+    login : require('./routes/login'),
+    signup: require('./routes/signup'),
+    dwolla: require('./payments/dwolla_auth')
 };
 
 //app middleware
 app.use(logger('dev'));
 app.use(express.static(__dirname+'/public'));
+app.use(methodOverride('_method'));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
     name: 'mukipayz',
     keys: [
@@ -29,11 +41,12 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-//routes middleware
-app.use('/', routes.index);
 
-// app.use('/auth', routes.auth);
+//routes middleware
 app.use('/auth/dwolla', routes.dwolla);
+app.use('/signup', routes.signup);
+app.use('/login', routes.login);
+app.use('/', routes.index);
 
 
 const port = process.env.PORT || 3000;
