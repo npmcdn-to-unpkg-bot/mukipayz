@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+<div class="row">
+<div class="col-xs-3"></div>
+<div class="col-xs-6">
+<!-- <div class="jumbotron"> -->
+  <h4>Let's Get You Enrolled for a Free Account</h4>
+    <form action='/signup' method='post'>
+  <fieldset class="form-group">
+    <label for="firstName">First Name</label>
+    <input type="text" name="first_name" placeholder="Enter First Name" class="form-control" id="firstName">
+
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="lastName">Last Name</label>
+    <input type="text" name="last_name" class="form-control" id="lastName" placeholder="Enter Last Name">
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" name="email" class="form-control" id="email" placeholder="Enter Email">
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="password">Password</label>
+    <input type="password" name="password" class="form-control" id="password" placeholder="Enter Password">
+  </fieldset>
+  <input type="submit" value="Add User" />
+<!-- </div> -->
+</div>
+</div>
+
+<div class="row">
+  <div class="col-xs-4"></div>
+  <div class="col-xs-4">
+  <div class="jumbotron">
+    <form action="/login">
+              <input type="submit" value="Opps, I am aready a user, can I log in please?">
+            </form>
+  </div>
+  </div>
+</div>
+<%- include('../partials/footer') %>

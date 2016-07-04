@@ -12,3 +12,17 @@ body {
   width: 100%;
   margin: 0;
 }
+
+.mukipayz {
+  font-family: 'Dosis', sans-serif;
+  font-size: 100px;
+  color: #0075E1;
+   text-shadow: 2px 2px blue;
+}
+
+.p2p {
+  font-family: 'Open Sans', sans-serif;
+}
+.footer{
+  
+}
