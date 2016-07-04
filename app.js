@@ -10,7 +10,8 @@ var express = require('express'),
     logger = require('morgan'),
     path = require('path'),
     methodOverride = require('method-override'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    cookieSession = require("cookie-session");
 //setup views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
