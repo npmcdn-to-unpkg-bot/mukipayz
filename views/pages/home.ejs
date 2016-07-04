@@ -1,0 +1,62 @@
+<!-- this is the home page the user is taken once they successfully login -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <h2>Welcome <=%^^^^USERS FIRST NAME^^^^^^^^^%></h2>
+    <% ^^^^^^GROUP NAMES LIST^^^^^^^^.forEach(function(^^^^^^GROUP NAMES LIST^^^^^^^^t) { %>
+                <ul>
+                    <li>
+                            <h1><a href="^^^^^^^TO THIS SPECIFIC GROUP"><%= ^^^^^^^^group.name^^^^^^^^^^^^ %></h1></a>
+                    </li>
+            </div>
+          </ul>
+        <% }); %>
+
+        <section>
+        <div class="row">
+          <div class="col-xs-4">
+
+          </div>
+
+          <div class="col-xs-4">
+            <div class="jumbotron">
+              <form action="/newGroup">
+                <input type="submit" value="I Want to Start a New Group">
+              </form>
+            </div>
+          </div>
+        </div>
+        </section>
+
+        <section>
+        <div class="row">
+          <div class="col-xs-4">
+
+          </div>
+
+          <div class="col-xs-4">
+            <div class="jumbotron">
+              <form action="/logout">
+                <input type="submit" value="Log Out">
+              </form>
+            </div>
+          </div>
+        </div>
+        </section>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+    </body>
+    </html>
