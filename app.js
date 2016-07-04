@@ -6,7 +6,9 @@ require('dotenv').config();
 //main app
 var express = require('express'),
     app = express(),
-    logger = require('morgan');
+    logger = require('morgan'),
+    passport = require('passport'),
+    cookieSession = require('cookie-session');
 
 //required routes
 var routes = {
@@ -17,10 +19,18 @@ var routes = {
 //app middleware
 app.use(logger('dev'));
 app.use(express.static(__dirname+'/public'));
-
+app.use(cookieSession({
+    name: 'mukipayz',
+    keys: [
+        process.env.SECRET_ONE,
+        process.env.SECRET_TWO
+    ]
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //routes middleware
-app.use('/', routes.landing);
+app.use('/', routes.index);
 
 // app.use('/auth', routes.auth);
 app.use('/auth/dwolla', routes.dwolla);
