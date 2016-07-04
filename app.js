@@ -23,7 +23,7 @@ var routes = {
     index: require('./routes/index'),
     login : require('./routes/login'),
     signup: require('./routes/signup'),
-    dwolla: require('./payments/dwolla_auth')
+    dwolla: require('./routes/auth/dwolla')
 };
 
 //app middleware
