@@ -11,7 +11,8 @@ var express = require('express'),
     methodOverride = require('method-override'),
     bodyParser = require('body-parser'),
     cookieSession = require("cookie-session"),
-    passport = require('passport');
+    passport = require('passport'),
+    mware = require('./middleware');
 //setup views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -42,7 +43,7 @@ app.use(cookieSession({
 // app.use('/home/:id', routes.home);
 app.use('/auth', routes.auth);
 app.use('/', routes.index);
-app.use('/home', routes.home);
+app.use('/home', mware.isLoggedIn, routes.home);
 
 
 const port = process.env.PORT || 3000;
