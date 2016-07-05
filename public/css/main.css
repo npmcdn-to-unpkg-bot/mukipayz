@@ -1,3 +1,4 @@
+@import "https://fonts.googleapis.com/css?family=Comfortaa|Lato:300";
 /* line 1, ../../styles/_global.scss */
 * {
   box-sizing: border-box;
@@ -13,23 +14,45 @@ body {
   margin: 0;
 }
 
+/* carousel height, as percentage of width */
+/* line 2, ../../styles/_flickity.scss */
+.main-carousel {
+  height: 100vh;
+}
+
+/* viewport inherit size from carousel */
+/* line 8, ../../styles/_flickity.scss */
+.main-carousel .flickity-viewport {
+  position: absolute;
+  width: 100%;
+}
+
+/* cell inherit height from carousel */
+/* line 14, ../../styles/_flickity.scss */
+.carousel-cell {
+  height: 100%;
+  width: 100vw;
+}
+
+/* line 17, ../../styles/main.scss */
 .mukipayz {
-  font-family: 'Dosis', sans-serif;
+  font-family: "Comfortaa", cursive;
   font-size: 100px;
   color: #0075E1;
-   text-shadow: 2px 2px blue;
+  text-shadow: 2px 2px blue;
 }
 
+/* line 24, ../../styles/main.scss */
 .p2p {
-  font-family: 'Open Sans', sans-serif;
-}
-.footer{
-
+  font-family: "Lato", sans-serif;
 }
 
+/* line 31, ../../styles/main.scss */
 .font1 {
-    font-family: 'Dosis', sans-serif;
+  font-family: "Comfortaa", cursive;
 }
+
+/* line 34, ../../styles/main.scss */
 .font2 {
-  font-family: 'Dosis', sans-serif;
+  font-family: "Lato", sans-serif;
 }
