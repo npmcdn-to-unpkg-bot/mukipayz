@@ -43,3 +43,5 @@ router.get('group/bills/new', function(req, res, next){
 router.get('group/bills/:id/pay', function(req, res, next){
 
 });
+
+module.exports = router;
