@@ -14,7 +14,7 @@ function Bills() {
 
 router.get('/', function(req, res, next) {
 
-  // console.log(req.session.user.email);
+   console.log(req.session.user);
     knex('users')
       .where('users.email', req.session.user.email)
         .leftOuterJoin('users_in_group', 'users.id', 'users_in_group.user_id')
@@ -46,14 +46,17 @@ router.post('/group/new', function(req, res, next){
   console.log(req.body.groupName);
   knex('groups').insert({
     group_name: req.body.groupName
-  })
-  .then(knex('users_in_group').insert({
-
-  }))
+  }).returning('*')
+  .then(function(result){
+    knex('users_in_group').insert({
+        user_id: req.session.user.user_id,
+        group_id: result[0].id
+    })
   .then(function(data){
     // res.send(data);
     res.redirect('/home');
   });
+});
 });
 
 //
