@@ -60,17 +60,18 @@ router.post('/group/new', function(req, res, next){
 });
 
 //
-// router.get('/groups/:id', function(req, res, next) {
-//     knex('users').where({
-//             email: req.session.user.email
-//         })
-//         .then(function(data) {
-//             res.render('/', {
-//                 data: data
-//             });
-//
-//         });
-// });
+router.get('/groups/:id', function(req, res, next) {
+    knex('users').where({
+            email: req.session.user.email
+        })
+        .then(function(data) {
+          // res.send(data);
+            // res.render('pages/group', {
+            //     data: data[0]
+            // });
+
+        });
+});
 
 router.get('group/edit', function(req, res, next){
 
