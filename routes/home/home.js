@@ -61,14 +61,13 @@ router.post('/group/new', function(req, res, next){
 
 //
 router.get('/groups/:id', function(req, res, next) {
-    knex('users').where({
-            email: req.session.user.email
+    knex('groups').where({
+            id: Number(req.params.id)
         })
         .then(function(data) {
-          // res.send(data);
-            // res.render('pages/group', {
-            //     data: data[0]
-            // });
+            res.render('pages/group', {
+                data: data[0]
+            });
 
         });
 });
