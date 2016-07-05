@@ -3,7 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt');
-var knex = require('../db/knex');
+var knex = require('../../db/knex');
 // var promise_result= require('./promise');
 
 
