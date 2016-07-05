@@ -9,14 +9,10 @@ var knex = require('../../db/knex');
 
 
 router.get('/', function(req, res, next) {
-<<<<<<< HEAD
+
     knex('users').then(function(data) {
     res.send(data);
-=======
-  res.send("test");
-    // knex('users').then(function(data) {
-    // res.send(data);
->>>>>>> fd958ee4c7c22ed0fc83890af3b4acbbd86d52fe
+
     //     res.render('pages/home', {
     //         data: data
         });
