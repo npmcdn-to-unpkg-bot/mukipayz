@@ -37,7 +37,7 @@ router.get ('group/edit', function(req, res, next){
 });
 
 router.get ('group/:id/bills/:id', function(req, res, next){
-    
+
 });
 
 router.get('group/bills/new', function(req, res, next){
