@@ -89,4 +89,9 @@ router.get('/group/bills/:id/pay', function(req, res, next){
 
 });
 
+router.get('/group/:id/messages', function(req, res, next){
+
+});
+
+router.get('/group/:id')
 module.exports = router;

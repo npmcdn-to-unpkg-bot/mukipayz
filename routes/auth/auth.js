@@ -88,7 +88,7 @@ promise_result(req.body.password).then(function(result){
                 email: req.body.email,
 
             }).then(function(data){
-                res.redirect('/login');
+                res.redirect('/auth/login');
             }).catch(next);
         });
 
