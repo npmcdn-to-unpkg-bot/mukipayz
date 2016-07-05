@@ -19,11 +19,14 @@
   "homepage": "https://github.com/mukipuz/mukipayz#readme",
   "dependencies": {
     "bcrypt": "^0.8.7",
+    "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
+    "cloudinary": "^1.4.1",
     "cookie-session": "^2.0.0-alpha.1",
     "dotenv": "^2.0.0",
     "ejs": "^2.4.2",
     "express": "^4.14.0",
+    "formidable": "^1.0.17",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-compass": "^2.1.0",
@@ -34,6 +37,7 @@
     "morgan": "^1.7.0",
     "passport": "^0.3.2",
     "passport-dwolla": "^1.0.0",
-    "pg": "^6.0.1"
+    "pg": "^6.0.1",
+    "slug": "^0.9.1"
   }
 }
