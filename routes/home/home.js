@@ -48,8 +48,8 @@ router.post('/group/new', function(req, res, next){
     group_name: req.body.groupName
   })
   .then(function(data){
-    res.send(data);
-    // res.redirect('/');
+    // res.send(data);
+    res.redirect('/home');
   });
 });
 
