@@ -14,4 +14,16 @@
 .carousel-cell {
   height: 100%;
   width: 100vw;
+  &.img img {
+      width: 100vw;
+      height: 100%;
+  }
+}
+
+/* dots are lines */
+.flickity-page-dots .dot {
+  height: 4px;
+  width: 40px;
+  margin: 0;
+  border-radius: 0;
 }
