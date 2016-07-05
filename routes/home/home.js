@@ -9,13 +9,12 @@ var knex = require('../../db/knex');
 
 
 router.get('/home', function(req, res, next) {
-  res.send("test");
-    // knex('users').then(function(data) {
-    // res.send(data);
+    knex('users').then(function(data) {
+    res.send(data);
     //     res.render('pages/home', {
     //         data: data
     //     });
-    // }).catch(next);
+    }).catch(next);
 
 });
 
@@ -43,3 +42,7 @@ router.get('group/bills/new', function(req, res, next){
 router.get('group/bills/:id/pay', function(req, res, next){
 
 });
+
+
+
+module.exports=router;
