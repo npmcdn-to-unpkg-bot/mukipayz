@@ -1,7 +1,7 @@
 'use strict';
 exports.up = function(knex, Promise) {
   return knex.schema.table('bills', function(table){
-    table.integer('amount');
+    table.float('amount', 2);
   });
 };
 
