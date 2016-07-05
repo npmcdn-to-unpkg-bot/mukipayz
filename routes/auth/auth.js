@@ -21,11 +21,11 @@ router.get('/login', function(req, res, next) {
 //using bcrypt compare we check that the login password matches/info matches the Database
 
 router.post('/login', function (req, res, next){
-  console.log(req.body);
+  // console.log(req.body);
   knex('users').select('email', 'password').where({
     email:req.body.email
-  }).then(function(data){
-    console.log(data);
+  }).then(function(data) {
+    console.log("data: ", data);
     if (data.length === 1){
       bcrypt.compare(req.body.password, data[0].password, function(err, result){
         if(result){

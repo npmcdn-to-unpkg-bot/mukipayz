@@ -9,6 +9,5 @@ exports.seed = function(knex, Promise) {
       email: "tiffcoils@garage.com",
       password: "43sdf45rh??sdfgdfag"
     });
-
   });
 };
