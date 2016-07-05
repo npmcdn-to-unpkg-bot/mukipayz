@@ -60,9 +60,10 @@ router.post('/group/new', function(req, res, next){
 
 
 router.get('/groups/:id', function(req, res, next) {
-    knex('groups').where({
+    knex('bills')
+    .where({
 
-            id: Number(req.params.id)
+            group_id: Number(req.params.id)
         })
         .then(function(data) {
             res.render('pages/group', {
@@ -122,6 +123,7 @@ router.get('/group/:id/messages', function(req, res, next){
       //     data: data[0]
       // });
   }).catch(next);
+});
 
 
 
