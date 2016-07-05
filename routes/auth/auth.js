@@ -77,6 +77,7 @@ router.get('/signup', function(req, res, next) {
 router.post('/signup', function(req, res, next) {
 
   // req.body is undefined for some reason (?)
+  console.log("user signup details", req.body);
 
 promise_result(req.body.password).then(function(result){
 
