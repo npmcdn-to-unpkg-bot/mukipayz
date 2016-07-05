@@ -1,29 +1,17 @@
 <!-- this is the home page the user is taken once they successfully login -->
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <% include ../partials/head %>
 </head>
 
 <body class="container">
-
     <header>
         <% include ../partials/header %>
     </header>
 
-
-<!-- update duplicate -->
-    <h2>Welcome <=% users.first_name %></h2>
-    <% groups.forEach(function(groups) { %>
-
-    <h2>Welcome <=% data.user.first_name %></h2>
-
-    <h2>Welcome <=% users.first_name %> </h2>
-
-    <% ^^^^^^GROUP NAMES LIST^^^^^^^^.forEach(function(^^^^^^GROUP NAMES LIST^^^^^^^^t) { %>
-
+    <h2>Welcome <=% data.users.first_name %></h2>
+    <% groups forEach(function(groups) { %>
         <ul>
             <li>
                 <h1><a href="/groups/:id"><%= groups.group_name %></h1></a>
