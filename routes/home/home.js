@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 // var bcrypt = require('bcrypt');
 var knex = require('../../db/knex');
+var uploader = require('../../uploader');
 // var promise_result= require('./promise');
 
 
@@ -69,23 +70,38 @@ router.get('group/edit', function(req, res, next){
 
 });
 
-router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
-    Bills().where({
-        id: req.params.bill_id
-    }).then(function(bill) {
-        bill = bill[0];
-        res.render('pages/billview', {bill:bill})
-    });
+router.get('/group/:group_id/bills/new', function(req, res, next) {
+    var group = {
+        id: req.params.group_id
+    };
+    res.render('pages/newBill', {group:group});
 });
 
-router.get('/group/bills/new', function(req, res, next){
-
+router.post('/group/:group_id/bills/new', function(req, res, next) {
+    uploader.upload(req).then(function(data) {
+        console.log("data: ", data);
+    });
 });
 
 router.get('/group/bills/:id/pay', function(req, res, next){
 
 
 });
+router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
+    Bills().where({
+        group_id: req.params.group_id,
+        id: req.params.bill_id
+    }).then(function(bill) {
+        bill = bill[0];
+        if (bill === undefined) {
+            console.log("no bill");
+            /**FIXME: Redirect Routes for Errors */
+            res.send('bill not found');
+        }
+        res.render('pages/billview', {bill:bill})
+    });
+});
+
 
 
 

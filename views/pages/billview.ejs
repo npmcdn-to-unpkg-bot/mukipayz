@@ -20,11 +20,11 @@ can we put the image of the bill on the top of this page if it exists -->
             <div class="carousel-cell details">
                 <h1 class="bill-title"><%= bill.title %></h1>
                 <h3>Total Amount: <%= bill.amount %></h3>
-                
+
             </div>
             <%# Bill Image%>
             <div class="carousel-cell img">
-                <img height="300" src="https://upload.wikimedia.org/wikipedia/commons/0/0b/ReceiptSwiss.jpg" alt="test reciept" />
+                <img height="300" src="<%= bill.image_url %>" alt="<%= bill.title %>" />
             </div>
         </div>
 
