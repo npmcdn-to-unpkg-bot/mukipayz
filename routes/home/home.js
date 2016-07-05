@@ -9,22 +9,38 @@ var knex = require('../../db/knex');
 
 
 router.get('/', function(req, res, next) {
-    knex('users').then(function(data) {
-    res.send(data);
-    //     res.render('pages/home', {
-    //         data: data
-        });
+    knex('users').where({
+      email: req.session.user.email
+    })
+    .then(function(data) {
+    res.render('/', {
+      data:data
+    });
 
+        });
 });
 
-router.get('/group/new', function(req, res, next){
 
+router.get('/group/new', function(req, res, next){
+  knex('group').then(function(data){
+    res.render('pages/newgroup', {
+      data:data
+    });
+  }).catch(next);
 });
 
 
 router.get ('groups/:id', function(req, res, next){
+  knex('users').where({
+    email: req.session.user.email
+  })
+  .then(function(data) {
+  res.render('/', {
+    data:data
+  });
 
-});
+      });
+  });
 
 router.get ('group/edit', function(req, res, next){
 
