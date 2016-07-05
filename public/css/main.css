@@ -33,6 +33,10 @@ body {
   height: 100%;
   width: 100vw;
 }
+/* line 20, ../../styles/_flickity.scss */
+.carousel-cell.img img {
+  width: 100vw;
+}
 
 /* line 17, ../../styles/main.scss */
 .mukipayz {
