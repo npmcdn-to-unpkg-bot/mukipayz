@@ -16,7 +16,6 @@ router.get('/home', function(req, res, next) {
     //         data: data
     //     });
     // }).catch(next);
-
 });
 
 router.get('/group/new', function(req, res, next){
