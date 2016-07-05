@@ -14,15 +14,18 @@
     <div class="row">
         <div class="col-xs-3"></div>
         <div class="col-xs-6">
-            <div>
-                <form action='/auth/login' method='post'>
-                    <fieldset class="form-group">
-                        <label for="email">Email</label>
-                        <input type="text" name="email" class="form-control" id="password" placeholder="Enter Email Address">
-                    </fieldset>
+
+        <form action='/auth/login' method='post'>
+              <fieldset class="form-group">
+                  <label for="email" class="control-label">Email</label>
+                  <input type="email" name="email" class="form-control" id="email" placeholder="Email" data-error="Bruh, that email address is invalid" required>
+                  <div class="help-block with-errors"></div>
+                </fieldset>
+
+
 
                     <fieldset class="form-group">
-                        <label for="exampleInputPassword1 ">Password</label>
+                        <label for="password ">Password</label>
                         <input type="password" name="password" class="form-control" id="password" placeholder="Enter Password">
                     </fieldset>
                     <input type="submit" value="Log In" />
