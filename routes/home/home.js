@@ -43,6 +43,7 @@ router.get('/group/new', function(req, res, next) {
 });
 
 router.post('/group/new', function(req, res, next){
+  console.log(req.body.groupName);
   knex('groups').insert({
     group_name: req.body.groupName
   })
