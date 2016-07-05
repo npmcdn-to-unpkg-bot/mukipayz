@@ -25,7 +25,6 @@ var uploader = {
     upload: function(request) {
         return new Promise(function(resolve, reject) {
             //check if uploads dir exists
-            // doUpload(request);
             fs.lstat(UPLOAD_DIR, function(err, stats) {
                 if (!err) {
                     if (stats.isDirectory()) {
@@ -49,10 +48,9 @@ var uploader = {
                 var form = new formidable.IncomingForm();
                     form.uploadDir = UPLOAD_DIR;
                     form.keepExtensions = true;
-                    // form.multiples = false;
 
                 form.on('end', function() {
-                    console.log("this: ", this);
+                    // console.log("this: ", this);
                     var image_path = path.resolve(__dirname, "./public/uploads/"+this.openedFiles[0].name);
                     // console.log("this: ", this);
                     fs.rename(this.openedFiles[0].path, image_path, function(err) {
@@ -60,11 +58,11 @@ var uploader = {
                     });
                 });
                 form.parse(request, function (err, fields, files) {
-                    console.log("files? ", files);
+                    // console.log("files? ", files);
                     files = files.files;
-                    console.log("fields: ", fields);
-                    console.log("files??: ", files);
-                    console.log("files.name: ", files.name.substring(0, files.name.indexOf('.')));
+                    // console.log("fields: ", fields);
+                    // console.log("files??: ", files);
+                    // console.log("files.name: ", files.name.substring(0, files.name.indexOf('.')));
                     var ext = files.name.substring(files.name.indexOf('.'), files.name.length);
                     var title;
                     if (files.name < 1) {

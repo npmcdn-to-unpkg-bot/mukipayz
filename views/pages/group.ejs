@@ -16,14 +16,25 @@ should be link for users to invite other's via email -->
     </header>
     <main>
 
-        <% bills.forEach(function(bills) { %>
-            <ul>
-                <li>
-                    <h1><a href="/groups/:id/bills/:id"><%= bills.title %></h1></a>
-                </li>
-            </ul>
-        <% }); %>
+        <div class="main-carousel">
 
+            <div class="carousel-cell bills">
+                <%# List of Bills go here! %>
+                <% data.forEach(function(bills) { %>
+                    <ul>
+                        <li>
+                            <h1><a href="/groups/:id/bills/:id"><%= bills.title %></h1></a>
+                        </li>
+                    </ul>
+                <% }); %>
+            </div>
+            <div class="carousel-cell messages">
+                <%# List of Messages for the group in this group go here! %>
+            </div>
+            <div class="carousel-cell users">
+                <%# List of Users in this group go here! %>
+            </div>
+        </div>
 
                 <div class="row">
                     <div class="col-xs-3"></div>

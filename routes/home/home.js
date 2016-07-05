@@ -5,6 +5,7 @@ var router = express.Router();
 // var bcrypt = require('bcrypt');
 var knex = require('../../db/knex');
 var uploader = require('../../uploader');
+var Promise = require('bluebird');
 // var promise_result= require('./promise');
 
 
@@ -59,18 +60,25 @@ router.post('/group/new', function(req, res, next){
 
 
 
-router.get('/groups/:id', function(req, res, next) {
-    knex('bills')
-    .where({
-
-            group_id: Number(req.params.id)
-        })
-        .then(function(data) {
-            res.render('pages/group', {
-                data: data[0]
-            });
-
+router.get('/group/:id', function(req, res, next) {
+    Promise.join(
+        knex('bills').where({group_id:Number(req.params.id)}),
+        knex('messages_in_group').where({group_id:Number(req.params.id)})
+    ).then(function(data) {
+        //Promise.join will join the data of multiple promises
+            //So data[0] == bills array, data[1] == messages in that group
+        //data = [all-bills, all-messages] for that id
+        //try res.json(data); to see all data returned
+        var joined = {
+            bills: data[0],
+            messages: data[1]
+        };
+        //**to use in view, data.bills or data.messages
+        res.render('pages/group', {
+            data: joined
         });
+    });
+
 });
 
 router.get('group/edit', function(req, res, next){
