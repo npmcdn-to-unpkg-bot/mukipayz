@@ -1,0 +1,17 @@
+/* carousel height, as percentage of width */
+.main-carousel {
+  // padding-bottom: 33.3%;
+  height: 100vh;
+}
+
+/* viewport inherit size from carousel */
+.main-carousel .flickity-viewport {
+  position: absolute;
+  width: 100%;
+}
+
+/* cell inherit height from carousel */
+.carousel-cell {
+  height: 100%;
+  width: 100vw;
+}

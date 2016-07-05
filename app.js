@@ -23,7 +23,8 @@ var routes = {
     landing: require('./routes/landing'),
     index: require('./routes/index'),
     auth : require('./routes/auth/auth'),
-    home: require('./routes/home/home')
+    home: require('./routes/home/home'),
+    dwolla: require('./routes/auth/dwolla')
 };
 
 //app middleware
@@ -44,7 +45,7 @@ app.use(cookieSession({
 app.use('/auth', routes.auth);
 app.use('/', routes.index);
 app.use('/home', mware.isLoggedIn, routes.home);
-
+app.use('/dwolla', routes.dwolla);
 
 const port = process.env.PORT || 3000;
 app.listen(port, function() {
