@@ -15,6 +15,7 @@ can we put the image of the bill on the top of this page if it exists -->
 <body>
 
     <main>
+
         <div class="main-carousel">
             <%# Bill Details%>
             <div class="carousel-cell details">
@@ -26,6 +27,7 @@ can we put the image of the bill on the top of this page if it exists -->
             <div class="carousel-cell img">
                 <img height="300" src="<%= bill.image_url %>" alt="<%= bill.title %>" />
             </div>
+
         </div>
 
         <section>
@@ -34,7 +36,7 @@ can we put the image of the bill on the top of this page if it exists -->
 
                 <div class="col-xs-4">
                     <div class="jumbotron">
-                        <form action="^^^^OAUTH LINK TO DWOLLA^^^^^">
+                        <form action="/auth/dwolla">
                             <input type="submit" value="Click Here To Pay With Dwolla">
                         </form>
                     </div>

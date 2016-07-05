@@ -9,21 +9,23 @@
             <div class="col-md-6">
                 <!-- <div class="jumbotron"> -->
                 <h4>Create a New Bill</h4>
-                <form action='/home/group/<%= group.id%>/bills/new' method='post'>
+                <form action="/home/group/<%= group.id %>/bills/new?_method=POST" method="POST"  enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="title">Bill Name</label>
                         <input type="text" name="title" placeholder="Bill Title" class="form-control" id="title">
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
-                        <input type="text" name="amount" class="form-control" id="amount" placeholder="Enter Amount to Split">
+                        <input type="number" name="amount" class="form-control" id="amount" placeholder="Enter Amount to Split">
                     </div>
                     <div class="form-group">
                         <label for="image">Add an Image </label>
                         <input type="file" name="files" id="image" accept="image/*">
                     </div>
-                <button class="btn btn-primary" type="submit">Create Bill</button>
+                    <button class="btn btn-primary" type="submit">Create Bill</button>
+                </form>
             </div>
+
         </div>
     </body>
 </html>

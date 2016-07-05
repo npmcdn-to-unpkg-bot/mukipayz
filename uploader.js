@@ -12,7 +12,7 @@ function Bills() {
 
 var cloudinary = require('cloudinary');
 cloudinary.config({
-    cloud_name: 'clairedeanart-com',
+    cloud_name: 'mukipayz',
     api_key: process.env.CLOUDINARY_KEY,
     api_secret: process.env.CLOUDINARY_SECRET
 });
@@ -25,10 +25,13 @@ var uploader = {
     upload: function(request) {
         return new Promise(function(resolve, reject) {
             //check if uploads dir exists
+            // doUpload(request);
             fs.lstat(UPLOAD_DIR, function(err, stats) {
                 if (!err) {
                     if (stats.isDirectory()) {
                         doUpload(request);
+                    } else {
+                        createDir(doUpload);
                     }
                 } else {
                     createDir(doUpload);
@@ -46,6 +49,7 @@ var uploader = {
                 var form = new formidable.IncomingForm();
                     form.uploadDir = UPLOAD_DIR;
                     form.keepExtensions = true;
+                    // form.multiples = false;
 
                 form.on('end', function() {
                     console.log("this: ", this);
@@ -56,9 +60,10 @@ var uploader = {
                     });
                 });
                 form.parse(request, function (err, fields, files) {
-
+                    console.log("files? ", files);
                     files = files.files;
                     console.log("fields: ", fields);
+                    console.log("files??: ", files);
                     console.log("files.name: ", files.name.substring(0, files.name.indexOf('.')));
                     var ext = files.name.substring(files.name.indexOf('.'), files.name.length);
                     var title;

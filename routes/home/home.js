@@ -78,8 +78,14 @@ router.get('/group/:group_id/bills/new', function(req, res, next) {
 });
 
 router.post('/group/:group_id/bills/new', function(req, res, next) {
+    console.log("are you even fucking making it here????");
+    console.log("uploader: ", uploader);
     uploader.upload(req).then(function(data) {
+        // uploader.toCloud()
         console.log("data: ", data);
+        res.json({
+            data:data
+        });
     });
 });
 

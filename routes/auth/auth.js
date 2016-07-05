@@ -22,7 +22,7 @@ router.get('/login', function(req, res, next) {
 
 router.post('/login', function (req, res, next){
   console.log(req.body);
-  knex('users').select('email', 'password').where({
+  knex('users').where({
     email:req.body.email
   }).then(function(data) {
     console.log("data: ", data);
@@ -31,7 +31,8 @@ router.post('/login', function (req, res, next){
         if(result){
             req.session.user = {
                 loggedIn: true,
-                email: data[0].email
+                email: data[0].email,
+                user_id: data[0].id
             };
             res.redirect('/home');
         } else {
@@ -77,6 +78,7 @@ router.get('/signup', function(req, res, next) {
 router.post('/signup', function(req, res, next) {
 
   // req.body is undefined for some reason (?)
+  console.log("user signup details", req.body);
 
 promise_result(req.body.password).then(function(result){
 
@@ -87,7 +89,7 @@ promise_result(req.body.password).then(function(result){
                 email: req.body.email,
 
             }).then(function(data){
-                res.redirect('/login');
+                res.redirect('/auth/login');
             }).catch(next);
         });
 
