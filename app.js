@@ -21,9 +21,8 @@ app.set('view engine', 'ejs');
 var routes = {
     landing: require('./routes/landing'),
     index: require('./routes/index'),
-    auth : require('./routes/auth/auth')
-
-    // home: require('./routes/home/:id')
+    auth : require('./routes/auth/auth'),
+    home: require('./routes/home/home')
 };
 
 //app middleware
@@ -42,8 +41,8 @@ app.use(cookieSession({
 //routes middleware
 // app.use('/home/:id', routes.home);
 app.use('/auth', routes.auth);
-// app.use('/login', routes.login);
 app.use('/', routes.index);
+app.use('/home', routes.home);
 
 
 const port = process.env.PORT || 3000;
