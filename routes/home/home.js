@@ -5,31 +5,17 @@ var router = express.Router();
 var bcrypt = require('bcrypt');
 var knex = require('../../db/knex');
 // var promise_result= require('./promise');
-knex('posts')
-    .leftJoin('comments', 'posts.id', 'comments.post_id')
-    .select('posts.content', 'comments.reply')
-    .where('posts.id', Number(req.params.id))
-    .then(function(posts) {
-        console.log(posts);
-        res.render('reddit/list', {
-            post: posts[0],
-        });
-    })
-    .catch(function(err) {
-        console.log(err);
-
-    });
-
 
 router.get('/', function(req, res, next) {
+  //console.log(req.session.user.email);
     knex('users')
-        .join('users_in_group', 'users.id', 'users_in_group.user_id')
-        .join('groups', 'users_in_group.group_id', 'groups.id')
-        .where({
-            email: req.session.user.email
-        })
+      .where('users.email', req.session.user.email)
+        .leftOuterJoin('users_in_group', 'users.id', 'users_in_group.user_id')
+        .leftOuterJoin('groups', 'users_in_group.group_id', 'groups.id')
+        .where('users.email', req.session.user.email)
         .then(function(data) {
-            res.render('/', {
+          // res.send(data);
+            res.render('pages/home', {
                 data: data
             });
 
