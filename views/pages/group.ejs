@@ -1,3 +1,53 @@
 <!-- this will be where the bills for a specific group go, this can only be viewed by members of the group. and the bills can be clicked on to be brought to a payment page
 
 should be link for users to invite other's via email -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+    <main>
+
+      <% ^^^^^^Bills Group Name Goes Here^^^^^^^^.forEach(function(^^^^^^Bills Group Name Goes Here^^^^^^^^t) { %>
+          <ul>
+              <li>
+                  <h1><a href="^^^^^^^TO THIS SPECIFIC Bill"><%= ^^^^^^^^bill.name^^^^^^^^^^^^ %></h1></a>
+              </li>
+              </div>
+          </ul>
+          <% }); %>
+
+
+
+
+      <div class="row">
+        <div class="col-xs-3"></div>
+        <div class="col-xs-6">
+          <div class="jumbotron">
+            <h1>Bill Name Goes Here Dynamically</h1>
+          </div>
+          <div class="jumbotron">
+            <h1>Bill Data Goes Here (Image, date, amount, etc.)</h1>
+          </div>
+        </div>
+
+      </div>
+
+
+    </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+</body>
+
+</html>
