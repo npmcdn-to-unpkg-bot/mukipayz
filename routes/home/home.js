@@ -69,7 +69,6 @@ router.get('group/edit', function(req, res, next){
 });
 
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
-    console.log("here?", req.query);
     Bills().where({
         id: req.params.bill_id
     }).then(function(bill) {

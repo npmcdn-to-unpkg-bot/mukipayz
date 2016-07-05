@@ -39,15 +39,6 @@ body {
   height: 100%;
 }
 
-/* dots are lines */
-/* line 24, ../../styles/_flickity.scss */
-.flickity-page-dots .dot {
-  height: 4px;
-  width: 40px;
-  margin: 0;
-  border-radius: 0;
-}
-
 /* line 17, ../../styles/main.scss */
 .mukipayz {
   font-family: "Comfortaa", cursive;

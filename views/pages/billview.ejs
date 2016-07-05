@@ -18,8 +18,9 @@ can we put the image of the bill on the top of this page if it exists -->
         <div class="main-carousel">
             <%# Bill Details%>
             <div class="carousel-cell details">
-                <h1><%= bill.title %></h1>
-                <h1>Other Details</h1>
+                <h1 class="bill-title"><%= bill.title %></h1>
+                <h3>Total Amount: <%= bill.amount %></h3>
+                
             </div>
             <%# Bill Image%>
             <div class="carousel-cell img">
