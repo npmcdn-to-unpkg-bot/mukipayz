@@ -10,7 +10,7 @@ var promise_result= require('../../promise');
 //login stuff
 router.get('/login', function(req, res, next) {
     knex('users').then(function(data) {
-        res.render('pages/auth/login', {
+        res.render('pages/login', {
             data: data
         });
     }).catch(next);
