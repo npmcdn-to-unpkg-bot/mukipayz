@@ -21,10 +21,10 @@ router.get('/', function(req, res, next) {
         .leftOuterJoin('groups', 'users_in_group.group_id', 'groups.id')
         .where('users.email', req.session.user.email)
         .then(function(data) {
-
-            res.render('pages/home', {
-                data: data[0]
-            });
+            res.send(data);
+            // res.render('pages/home', {
+            //     data: data[0]
+            // });
 
         })
         .catch(function(err) {
