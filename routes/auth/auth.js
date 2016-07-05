@@ -94,4 +94,13 @@ promise_result(req.body.password).then(function(result){
     });
 });
 
+router.get('/logout', function(req, res) {
+    //logout main session user
+    req.sessionOptions.maxAge = 0;
+    req.session = null;
+    //logout passport-dwolla session too
+    req.logout();
+    res.redirect('/');
+});
+
 module.exports = router;

@@ -8,7 +8,7 @@ var knex = require('../../db/knex');
 
 
 
-router.get('/home', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.send("test");
     // knex('users').then(function(data) {
     // res.send(data);
