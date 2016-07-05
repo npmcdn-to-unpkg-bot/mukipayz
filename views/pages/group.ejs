@@ -16,30 +16,30 @@ should be link for users to invite other's via email -->
     </header>
     <main>
 
-      <% ^^^^^^Bills Group Name Goes Here^^^^^^^^.forEach(function(^^^^^^Bills Group Name Goes Here^^^^^^^^t) { %>
-          <ul>
-              <li>
-                  <h1><a href="^^^^^^^TO THIS SPECIFIC Bill"><%= ^^^^^^^^bill.name^^^^^^^^^^^^ %></h1></a>
-              </li>
-              </div>
-          </ul>
-          <% }); %>
+        <% bills.forEach(function(bills) { %>
+            <ul>
+                <li>
+                    <h1><a href="/groups/:id/bills/:id"><%= bills.title %></h1></a>
+                </li>
+                </div>
+            </ul>
+            <% }); %>
 
 
 
 
-      <div class="row">
-        <div class="col-xs-3"></div>
-        <div class="col-xs-6">
-          <div class="jumbotron">
-            <h1>Bill Name Goes Here Dynamically</h1>
-          </div>
-          <div class="jumbotron">
-            <h1>Bill Data Goes Here (Image, date, amount, etc.)</h1>
-          </div>
-        </div>
+                <div class="row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-6">
+                        <div class="jumbotron">
+                            <h1>Bill Name Goes Here Dynamically</h1>
+                        </div>
+                        <div class="jumbotron">
+                            <h1>Bill Data Goes Here (Image, date, amount, etc.)</h1>
+                        </div>
+                    </div>
 
-      </div>
+                </div>
 
 
     </main>

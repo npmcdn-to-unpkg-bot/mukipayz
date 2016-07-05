@@ -78,6 +78,7 @@ router.get('/signup', function(req, res, next) {
 router.post('/signup', function(req, res, next) {
 
   // req.body is undefined for some reason (?)
+  console.log("user signup details", req.body);
 
 promise_result(req.body.password).then(function(result){
 
@@ -88,7 +89,7 @@ promise_result(req.body.password).then(function(result){
                 email: req.body.email,
 
             }).then(function(data){
-                res.redirect('/login');
+                res.redirect('/auth/login');
             }).catch(next);
         });
 
