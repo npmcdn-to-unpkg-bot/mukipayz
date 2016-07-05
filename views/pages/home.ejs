@@ -10,11 +10,11 @@
         <% include ../partials/header %>
     </header>
 
-    <h2>Welcome <=% data.users.first_name %></h2>
+    <!-- <h2>Welcome <=% data[0].first_name %></h2>
     <% groups forEach(function(groups) { %>
         <ul>
             <li>
-                <h1><a href="/groups/:id"><%= groups.group_name %></h1></a>
+                <h1><a href="/groups/:id"><%= data[0].group_name %></h1></a>
             </li>
             </div>
         </ul>
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> -->
 
             <section>
                 <div class="row">

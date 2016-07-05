@@ -15,17 +15,16 @@ function Bills() {
 
 router.get('/', function(req, res, next) {
 
-  //console.log(req.session.user.email);
     knex('users')
       .where('users.email', req.session.user.email)
         .leftOuterJoin('users_in_group', 'users.id', 'users_in_group.user_id')
         .leftOuterJoin('groups', 'users_in_group.group_id', 'groups.id')
         .where('users.email', req.session.user.email)
         .then(function(data) {
-          // res.send(data);
-            res.render('pages/home', {
-                data: data
-            });
+            res.send(data);
+            // res.render('pages/home', {
+            //     data: data[0]
+            // });
 
         })
         .catch(function(err) {
@@ -44,23 +43,28 @@ router.get('/group/new', function(req, res, next) {
 });
 
 router.post('/group/new', function(req, res, next){
-  knex('groups').insert({
-    group_name: req.body.groupName
-  })
-  .then(function(data){
-    res.send(data);
-    // res.redirect('/');
-  });
+    knex('groups').insert({
+        group_name: req.body.groupName
+    }).returning('*').then(function(result) {
+        knex('users_in_group').insert({
+            user_id: req.session.user.user_id,
+            group_id: result[0].id
+        })
+        .then(function(data){
+            res.send(data);
+            // res.redirect('/');
+        });
+    });
 });
 
 
 router.get('/groups/:id', function(req, res, next) {
-    knex('users').where({
-            email: req.session.user.email
+    knex('groups').where({
+            id: Number(req.params.id)
         })
         .then(function(data) {
-            res.render('/', {
-                data: data
+            res.render('pages/group', {
+                data: data[0]
             });
 
         });

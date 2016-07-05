@@ -1,14 +1,14 @@
 <!-- views/pages/index.ejs -->
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
 
-<%- include('../partials/head') %>
+<body class="container">
 
-<body>
-    <header class="page-header">
-        <h1 class="font1">Mukipayz</h1>
-        <h3>A Peer to Peer Payment Sharing Program</h3>
-
+    <header>
+        <% include ../partials/header %>
     </header>
 
     <main>
@@ -72,7 +72,7 @@
 
                 <div class="col-xs-4">
                     <div class="jumbotron">
-                        <form action="/signUp">
+                        <form action="/auth/signUp">
                             <br>Make splitting expesnses easier and
                             <input type="submit" value="Join Mukipayz">
                         </form>
@@ -85,19 +85,5 @@
 
     </main>
 
-    <footer>
-<<<<<<< HEAD
-        <% include ../partials/footer %>
-    </footer>
 
-=======
-      <a href="https://github.com/mukipuz/mukipayz">GitHub</a>
-      <a href="https://www.dwolla.com/">Dwolla</a>
-    </footer>
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script   src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
->>>>>>> 93326a6d4d341750d4ac5e4c9f087d2cd06c098e
-</body>
-
-</html>
+    <%- include('../partials/footer') %>
