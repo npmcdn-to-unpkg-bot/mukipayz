@@ -7,7 +7,7 @@
 // var client = new dwolla.Client({
 //     environment: 'sandbox',
 //     id: process.env.DWOLLA_ID,
-//     secret: process.env.DWOLLA_SECRET
+//     // secret: process.env.DWOLLA_SECRET
 // });
 // var accessToken = "rvU7oC4Cz9SJQR27ocDiSMVCBOTixF7vQyIhzbDA9Qz6v7LoxJ;"
 // var accountToken = new client.Token({access_token: accessToken});
