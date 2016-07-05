@@ -22,11 +22,15 @@ can we put the image of the bill on the top of this page if it exists -->
             <div class="col-xs-6">
                 <div class="jumbotron">
                     <div>
-                        <div>Bill IMAGE (if avaiable)</div>
-                        <div>Bill Data</div>
-                        <div>Bill Data</div>
-                        <div>Bill Data</div>
-                        <div>Bill Data</div>
+                        <div><img src="<%=bills.image_url%>" alt="Image of Bill"/></div>
+                        <ul>
+                          <li>
+                            <%= bills.title %>
+                          </li>
+                          <li>
+                            <%= bills.group_id %>
+                          </li>
+                        </ul>
                     </div>
                 </div>
           </div>
