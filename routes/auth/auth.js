@@ -29,13 +29,13 @@ router.post('/login', function (req, res, next){
     if (data.length === 1){
       bcrypt.compare(req.body.password, data[0].password, function(err, result){
         if(result){
-          res.send('login match');
-          // res.render('user', {
-          //   err:undefined,
-          //   email:data[0].email,
-          //   password:data[0].password
-          // });
+            req.session.user = {
+                loggedIn: true,
+                email: data[0].email
+            };
+            res.redirect('/home');
         } else {
+            //redirect to login page
           res.send('password err');
           // res.render('user', {
           //   //should change this to a redirect with error message for actual site but sometimes it is easer to see

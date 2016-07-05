@@ -14,8 +14,12 @@ router.get('/home', function(req, res, next) {
     //     res.render('pages/home', {
     //         data: data
     //     });
+<<<<<<< HEAD
     }).catch(next);
 
+=======
+    // }).catch(next);
+>>>>>>> 2b28537530cdf28d8fe8f8f1fe4a978659bd056a
 });
 
 router.get('/group/new', function(req, res, next){
