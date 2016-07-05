@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var bcrypt = require('bcrypt');
+// var bcrypt = require('bcrypt');
 var knex = require('../../db/knex');
 // var promise_result= require('./promise');
 
@@ -35,13 +35,23 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/group/new', function(req, res, next) {
-    knex('group').then(function(data) {
+    knex('groups').then(function(data) {
         res.render('pages/newgroup', {
             data: data
         });
     }).catch(next);
 });
 
+router.post('/group/new', function(req, res, next){
+  console.log(req.body.groupName);
+  knex('groups').insert({
+    group_name: req.body.groupName
+  })
+  .then(function(data){
+    res.send(data);
+    // res.redirect('/');
+  });
+});
 
 
 router.get('/groups/:id', function(req, res, next) {
