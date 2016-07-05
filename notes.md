@@ -103,4 +103,22 @@ I did not make a wireframe for this yet but it will be a hidden menu bar that ca
 * color 1: R0 G117 B225
 * color2: R173 G203 B225
 * color3: R224 G253 B255
->>>>>>> 1b5729ee1a6e13f4eff32a8abec8cfe4d535d83a
+
+
+##Routes
+* /index -> landing page
+* /auth
+    * /signup
+    * /login
+    * /logout
+    * /dwolla
+        * /login
+* /home -> logged in middleware
+    * /groups
+        * /new -> new group
+        * /edit -> add/delete users from group
+        * /:id
+            * /bills -> all bills of group :id
+            * /bills/new -> add bill to group
+            * /bills/:id -> single bill
+                * /pay -> pay bill page at group :id, bill :id
