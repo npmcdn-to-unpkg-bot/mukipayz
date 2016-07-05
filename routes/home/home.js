@@ -14,16 +14,16 @@ function Bills() {
 
 router.get('/', function(req, res, next) {
 
-  //console.log(req.session.user.email);
+  // console.log(req.session.user.email);
     knex('users')
       .where('users.email', req.session.user.email)
         .leftOuterJoin('users_in_group', 'users.id', 'users_in_group.user_id')
         .leftOuterJoin('groups', 'users_in_group.group_id', 'groups.id')
         .where('users.email', req.session.user.email)
         .then(function(data) {
-          // res.send(data);
+
             res.render('pages/home', {
-                data: data
+                data: data[0]
             });
 
         })
@@ -47,24 +47,27 @@ router.post('/group/new', function(req, res, next){
   knex('groups').insert({
     group_name: req.body.groupName
   })
+  .then(knex('users_in_group').insert({
+
+  }))
   .then(function(data){
     // res.send(data);
     res.redirect('/home');
   });
 });
 
-
-router.get('/groups/:id', function(req, res, next) {
-    knex('users').where({
-            email: req.session.user.email
-        })
-        .then(function(data) {
-            res.render('/', {
-                data: data
-            });
-
-        });
-});
+//
+// router.get('/groups/:id', function(req, res, next) {
+//     knex('users').where({
+//             email: req.session.user.email
+//         })
+//         .then(function(data) {
+//             res.render('/', {
+//                 data: data
+//             });
+//
+//         });
+// });
 
 router.get('group/edit', function(req, res, next){
 
@@ -90,8 +93,17 @@ router.get('/group/bills/:id/pay', function(req, res, next){
 });
 
 router.get('/group/:id/messages', function(req, res, next){
+  knex('').then(function(data) {
+      res.render('pages/login', {
+          data: data
+      });
+  }).catch(next);
 
 });
 
-router.get('/group/:id')
+// });
+
+router.get('/group/:id', function(req, res, next){
+
+});
 module.exports = router;
