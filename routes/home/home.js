@@ -44,4 +44,8 @@ router.get('group/bills/:id/pay', function(req, res, next){
 
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b837f11445d9c2dace89ccd74e8e26580de2b437
 module.exports = router;
