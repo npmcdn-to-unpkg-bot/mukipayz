@@ -46,11 +46,11 @@ router.post('/group/new', function(req, res, next){
   console.log(req.body.groupName);
   knex('groups').insert({
     group_name: req.body.groupName
-  })
+  }).returning('*')
   .then(function(result){
     knex('users_in_group').insert({
-        user_id: req.session.user.id,
-        group_id: result.id
+        user_id: req.session.user.user_id,
+        group_id: result[0].id
     })
   .then(function(data){
     // res.send(data);
