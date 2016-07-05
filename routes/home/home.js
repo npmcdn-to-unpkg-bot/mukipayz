@@ -73,6 +73,13 @@ router.get('/group/:id', function(req, res, next) {
             bills: data[0],
             messages: data[1]
         };
+        if (joined.bills.length === 0) {
+            joined.bills = null;
+        }
+        if (joined.messages.length === 0) {
+            joined.messages = null;
+        }
+        // res.json(joined.bills);
         //**to use in view, data.bills or data.messages
         res.render('pages/group', {
             data: joined
@@ -109,6 +116,7 @@ router.get('/group/bills/:id/pay', function(req, res, next){
 
 });
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
+    console.log("Hitting Bill:id for group:id")
     Bills().where({
         group_id: req.params.group_id,
         id: req.params.bill_id

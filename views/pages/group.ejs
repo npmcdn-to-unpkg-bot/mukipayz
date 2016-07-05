@@ -7,54 +7,62 @@ should be link for users to invite other's via email -->
 
 <head>
     <% include ../partials/head %>
+    <link rel="stylesheet" href="https://npmcdn.com/flickity@1.2/dist/flickity.min.css">
 </head>
 
-<body class="container">
+<body>
 
     <header>
-        <% include ../partials/header %>
+        <% include ../partials/navbar %>
     </header>
-    <main>
+    <main class="container">
 
         <div class="main-carousel">
 
             <div class="carousel-cell bills">
+                <h1 class="cell-title">Bills</h1>
                 <%# List of Bills go here! %>
-                <% data.forEach(function(bills) { %>
-                    <ul>
-                        <li>
-                            <h1><a href="/groups/:id/bills/:id"><%= bills.title %></h1></a>
-                        </li>
-                    </ul>
-                <% }); %>
+                <% if (!data.bills) { %>
+                    <h1>No Bills Yet. Click below to add one</h1>
+                    <button type="button" name="button">Add a Bill!</button>
+                <% } else { %>
+                    <% data.bills.forEach(function(bill) { %>
+                        <ul>
+                            <li>
+                                <h1><a href="/home/group/<%= bill.group_id %>/bills/<%= bill.id %>"><%= bill.title %></h1></a>
+                            </li>
+                        </ul>
+                    <% }); %>
+                <% } %>
             </div>
             <div class="carousel-cell messages">
+                <h1 class="cell-title">Messages</h1>
                 <%# List of Messages for the group in this group go here! %>
+                <% if (!data.messages) { %>
+                    <h1>No Messages Yet. Click below to add one</h1>
+                    <button type="button" name="button">Add a Message!</button>
+                <% } else { %>
+                    <% data.messages.forEach(function(message) { %>
+                        <ul>
+                            <li>
+                                <h1>
+                                    <%= message.content %>
+                                </h1>
+                            </li>
+                        </ul>
+                    <% }); %>
+                <% } %>
+
             </div>
             <div class="carousel-cell users">
                 <%# List of Users in this group go here! %>
+                <h1 class="cell-title">Friends</h1>
             </div>
         </div>
 
-                <div class="row">
-                    <div class="col-xs-3"></div>
-                    <div class="col-xs-6">
-                        <div class="jumbotron">
-                            <h1>Bill Name Goes Here Dynamically</h1>
-                        </div>
-                        <div class="jumbotron">
-                            <h1>Bill Data Goes Here (Image, date, amount, etc.)</h1>
-                        </div>
-                    </div>
-
-                </div>
-
-
     </main>
 
-    <footer>
-        <% include ../partials/footer %>
-    </footer>
+    <%- include('../partials/flickity/scripts') %>
 
 </body>
 
