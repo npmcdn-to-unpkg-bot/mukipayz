@@ -3,12 +3,33 @@
 //other imported files
 
 //font imports
-@import 'https://fonts.googleapis.com/css?family=Comfortaa|Lato';
+@import 'https://fonts.googleapis.com/css?family=Comfortaa|Lato:300';
 //to use:
     //Header / Headlines
         //font-family: 'Comfortaa', cursive;
     //Body text
         //font-family: 'Lato', sans-serif;
-
+$header-font: 'Comfortaa', cursive;
+$body-font: 'Lato', sans-serif;
 
 //other styling here
+.mukipayz {
+  font-family: $header-font;
+  font-size: 100px;
+  color: #0075E1;
+  text-shadow: 2px 2px blue;
+}
+
+.p2p {
+  font-family: $body-font;
+}
+.footer{
+
+}
+
+.font1 {
+    font-family: $header-font
+}
+.font2 {
+  font-family:  $body-font;
+}

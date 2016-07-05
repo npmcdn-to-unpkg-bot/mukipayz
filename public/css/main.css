@@ -1,3 +1,4 @@
+@import "https://fonts.googleapis.com/css?family=Comfortaa|Lato:300";
 /* line 1, ../../styles/_global.scss */
 * {
   box-sizing: border-box;
@@ -13,23 +14,25 @@ body {
   margin: 0;
 }
 
+/* line 16, ../../styles/main.scss */
 .mukipayz {
-  font-family: 'Dosis', sans-serif;
+  font-family: "Comfortaa", cursive;
   font-size: 100px;
   color: #0075E1;
-   text-shadow: 2px 2px blue;
+  text-shadow: 2px 2px blue;
 }
 
+/* line 23, ../../styles/main.scss */
 .p2p {
-  font-family: 'Open Sans', sans-serif;
-}
-.footer{
-
+  font-family: "Lato", sans-serif;
 }
 
+/* line 30, ../../styles/main.scss */
 .font1 {
-    font-family: 'Dosis', sans-serif;
+  font-family: "Comfortaa", cursive;
 }
+
+/* line 33, ../../styles/main.scss */
 .font2 {
-  font-family: 'Dosis', sans-serif;
+  font-family: "Lato", sans-serif;
 }
