@@ -60,8 +60,9 @@ router.post('/group/new', function(req, res, next){
 });
 
 //
-router.get('/groups/:id', function(req, res, next) {
-    knex('groups').where({
+router.get('/group/:id', function(req, res, next) {
+    knex('groups').leftOuterJoin('bills', 'bills.group_id', 'groups.id')
+    .where({
             id: Number(req.params.id)
         })
         .then(function(data) {
@@ -96,17 +97,16 @@ router.get('/group/bills/:id/pay', function(req, res, next){
 });
 
 router.get('/group/:id/messages', function(req, res, next){
-  knex('').then(function(data) {
-      res.render('pages/login', {
-          data: data
-      });
+  knex('messages_in_group').then(function(data) {
+    res.send(data);
+      // res.render('pages/group', {
+      //     data: data[0]
+      // });
   }).catch(next);
 
 });
 
 // });
 
-router.get('/group/:id', function(req, res, next){
 
-});
 module.exports = router;
