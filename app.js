@@ -21,9 +21,9 @@ app.set('view engine', 'ejs');
 var routes = {
     landing: require('./routes/landing'),
     index: require('./routes/index'),
-    login : require('./routes/login'),
-    signup: require('./routes/signup'),
-    home: require('./routes/home/:id')
+    auth : require('./routes/auth/auth')
+
+    // home: require('./routes/home/:id')
 };
 
 //app middleware
@@ -33,8 +33,8 @@ app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({extended: true}));
 //routes middleware
 // app.use('/home/:id', routes.home);
-app.use('/signup', routes.signup);
-app.use('/login', routes.login);
+app.use('/auth', routes.auth);
+// app.use('/login', routes.login);
 app.use('/', routes.index);
 
 
