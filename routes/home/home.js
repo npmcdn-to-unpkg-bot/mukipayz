@@ -8,7 +8,7 @@ var knex = require('../../db/knex');
 
 
 
-router.get('/', function(req, res, next) {
+router.get('/home', function(req, res, next) {
   res.send("test");
     // knex('users').then(function(data) {
     // res.send(data);
@@ -16,5 +16,30 @@ router.get('/', function(req, res, next) {
     //         data: data
     //     });
     // }).catch(next);
+
+});
+
+router.get('/group/new', function(req, res, next){
+
+});
+
+
+router.get ('groups/:id', function(req, res, next){
+
+});
+
+router.get ('group/edit', function(req, res, next){
+
+});
+
+router.get ('group/:id/bills/:id', function(req, res, next){
+
+});
+
+router.get('group/bills/new', function(req, res, next){
+
+});
+
+router.get('group/bills/:id/pay', function(req, res, next){
 
 });
