@@ -246,9 +246,6 @@ router.get('/group/:id/messages/new', function(req, res, next) {
 });
 
 router.post('/group/:id/messages/new', function(req, res, next) {
-    var user = {
-        id: req.session.user.user_id
-    }
     Messages().insert({
         content: req.body.message,
         user_id: req.session.user.user_id,
@@ -259,7 +256,7 @@ router.post('/group/:id/messages/new', function(req, res, next) {
         console.error("error saving message");
     });
 });
-//
+
 // Promise.join(
 //     db_model.numberOfMembersPerGroup(req.params.group_id),
 //     knex('bills').where({group_id: req.params.group_id})
