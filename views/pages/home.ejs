@@ -16,6 +16,7 @@
         <div class="carousel-cell groups">
             <h1 class="header-text cell-title">Groups</h1>
             <% groups.forEach(function(group) { %>
+              <% console.log(group); %>
                 <ul>
                     <li>
                         <h1><a href="/home/group/<%= group.id %>"><%= group.group_name %></h1></a>
@@ -27,8 +28,7 @@
         <div class="carousel-cell img">
             <h1 class="header-text cell-title">Options</h1>
             <div class="col-md-12">
-                    <a href="/home/group/new" class="btn btn-primary btn-block">I Want to Start a New Group</a>
-                </div>
+                <a href="/home/group/new" class="btn btn-primary btn-block">I Want to Start a New Group</a>
             </div>
         </div>
     </div>
