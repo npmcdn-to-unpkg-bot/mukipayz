@@ -71,6 +71,7 @@ router.get('/group/:id', function(req, res, next) {
         knex('bills').where({group_id:Number(req.params.id)}),
         knex('messages_in_group').where({group_id:Number(req.params.id)})
     ).then(function(data) {
+
         //Promise.join will join the data of multiple promises
             //So data[0] == bills array, data[1] == messages in that group
         //data = [all-bills, all-messages] for that id
@@ -79,17 +80,20 @@ router.get('/group/:id', function(req, res, next) {
             bills: data[0],
             messages: data[1]
         };
+
         if (joined.bills.length === 0) {
             joined.bills = null;
         }
         if (joined.messages.length === 0) {
             joined.messages = null;
         }
-        // res.json(joined.bills);
-        //**to use in view, data.bills or data.messages
+        //res.send(joined.bills);
+    //     // res.json(joined.bills);
+    //     // to use in view, data.bills or data.messages
         res.render('pages/group', {
             data: joined
         });
+        //console.log(data);
     });
 
 });

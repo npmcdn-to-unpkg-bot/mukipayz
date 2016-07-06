@@ -10,12 +10,13 @@
             <% include ../partials/header %>
         </header>
 
-        <h2>Welcome <=% data[0].first_name %></h2>
+        <h2>Welcome <%= data[0].first_name %></h2>
         <% data.forEach(function(groups) { %>
+          <% console.log(groups) %>
             <ul>
                 <li>
                     <h1>
-                        <a href="/groups/:id"><%= data[0].group_name %></h1>
+                        <a href="./group/<%= groups.group_id %>"><%= groups.group_name %></h1>
                     </a>
                 </li>
             </div>
@@ -28,7 +29,7 @@
 
             <div class="col-md-4">
                 <div class="jumbotron">
-                    <form action="/newGroup">
+                    <form action="home/group/new">
                         <input type="submit" value="I Want to Start a New Group">
                     </form>
                 </div>
