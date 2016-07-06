@@ -65,11 +65,20 @@ function getGroupMessages(group_id) {
             }).catch(reject);
     });
 }
+function getGroupFriends(group_id) {
+    return new Promise(function(resolve, reject) {
+        Users_In_Group().where({group_id: group_id})
+            .then(function(users) {
+                resolve(users);
+            }).catch(reject);
+    });
+}
 
 
 module.exports = {
     getUser: getUser,
     getUsersFriends: getUsersFriends,
     getUsersGroups: getUsersGroups,
-    getGroupMessages: getGroupMessages
+    getGroupMessages: getGroupMessages,
+    getGroupFriends: getGroupFriends
 };
