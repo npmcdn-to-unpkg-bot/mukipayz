@@ -7,7 +7,7 @@ var knex = require('../../db/knex');
 var uploader = require('../../uploader');
 var Promise = require('bluebird');
 // var promise_result= require('./promise');
-
+var db_model = require('../../db_models');
 
 function Bills() {
     //model for bills table
@@ -21,23 +21,25 @@ function Bills() {
  //-------ABove
 
 router.get('/', function(req, res, next) {
-
-    knex('users')
-      .where('users.email', req.session.user.email)
-        .leftOuterJoin('users_in_group', 'users.id', 'users_in_group.user_id')
-        .leftOuterJoin('groups', 'users_in_group.group_id', 'groups.id')
-        .where('users.email', req.session.user.email)
-        .then(function(data) {
-            // res.send(data);
-            res.render('pages/home', {
-                data: data
-            });
-
-        })
-        .catch(function(err) {
-            console.log(err);
-
+    Promise.join(
+        db_model.getUser(req.session.user.email),
+        db_model.getUsersGroups(req.session.user.email),
+        //friends model not yet fully functional
+        db_model.getUsersFriends(req.session.user.email)
+    ).then(function(data) {
+        data = {
+            user: data[0],
+            groups: data[1],
+            friends: data[2]
+        };
+        // res.json(data);
+        res.render('pages/home', {
+            user: data.user,
+            groups: data.groups,
+            friends: data.friends
         });
+    });
+
 });
 
 
