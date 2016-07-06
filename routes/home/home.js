@@ -207,32 +207,18 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
     ).then(function(data) {
-        // bill = bill[0];
-        // if (bill === undefined) {
-        //     console.log("no bill");
-        //     /**FIXME: Redirect Routes for Errors */
-        //     res.send('bill not found');
-        // }
-  //       Promise.join(
-  //      db_model.numberOfMembersPerGroup(req.params.group_id),
-  //      knex('bills').where({group_id: req.params.group_id})
-  //  ).then(function(data) {
-  //     //  res.json(data);
-  //     //  data[0] = count: #,
-  //     //  data[1] = all bills
-       res.render('pages/billview', {
-         bill : data[1],
-         numUsers: data[0],
-         totalPerUser: (Number(data[1].amount) / Number(data[0].count))
-       });
+
+      var obj = {
+        bill : data[1],
+        numUsers: data[0],
+        totalPerUser: Number(data[0][0].amount) / Number(data[1][0].count)
+      }
+      // res.json(obj);
+
+       res.render('pages/billview', obj);
    }).catch(function(err) {
        console.error(err);
    });
-          // db_model.numberOfMembersPerGroup(req.params.group_id).then(function(data){
-          //       console.log(data);
-          //       console.log("count is: " + data[0].count);
-          //   res.render('pages/billview', data[0])
-          // })
 
 });
 
