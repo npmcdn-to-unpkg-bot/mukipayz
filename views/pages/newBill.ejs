@@ -11,17 +11,17 @@
                 <div class="col-md-6">
                     <!-- <div class="jumbotron"> -->
                     <h4>Create a New Bill</h4>
-                    <form action="/home/group/<%= group.id %>/bills/new" method="POST"  enctype="multipart/form-data">
+                    <form data-toggle="validator" role="form" action="/home/group/<%= group.id %>/bills/new" method="POST"  enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="title">Bill Name</label>
+                            <label for="title" class="control-label">Bill Name</label>
                             <input type="text" name="title" placeholder="Bill Title" class="form-control" id="title">
                         </div>
                         <div class="form-group">
-                            <label for="amount">Amount</label>
-                            <input type="text" name="amount" class="form-control" id="amount" placeholder="Enter Amount to Split">
+                            <label for="amount" class="control-label">Amount</label>
+                            <input type="text" name="amount" class="form-control" id="amount" placeholder="Enter Total Amount to Split">
                         </div>
                         <div class="form-group">
-                            <label for="image">Add an Image </label>
+                            <label class="control-label" for="image">Add an Image </label>
                             <input type="file" name="files" id="image" accept="image/*">
                         </div>
                         <button class="btn btn-primary" type="submit">Create Bill</button>
