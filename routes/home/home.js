@@ -144,6 +144,42 @@ router.post('/group/:group_id/bills/new', function(req, res, next) {
     });
 });
 
+router.get('/group/:group_id/add', function(req, res, next) {
+    var group = {
+        id: req.params.group_id
+    };
+    res.render('pages/addUserGroup', {
+        group: group
+    });
+});
+
+
+router.post('/group/:group_id/add', function(req, res, next){
+  knex('users').then(function(req, res, next){
+    if(req.body.invite_email=== req.session.user.user_email){
+      knex('users_in_group').insert({
+        user_id: req.session.user.user_id,
+        group_id: req.params.group_id
+      });
+    }
+    else{
+      knex('users').insert({
+        email:req.body.invite_email,
+        first_name: 'anonymous',
+        last_name: 'user',
+        password: req.body.invite_email
+      }).returning('*')
+      .then(function(result) {
+        knex('users_in_group').insert({
+          user_id: result.id,
+          group_id: req.params.group_id
+        });
+    });
+  }
+  });
+
+});
+
 router.get('/group/bills/:id/pay', function(req, res, next) {
 
 

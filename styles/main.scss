@@ -6,6 +6,7 @@
 @import "menu";
 @import "cells";
 
+
 //font imports
 @import 'https://fonts.googleapis.com/css?family=Comfortaa|Lato:300';
 //to use:
@@ -16,10 +17,24 @@
 $header-font: 'Comfortaa', cursive;
 $body-font: 'Lato', sans-serif;
 
-.header-text {
+//other styling here
+.mukipayz {
+  font-family: $header-font;
+  font-size: 100px;
+  color: #0075E1;
+  text-shadow: 2px 2px blue;
+}
+
+.p2p {
+  font-family: $body-font;
+}
+.footer{
+
+}
+.font1 {
     font-family: $header-font
 }
-.body-text {
+.font2 {
   font-family:  $body-font;
 }
 .middle {

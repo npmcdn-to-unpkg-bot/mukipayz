@@ -278,22 +278,35 @@ main {
   font-size: 12px;
 }
 
-/* line 19, ../../styles/main.scss */
-.header-text {
+/* line 21, ../../styles/main.scss */
+.mukipayz {
   font-family: "Comfortaa", cursive;
+  font-size: 100px;
+  color: #0075E1;
+  text-shadow: 2px 2px blue;
 }
 
-/* line 22, ../../styles/main.scss */
-.body-text {
+/* line 28, ../../styles/main.scss */
+.p2p {
   font-family: "Lato", sans-serif;
 }
 
-/* line 25, ../../styles/main.scss */
+/* line 34, ../../styles/main.scss */
+.font1 {
+  font-family: "Comfortaa", cursive;
+}
+
+/* line 37, ../../styles/main.scss */
+.font2 {
+  font-family: "Lato", sans-serif;
+}
+
+/* line 40, ../../styles/main.scss */
 .middle {
   padding-left: 10%;
 }
 
-/* line 28, ../../styles/main.scss */
+/* line 43, ../../styles/main.scss */
 .right {
   padding-left: 10%;
 }
