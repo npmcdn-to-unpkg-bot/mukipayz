@@ -176,7 +176,7 @@ router.get('/group/:group_id/add', function(req, res, next) {
 });
 
 
-<<<<<<< HEAD
+
 router.post('/group/:group_id/add', function(req, res, next){
   console.log(req.body.invite_email);
   console.log(req.session.user.email);
@@ -254,7 +254,7 @@ router.post('/group/:id/messages/new', function(req, res, next) {
         console.error("error saving message");
     });
 });
-=======
+
 router.post('/group/:group_id/add', function(req, res, next) {
             console.log(req.body.invite_email);
 
@@ -322,7 +322,9 @@ router.post('/group/:group_id/add', function(req, res, next) {
         router.get('/group/bills/:id/pay', function(req, res, next) {
 
 
-        }); router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
+        });
+
+        router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
             Bills().where({
                 group_id: req.params.group_id,
                 id: req.params.bill_id
@@ -348,7 +350,7 @@ router.post('/group/:group_id/add', function(req, res, next) {
                 // });
             }).catch(next);
         });
->>>>>>> invites
+
 
 // Promise.join(
 //     db_model.numberOfMembersPerGroup(req.params.group_id),
