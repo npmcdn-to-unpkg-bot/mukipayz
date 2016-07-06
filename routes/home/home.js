@@ -9,9 +9,9 @@ var Promise = require('bluebird');
 var moment = require('moment');
 // var promise_result= require('./promise');
 var db_model = require('../../db_models');
-var promise_result= require('../../promise');
+var promise_result = require('../../promise');
 var randomstring = require("randomstring");
-var email= require('../../emailer');
+var email = require('../../emailer');
 function Bills() {
     //model for bills table
     return knex('bills');
@@ -47,7 +47,6 @@ router.get('/', function(req, res, next) {
     });
 });
 
-
 router.get('/group/new', function(req, res, next) {
     knex('groups').then(function(data) {
         res.render('pages/newgroup', {
@@ -70,8 +69,6 @@ router.post('/group/new', function(req, res, next) {
             });
     });
 });
-
-
 
 
 router.get('/group/:id', function(req, res, next) {
