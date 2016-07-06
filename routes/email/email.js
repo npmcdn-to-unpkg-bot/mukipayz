@@ -58,14 +58,14 @@ router.post('/submit', function(req,res) {
     mailgun.messages().send(data, function (err, body) {
         //If there is an error, render the error page
         if (err) {
-            res.render('error', { error : err});
+            res.render('email/error', { error : err});
             console.log("got an error: ", err);
         }
-        //Else we can greet    and leave
+        // //Else we can greet    and leave
         else {
             //Here "submitted.ejs" is the view file for this landing page
-            //We pass the variable "email" from the url parameter in an object rendered by Jade
-            res.render('email/submitted', { email : req.params.mail });
+            //We pass the variable "email" from the url parameter in an object rendered by ejs
+            res.render('pages/addUserGroup');
             console.log(body);
         }
     });

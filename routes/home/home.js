@@ -175,8 +175,10 @@ router.post('/group/:group_id/add', function(req, res, next){
         knex('users_in_group').insert({
           user_id: result.id,
           group_id: req.params.group_id
-        })
-        res.end();
+        }).returning('*')
+      .then(function(result){
+        //call email function
+      });
     });
   }
   });
