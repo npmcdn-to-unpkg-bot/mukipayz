@@ -11,7 +11,7 @@ var moment = require('moment');
 var db_model = require('../../db_models');
 var promise_result= require('../../promise');
 var randomstring = require("randomstring");
-
+var email= require('../../emailer');
 function Bills() {
     //model for bills table
     return knex('bills');
@@ -182,47 +182,64 @@ router.post('/group/:group_id/add', function(req, res, next) {
     knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
         // knex('users_in_group')
         .then(function(data) {
-                console.log(data);
+            console.log(data);
 
-                if (data.length > 0) {
-                    console.log(data[0].id);
-                    knex('users_in_group').insert({
+            if (data.length > 0) {
+                console.log(data[0].id);
+                knex('users_in_group').insert({
                         user_id: data[0].user_id,
                         group_id: req.params.group_id
                     })
-                //  })
-                    .then(function(data){
-                    res.redirect('/home');
-                  });
-                } else {
-                  var password = randomstring.generate(7);
-                  promise_result(password)
-                  //console.log(promise_result("wow"))
-                  .then(function(result){
-                    console.log("result: ", result);
-                    return knex('users').insert({
+                    //  })
+                    .then(function(data) {
+                        res.redirect('/home');
+                    });
+            } else {
+                var password = randomstring.generate(7);
+                promise_result(password)
+                    //console.log(promise_result("wow"))
+                    .then(function(result) {
+                        console.log("result: ", result);
+                        return knex('users').insert({
                             email: req.body.invite_email,
                             first_name: 'anonymous',
                             last_name: 'user',
                             password: result
                         }).returning('*')
-                      }).then(function(results) {
-                            console.log("RESULT from database stuff" + results[0]);
-                            return knex('users_in_group').insert({
-                                    user_id: results[0].id,
-                                    group_id: req.params.group_id
-                                }).returning('*')
-                                .then(function(result) {
-                                    res.send('do it');
-                                    //call email
-
+                    }).then(function(results) {
+                        console.log("RESULT from database stuff" + results[0]);
+                        return knex('users_in_group').insert({
+                                user_id: results[0].id,
+                                group_id: req.params.group_id
+                            }).returning('*')
+                            .then(function(result) {
+                                res.send('do it');
+                                //call email
+                                email(req.body.invite_email, function(err, body) {
+                                    if (err) {
+                                        res.render('email/error', {
+                                            error: err
+                                        });
+                                        console.log("got an error: ", err);
+                                    }
+                                    // //Else we can greet    and leave
+                                    else {
+                                        //Here "submitted.ejs" is the view file for this landing page
+                                        //We pass the variable "email" from the url parameter in an object rendered by ejs
+                                        res.render('pages/addUserGroup', {
+                                            success: "you invited a user"
+                                        });
+                                        console.log(body);
+                                    }
                                 });
-                        });
-                }
-            }).catch(function(err) {
-              console.error("ERROR: ", err);
-            });
-      });
+
+                            });
+                    });
+            }
+        }).catch(function(err) {
+            console.error("ERROR: ", err);
+        });
+});
 
 
 
@@ -273,16 +290,4 @@ router.post('/group/:id/messages/new', function(req, res, next) {
 });
 
 
-// Promise.join(
-//     db_model.numberOfMembersPerGroup(req.params.group_id),
-//     knex('bills').where({group_id: req.params.group_id})
-// ).then(function(data) {
-//     data[0] = count: #,
-//     data[1] = all bills
-// }).catch(function(err) {
-//     console.error(err);
-// });
-
-
-
-        module.exports = router;
+module.exports = router;
