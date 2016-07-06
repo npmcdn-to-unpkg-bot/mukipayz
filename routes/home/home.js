@@ -11,7 +11,7 @@ var moment = require('moment');
 var db_model = require('../../db_models');
 var promise_result= require('../../promise');
 var randomstring = require("randomstring");
-
+var email= require('../../emailer');
 function Bills() {
     //model for bills table
     return knex('bills');
@@ -295,6 +295,19 @@ router.post('/group/:group_id/add', function(req, res, next) {
                                         .then(function(result) {
                                             res.send('do it');
                                             //call email
+                                            email(req.body.invite_email, function(err, body){
+                                              if (err) {
+                                                  res.render('email/error', { error : err});
+                                                  console.log("got an error: ", err);
+                                              }
+                                              // //Else we can greet    and leave
+                                              else {
+                                                  //Here "submitted.ejs" is the view file for this landing page
+                                                  //We pass the variable "email" from the url parameter in an object rendered by ejs
+                                                  res.render('pages/addUserGroup', {success: "you invited a user"});
+                                                  console.log(body);
+                                              }
+                                            });
 
                                         });
                                 });
