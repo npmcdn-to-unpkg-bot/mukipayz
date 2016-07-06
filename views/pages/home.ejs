@@ -13,7 +13,7 @@
     <h2>Welcome <%= user.first_name %>!</h2>
     <div class="main-carousel">
         <%# Bill Details%>
-        <div class="carousel-cell groups">
+        <div class="carousel-cell groups container">
             <h1 class="header-text cell-title">Groups</h1>
             <% groups.forEach(function(group) { %>
               <% console.log(group); %>
@@ -25,7 +25,7 @@
             <% }); %>
         </div>
         <%# Bill Image%>
-        <div class="carousel-cell img">
+        <div class="carousel-cell img container">
             <h1 class="header-text cell-title">Options</h1>
             <div class="col-md-12">
                 <a href="/home/group/new" class="btn btn-primary btn-block">I Want to Start a New Group</a>
