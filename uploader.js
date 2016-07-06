@@ -4,7 +4,8 @@ var fs = require('fs'),
     path = require('path'),
     Promise = require('bluebird'),
     slugify = require('slug'),
-    knex = require('./db/knex');
+    knex = require('./db/knex'),
+    alter = require('imagemagick');
 
 function Bills() {
     return knex('bills');
