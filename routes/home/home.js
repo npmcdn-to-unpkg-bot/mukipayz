@@ -73,10 +73,11 @@ router.get('/group/:id', function(req, res, next) {
         knex('bills').where({group_id:Number(req.params.id)}),
         knex('messages_in_group').where({group_id:Number(req.params.id)})
     ).then(function(data) {
+      // res.json(data[0].length);
       // if(data[0].length>0){
       res.render('pages/group', {
-          data: data
-
+          data: data,
+          group_id: req.params.id
       });
     // }
     // else{
