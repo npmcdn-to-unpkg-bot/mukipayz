@@ -199,9 +199,7 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
             /**FIXME: Redirect Routes for Errors */
             res.send('bill not found');
         }
-        res.render('pages/billview', {
-            bill: bill
-        })
+        res.render('pages/billview', numberOfMembersPerGroup(req.params.group_id))
     });
 });
 
