@@ -56,8 +56,6 @@
             logout.addEventListener('click', handleLogout);
 
 
-
-
         menuInner.appendChild(returnHome);
         menuInner.appendChild(close);
         menuInner.appendChild(menuTitle);
@@ -65,9 +63,7 @@
         menuInner.appendChild(groups);
         menuInner.appendChild(newGroup);
 
-
         menuInner.appendChild(logout);
-
 
         menu.appendChild(menuInner);
 
