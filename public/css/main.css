@@ -1,10 +1,15 @@
 @import "https://fonts.googleapis.com/css?family=Comfortaa|Lato:300";
-/* line 1, ../../styles/_global.scss */
+@btn-primary : darken(#428bca, 6.5%);
+@btn-success : darken(#5cb85c, 20%);
+@btn-info :    #5bc0de;
+@btn-warning : #f0ad4e;
+@btn-danger :  #d9534f;
+/* line 9, ../../styles/_global.scss */
 * {
   box-sizing: border-box;
 }
 
-/* line 5, ../../styles/_global.scss */
+/* line 13, ../../styles/_global.scss */
 body {
   top: 0;
   right: 0;
@@ -12,6 +17,50 @@ body {
   left: 0;
   width: 100%;
   margin: 0;
+  font-size: 16px;
+}
+
+@media (max-width: 767px) {
+  /* line 23, ../../styles/_global.scss */
+  .header-text.mukipayz {
+    font-size: 4em !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* line 23, ../../styles/_global.scss */
+  .header-text.mukipayz {
+    font-size: 5.5em !important;
+  }
+}
+@media (min-width: 1024px) {
+  /* line 23, ../../styles/_global.scss */
+  .header-text.mukipayz {
+    font-size: 7em !important;
+  }
+}
+
+/* line 35, ../../styles/_global.scss */
+.footer {
+  margin-top: 20px;
+  text-align: center;
+}
+@media (max-width: 767px) {
+  /* line 38, ../../styles/_global.scss */
+  .footer .footer-item {
+    margin-right: 8px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* line 38, ../../styles/_global.scss */
+  .footer .footer-item {
+    margin-right: 12px;
+  }
+}
+@media (min-width: 1024px) {
+  /* line 38, ../../styles/_global.scss */
+  .footer .footer-item {
+    margin-right: 15px;
+  }
 }
 
 /* carousel height, as percentage of width */
@@ -49,25 +98,19 @@ body {
   top: 80% !important;
 }
 
-/* line 17, ../../styles/main.scss */
+/* line 2, ../../styles/_index.scss */
 .mukipayz {
-  font-family: "Comfortaa", cursive;
-  font-size: 100px;
+  font-size: 4em;
   color: #0075E1;
-  text-shadow: 2px 2px blue;
+  text-align: center;
 }
 
-/* line 24, ../../styles/main.scss */
-.p2p {
-  font-family: "Lato", sans-serif;
-}
-
-/* line 31, ../../styles/main.scss */
-.font1 {
+/* line 17, ../../styles/main.scss */
+.header-text {
   font-family: "Comfortaa", cursive;
 }
 
-/* line 34, ../../styles/main.scss */
-.font2 {
+/* line 20, ../../styles/main.scss */
+.body-text {
   font-family: "Lato", sans-serif;
 }
