@@ -203,7 +203,6 @@ router.get('/group/bills/:id/pay', function(req, res, next) {
 
 });
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
-
     Promise.join(
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
@@ -220,7 +219,7 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
    }).catch(function(err) {
        console.error(err);
    });
-      
+
 });
 
 //creat new message
