@@ -39,7 +39,7 @@ should be link for users to invite other's via email -->
                 </div>
                 <div class="carousel-cell messages container">
                     <h1 class="header-text cell-title">Messages</h1>
-                    <a href="/home/group/<%= group.id %>/bills/new"><button class="btn btn-primary btn-sm btn-block" name="button">New Message</button></a>
+                    <a href="/home/group/<%= group.id %>/messages/new"><button class="btn btn-primary btn-sm btn-block" name="button">New Message</button></a>
                     <% if (messages.length > 0) { %>
                         <ul class="messages-box cell-list-block">
                             <% messages.forEach(function(message) { %>
