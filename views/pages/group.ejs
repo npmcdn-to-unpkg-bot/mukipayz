@@ -12,9 +12,10 @@ should be link for users to invite other's via email -->
 <body class="container">
 
     <header>
-        <% include ../partials/header %>
+        <% include ../partials/navbar %>
     </header>
     <main>
+        <h1 class="header-text">Group</h1>
       <% if(data[0]==[]){console.log("woot")} %>
             <% data[0].forEach(function(group) { %>
               <% console.log(group); %>
