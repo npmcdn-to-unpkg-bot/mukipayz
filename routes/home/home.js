@@ -14,6 +14,12 @@ function Bills() {
     return knex('bills');
 }
 
+//---------BELOW
+ router.get('/payment', function(req, res, next){
+   res.render('pages/payment');
+ });
+ //-------ABove
+
 router.get('/', function(req, res, next) {
 
     knex('users')
