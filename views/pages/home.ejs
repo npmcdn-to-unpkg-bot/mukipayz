@@ -1,60 +1,58 @@
 <!-- this is the home page the user is taken once they successfully login -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <% include ../partials/head %>
-</head>
+    <head>
+        <% include ../partials/head %>
+    </head>
 
-<body class="container">
-    <header>
-        <% include ../partials/header %>
-    </header>
+    <body class="container">
+        <header>
+            <% include ../partials/header %>
+        </header>
 
-    <h2>Welcome <=% data[0].first_name %></h2>
-    <% groups.forEach(function(groups) { %>
-        <ul>
-            <li>
-                <h1><a href="/groups/:id"><%= data[0].group_name %></h1></a>
-            </li>
+        <h2>Welcome <=% data[0].first_name %></h2>
+        <% data.forEach(function(groups) { %>
+            <ul>
+                <li>
+                    <h1>
+                        <a href="/groups/:id"><%= data[0].group_name %></h1>
+                    </a>
+                </li>
             </div>
         </ul>
-        <% }); %>
+    <% }); %>
 
-            <section>
-                <div class="row">
-                    <div class="col-md-4">
+    <section>
+        <div class="row">
+            <div class="col-md-4"></div>
 
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="jumbotron">
-                            <form action="/newGroup">
-                                <input type="submit" value="I Want to Start a New Group">
-                            </form>
-                        </div>
-                    </div>
+            <div class="col-md-4">
+                <div class="jumbotron">
+                    <form action="/newGroup">
+                        <input type="submit" value="I Want to Start a New Group">
+                    </form>
                 </div>
-            </section>
+            </div>
+        </div>
+    </section>
 
-            <section>
-                <div class="row">
-                    <div class="col-md-4">
+    <section>
+        <div class="row">
+            <div class="col-md-4"></div>
 
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="jumbotron">
-                            <form action="/logout">
-                                <input type="submit" value="Log Out">
-                            </form>
-                        </div>
-                    </div>
+            <div class="col-md-4">
+                <div class="jumbotron">
+                    <form action="/logout">
+                        <input type="submit" value="Log Out">
+                    </form>
                 </div>
-            </section>
+            </div>
+        </div>
+    </section>
 
-            <footer>
-                <% include ../partials/footer %>
-            </footer>
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
 
 </body>
 

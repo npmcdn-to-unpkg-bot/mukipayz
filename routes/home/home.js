@@ -28,10 +28,10 @@ router.get('/', function(req, res, next) {
         .leftOuterJoin('groups', 'users_in_group.group_id', 'groups.id')
         .where('users.email', req.session.user.email)
         .then(function(data) {
-            res.send(data);
-            // res.render('pages/home', {
-            //     data: data[0]
-            // });
+            // res.send(data);
+            res.render('pages/home', {
+                data: data
+            });
 
         })
         .catch(function(err) {
@@ -67,7 +67,6 @@ router.post('/group/new', function(req, res, next){
 
 
 router.get('/group/:id', function(req, res, next) {
-
     Promise.join(
         knex('bills').where({group_id:Number(req.params.id)}),
         knex('messages_in_group').where({group_id:Number(req.params.id)})
@@ -90,11 +89,11 @@ router.get('/group/:id', function(req, res, next) {
         //**to use in view, data.bills or data.messages
         res.render('pages/group', {
             data: joined
-
         });
     });
 
 });
+
 
 router.get('group/edit', function(req, res, next){
 
