@@ -27,7 +27,7 @@
 
         // menu.classList.add('fade');
         var menuInner = document.createElement('div');
-           menuInner.className = "menu-inner";
+           menuInner.className = "menu-inner container";
         var menuTitle = document.createElement('h1');
            menuTitle.className = "menu-title";
            menuTitle.innerHTML = "Menu";
