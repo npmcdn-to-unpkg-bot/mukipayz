@@ -15,6 +15,7 @@ var express = require('express'),
     mware = require('./middleware');
 //setup views
 app.set('views', path.join(__dirname, 'views'));
+
 app.set('view engine', 'ejs');
 
 
