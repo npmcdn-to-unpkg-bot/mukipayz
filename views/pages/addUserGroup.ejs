@@ -16,13 +16,14 @@
             <div class="col-md-6">
                 <div>
                     <h1 class="text-center">Add Users to Group</h1>
-                      <form action='/home/group/id/add' method='post' data-toggle="validator" role="form">
+                      <form id="mgform" action="/email/submit" method="post" data-toggle="validator" role="form">
                         <fieldset class="form-group">
-                            <label for="userName" class="control-label">New User E-mail</label>
-                            <input type="text" class="form-control" id="invite_email" name="invite_email" placeholder="Enter Email" required>
+                            <label for="mail" class="control-label">Invite Your Friends, As Many As You Want!</label>
+                            <input type="text" class="form-control" id="invite_email" name="invite_email" placeholder="Enter Your Friend's Email" required>
                         </fieldset>
-                        <input type="submit" value="Add User" />
+                        <input type="submit" value="Send Invite"></input>
                     </form>
+
                 </div>
             </div>
         </div>
