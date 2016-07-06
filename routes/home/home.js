@@ -153,12 +153,16 @@ router.get('/group/:group_id/add', function(req, res, next) {
 
 
 router.post('/group/:group_id/add', function(req, res, next){
+  console.log(req.body.invite_email);
+  console.log(req.session.user.email);
+  console.log(req.params.group_id);
   knex('users').then(function(req, res, next){
-    if(req.body.invite_email=== req.session.user.user_email){
+    if(req.body.invite_email === req.session.user.email){
       knex('users_in_group').insert({
-        user_id: req.session.user.user_id,
+        user_id: req.session.user.email,
         group_id: req.params.group_id
       });
+      res.redirect('/home');
     }
     else{
       knex('users').insert({
@@ -171,7 +175,8 @@ router.post('/group/:group_id/add', function(req, res, next){
         knex('users_in_group').insert({
           user_id: result.id,
           group_id: req.params.group_id
-        });
+        })
+        res.end();
     });
   }
   });

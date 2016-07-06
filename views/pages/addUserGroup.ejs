@@ -16,7 +16,7 @@
             <div class="col-md-6">
                 <div>
                     <h1 class="text-center">Add Users to Group</h1>
-                      <form action='/home/group/id/add' method='post' data-toggle="validator" role="form">
+                      <form action='/home/group/:group_id/add' method='post' data-toggle="validator" role="form">
                         <fieldset class="form-group">
                             <label for="userName" class="control-label">New User E-mail</label>
                             <input type="text" class="form-control" id="invite_email" name="invite_email" placeholder="Enter Email" required>
