@@ -105,4 +105,8 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
+router.get('/payment', function(req, res) {
+  res.render('pages/payment')
+});
+
 module.exports = router;
