@@ -317,34 +317,48 @@ main {
   color: rgba(43, 43, 43, 0.5);
 }
 
-/* line 21, ../../styles/main.scss */
+/* line 2, ../../styles/_error.scss */
+.error-page {
+  text-align: center;
+}
+/* line 4, ../../styles/_error.scss */
+.error-page .error-header {
+  font-size: 3em;
+}
+/* line 7, ../../styles/_error.scss */
+.error-page .image {
+  width: 100%;
+  height: 100%;
+}
+
+/* line 22, ../../styles/main.scss */
 .mukipayz {
   font-family: "Comfortaa", cursive;
   font-size: 100px;
   color: #0075E1;
 }
 
-/* line 27, ../../styles/main.scss */
+/* line 28, ../../styles/main.scss */
 .p2p {
   font-family: "Lato", sans-serif;
 }
 
-/* line 33, ../../styles/main.scss */
+/* line 34, ../../styles/main.scss */
 .font1 {
   font-family: "Comfortaa", cursive;
 }
 
-/* line 36, ../../styles/main.scss */
+/* line 37, ../../styles/main.scss */
 .font2 {
   font-family: "Lato", sans-serif;
 }
 
-/* line 39, ../../styles/main.scss */
+/* line 40, ../../styles/main.scss */
 .middle {
   padding-left: 10%;
 }
 
-/* line 42, ../../styles/main.scss */
+/* line 43, ../../styles/main.scss */
 .right {
   padding-left: 10%;
 }

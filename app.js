@@ -50,6 +50,45 @@ app.use('/home', mware.isLoggedIn, routes.home);
 app.use('/dwolla', routes.dwolla);
 app.use('/email', routes.email);
 
+
+
+// error handlers
+//handle any other routes that don't exist
+app.get('*', function(req, res, next) {
+    var err = new Error('Page Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+    console.log("env = development");
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        var issue = JSON.stringify({
+            error: {
+                message: err.message,
+                error: err
+            },
+            stack: err.stack
+        });
+        res.send(issue);
+    });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('pages/404', {
+        error: {
+            message: err.message,
+            error: err.status
+        }
+    });
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, function() {
     console.log("listening on", port);
