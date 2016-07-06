@@ -43,12 +43,12 @@ router.post('/submit', function(req,res) {
 
     //We pass the api_key and domain to the wrapper, or it won't be able to identify + send emails
     var mailgun = new Mailgun({apiKey: api_key, domain: domain});
-
+      // console.log(req.body);
     var data = {
     //Specify email data
       from: from_who,
     //The email to contact
-      to: req.body.mail,
+      to: req.body.invite_email,
     //Subject and text data
       subject: 'You Have Been Summoned to Mukipayz',
       html: 'You have a friend at Mukipayz. Mukipayz makes cost sharing easy. Come join your friend and help share the costs!'
@@ -58,14 +58,14 @@ router.post('/submit', function(req,res) {
     mailgun.messages().send(data, function (err, body) {
         //If there is an error, render the error page
         if (err) {
-            res.render('error', { error : err});
+            res.render('email/error', { error : err});
             console.log("got an error: ", err);
         }
-        //Else we can greet    and leave
+        // //Else we can greet    and leave
         else {
             //Here "submitted.ejs" is the view file for this landing page
             //We pass the variable "email" from the url parameter in an object rendered by ejs
-            res.render('pages/newgroup');
+            res.render('pages/addUserGroup');
             console.log(body);
         }
     });
