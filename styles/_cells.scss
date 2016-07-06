@@ -1,0 +1,34 @@
+.cell-list-block {
+    list-style: none;
+    padding: 5%;
+}
+
+
+.cell-list-item {
+    width: 100%;
+    height: 150px;
+    background: rgb(238, 238, 238);
+    margin-top: 10px;
+    border-radius: 3px;
+}
+
+
+.messages-box {
+    .message {
+        height: auto;
+        border: solid 1px;
+        background: rgba(53, 188, 59, 0.39);
+        margin-top: 10px;
+        border-radius: 7px;
+        padding: 10px;
+        display: inline-block;
+        font-size: 18px;
+        .message-content {
+            height: auto;
+        }
+        .sub-content {
+            font-style: italic;
+            font-size: 12px;
+        }
+    }
+}

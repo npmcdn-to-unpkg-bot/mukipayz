@@ -1,6 +1,7 @@
 'use strict';
 var knex = require('./db/knex');
 var Promise = require('bluebird');
+var moment = require('moment');
 
 function Users() {
     return knex('users');
@@ -19,6 +20,13 @@ function getUser(email) {
     return new Promise(function(resolve, reject) {
         Users().where({email: email}).then(function(user){
             resolve(user[0]);
+        }).catch(reject);
+    });
+}
+function getGroup(group_id) {
+    return new Promise(function(resolve, reject) {
+        Groups().where({id: group_id}).then(function(group){
+            resolve(group[0]);
         }).catch(reject);
     });
 }
@@ -60,14 +68,23 @@ function getUsersGroups(email) {
 function getGroupMessages(group_id) {
     return new Promise(function(resolve, reject) {
         Messages().where({group_id: group_id})
+            .join('users', 'users.id', '=', 'messages_in_group.user_id')
+            .select('content', 'users.first_name', 'users.last_name', 'messages_in_group.created_at')
+            .orderBy('messages_in_group.created_at', 'desc')
             .then(function(messages) {
+                messages.map(function(message) {
+                    message.last_name = message.last_name.substr(0, 1) + '.';
+                    message.created_at = moment(message.created_at).fromNow();
+                });
                 resolve(messages);
             }).catch(reject);
     });
 }
-function getGroupFriends(group_id) {
+function getGroupFriends(group_id, currUser) {
     return new Promise(function(resolve, reject) {
         Users_In_Group().where({group_id: group_id})
+            .join('users', 'users.id', '=', 'users_in_group.user_id')
+            .select('first_name', 'last_name', 'email', 'users.id')
             .then(function(users) {
                 resolve(users);
             }).catch(reject);
@@ -77,6 +94,7 @@ function getGroupFriends(group_id) {
 
 module.exports = {
     getUser: getUser,
+    getGroup: getGroup,
     getUsersFriends: getUsersFriends,
     getUsersGroups: getUsersGroups,
     getGroupMessages: getGroupMessages,

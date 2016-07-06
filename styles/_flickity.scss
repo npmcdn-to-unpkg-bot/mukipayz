@@ -8,6 +8,8 @@
 .main-carousel .flickity-viewport {
   position: absolute;
   width: 100%;
+  // border: solid 1px rgba(89, 89, 89, 0.2);
+  border-radius: 3px;
 }
 
 /* cell inherit height from carousel */
@@ -28,6 +30,8 @@
 }
 
 
-.flickity-prev-next-button {
-    top: 80% !important;
+button.flickity-prev-next-button {
+    position: fixed !important;
+    bottom: 0px !important;
+    transform: translateY(200px) !important;
 }

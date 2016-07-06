@@ -70,20 +70,22 @@ router.post('/group/new', function(req, res, next) {
 
 router.get('/group/:id', function(req, res, next) {
     Promise.join(
+        db_model.getGroup(Number(req.params.id)),
         knex('bills').where({
             group_id: Number(req.params.id)
         }),
-        knex('messages_in_group').where({
-            group_id: Number(req.params.id)
-        })
+        db_model.getGroupMessages(Number(req.params.id)),
+        db_model.getGroupFriends(Number(req.params.id))
     ).then(function(data) {
-        // res.json(data[0].length);
+        data = {
+            group: data[0],
+            bills: data[1],
+            messages: data[2],
+            friends: data[3]
+        };
+        // res.json(data);
         // if(data[0].length>0){
-        res.render('pages/group', {
-            data: data,
-            group_id: req.params.id
-        });
-
+        res.render('pages/group', data);
     });
 
 });

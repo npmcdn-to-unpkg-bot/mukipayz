@@ -6,7 +6,7 @@ var setup = new Flickity( flick, {
     cellPosition: 'center',
     // prevNextButtons: false,
     setGallerySize: false,
-    // wrapAround: true,
+    wrapAround: true,
     pageDots: false,
     contain: true
 });
