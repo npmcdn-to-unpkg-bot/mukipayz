@@ -100,14 +100,22 @@ router.get('/group/:group_id/bills/new', function(req, res, next) {
 });
 
 router.post('/group/:group_id/bills/new', function(req, res, next) {
-    console.log("are you even fucking making it here????");
-    console.log("uploader: ", uploader);
-    uploader.upload(req).then(function(data) {
-        // uploader.toCloud()
-        console.log("data: ", data);
-        res.json({
-            data:data
+    var data = {}
+    uploader.upload(req).then(function(uploaded) {
+        data.uploadData = uploaded;
+        data.uploadData.group_id = req.params.group_id;
+        uploader.toCloud(data.uploadData.image.file).then(function(result) {
+            data.cloudData = result;
+            uploader.toDatabase({cloud:data.cloudData, upload:data.uploadData}).then(function(db_data) {
+                res.redirect('/home/group/'+req.params.group_id);
+            }).catch(function(err) {
+                console.error("Error saving to database", err);
+            });
+        }).catch(function(err) {
+            console.error("Error saving to cloud:", err);
         });
+    }).catch(function(err) {
+        console.error("Error saving to filesystem", err);
     });
 });
 
@@ -116,7 +124,6 @@ router.get('/group/bills/:id/pay', function(req, res, next){
 
 });
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
-    console.log("Hitting Bill:id for group:id")
     Bills().where({
         group_id: req.params.group_id,
         id: req.params.bill_id
