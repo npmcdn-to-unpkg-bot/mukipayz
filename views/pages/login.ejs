@@ -12,6 +12,16 @@
     </header>
 
     <div class="row">
+
+        <% if (error) { %>
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                <%= error.message %>
+                <p><a href="/auth/signup"><%= error.signup %></a></p>
+            </div>
+        <% } %>
+
         <div class="col-md-12">
 
         <form action='/auth/login' method='post'>
@@ -29,6 +39,12 @@
                     </fieldset>
                     <button class="btn btn-primary btn-lg btn-block" type="submit">Log in!</button>
                 </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label for="">Not a user?</label>
+                <a href="/auth/signup" class="btn btn-success btn-block btn-lg">Sign up today!</a>
             </div>
         </div>
     </div>

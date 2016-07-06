@@ -208,6 +208,7 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
         id: req.params.bill_id
     }).then(function(bill) {
         bill = bill[0];
+        console.log("bill: ", bill);
         if (bill === undefined) {
             console.log("no bill");
             /**FIXME: Redirect Routes for Errors */
