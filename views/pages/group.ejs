@@ -20,13 +20,14 @@ should be link for users to invite other's via email -->
                 <ul>
                     <li>
                         <h1>
-                            <a href="/group/<%= group.group_id %>/bills/<%= group.id %>"><%= group.title %></h1>
+                            <a href="./<%= group.group_id %>/bills/<%= group.id %>"><%= group.title %></h1>
                         </a>
                     </li>
                 </div>
             </ul>
         <% }); %>
-
+        <% console.log(data[0][0].group_id); %>
+    <a href src="./<%= data[0][0].group_id %>/bills/new">link?</a>
 
     </main>
 
