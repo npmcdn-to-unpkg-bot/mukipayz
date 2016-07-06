@@ -58,11 +58,10 @@ var uploader = {
                     });
                 });
                 form.parse(request, function (err, fields, files) {
-                    // console.log("files? ", files);
                     files = files.files;
                     // console.log("fields: ", fields);
                     // console.log("files??: ", files);
-                    // console.log("files.name: ", files.name.substring(0, files.name.indexOf('.')));
+                    console.log("files.name: ", files.name.substring(0, files.name.indexOf('.')));
                     var ext = files.name.substring(files.name.indexOf('.'), files.name.length);
                     var title;
                     if (files.name < 1) {
@@ -97,16 +96,19 @@ var uploader = {
     },
     toDatabase: function(data) {
         return new Promise(function(resolve, reject) {
+            console.log("data upload: ", data.upload);
             Bills().insert({
-                title: data.upload.title || '',
-                amount: data.upload.amount || 0,
-                image_url: data.cloud.url,
-                cloudinary_id: data.cloud.public_id
+                title: data.upload.formData.title || '',
+                amount: data.upload.formData.amount || 0,
+                group_id: data.upload.group_id,
+                image_url: data.cloud.url
             }).then(resolve).catch(reject);
         });
     },
     removeFromFile: function(data) {
-
+        return new Promise(function(resolve, reject) {
+            //remove file from uploads
+        });
     }
 };
 
