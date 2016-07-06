@@ -242,13 +242,13 @@ main {
   padding: 10px !important;
 }
 
-/* line 1, ../../styles/_cells.scss */
+/* line 4, ../../styles/_cells.scss */
 .cell-list-block {
   list-style: none;
   padding: 5%;
 }
 
-/* line 7, ../../styles/_cells.scss */
+/* line 9, ../../styles/_cells.scss */
 .cell-list-item {
   width: 100%;
   height: 150px;
@@ -257,25 +257,63 @@ main {
   border-radius: 3px;
 }
 
-/* line 17, ../../styles/_cells.scss */
+/* line 19, ../../styles/_cells.scss */
 .messages-box .message {
   height: auto;
   border: solid 1px;
-  background: rgba(53, 188, 59, 0.39);
-  margin-top: 10px;
+  margin-top: 20px;
   border-radius: 7px;
   padding: 10px;
   display: inline-block;
   font-size: 18px;
+  border: solid 0px;
+  width: 85%;
 }
-/* line 26, ../../styles/_cells.scss */
+/* line 29, ../../styles/_cells.scss */
+.messages-box .message.green {
+  background: rgba(53, 188, 59, 0.39);
+  float: right;
+}
+/* line 33, ../../styles/_cells.scss */
+.messages-box .message.blue {
+  background: rgba(52, 98, 187, 0.39);
+  float: left;
+}
+/* line 37, ../../styles/_cells.scss */
+.messages-box .message.green::before {
+  border-width: 20px 0 0px 30px;
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  border-style: solid;
+  display: block;
+  width: 0;
+  right: 10px;
+  border-width: 12px 0 0 30px;
+  border-color: rgba(53, 188, 59, 0.39) transparent;
+}
+/* line 49, ../../styles/_cells.scss */
+.messages-box .message.blue::before {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  border-style: solid;
+  display: block;
+  width: 0;
+  border-color: rgba(15, 75, 190, 0.39) transparent;
+  left: 10px;
+  border-width: 12px 30px 0 0;
+}
+/* line 60, ../../styles/_cells.scss */
 .messages-box .message .message-content {
   height: auto;
 }
-/* line 29, ../../styles/_cells.scss */
+/* line 63, ../../styles/_cells.scss */
 .messages-box .message .sub-content {
   font-style: italic;
   font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 /* line 21, ../../styles/main.scss */
