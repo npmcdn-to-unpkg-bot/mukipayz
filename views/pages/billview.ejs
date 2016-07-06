@@ -8,8 +8,6 @@ can we put the image of the bill on the top of this page if it exists -->
 
 <head>
     <%- include('../partials/head') %>
-    <link rel="stylesheet" href="https://npmcdn.com/flickity@1.2/dist/flickity.min.css">
-
 </head>
 
 <body>
@@ -28,7 +26,6 @@ can we put the image of the bill on the top of this page if it exists -->
             <div class="carousel-cell img">
                 <img height="300" src="<%= bill.image_url %>" alt="<%= bill.title %>" />
             </div>
-
         </div>
 
         <section>
@@ -52,6 +49,10 @@ can we put the image of the bill on the top of this page if it exists -->
             </div>%>
         </section>
     </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
 
     <%- include('../partials/flickity/scripts') %>
 

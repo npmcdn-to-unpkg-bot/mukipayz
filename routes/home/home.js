@@ -7,7 +7,7 @@ var knex = require('../../db/knex');
 var uploader = require('../../uploader');
 var Promise = require('bluebird');
 // var promise_result= require('./promise');
-
+var db_model = require('../../db_models');
 
 function Bills() {
     //model for bills table
@@ -21,23 +21,25 @@ function Bills() {
  //-------ABove
 
 router.get('/', function(req, res, next) {
-
-    knex('users')
-      .where('users.email', req.session.user.email)
-        .leftOuterJoin('users_in_group', 'users.id', 'users_in_group.user_id')
-        .leftOuterJoin('groups', 'users_in_group.group_id', 'groups.id')
-        .where('users.email', req.session.user.email)
-        .then(function(data) {
-            res.send(data);
-            // res.render('pages/home', {
-            //     data: data[0]
-            // });
-
-        })
-        .catch(function(err) {
-            console.log(err);
-
+    Promise.join(
+        db_model.getUser(req.session.user.email),
+        db_model.getUsersGroups(req.session.user.email),
+        //friends model not yet fully functional
+        db_model.getUsersFriends(req.session.user.email)
+    ).then(function(data) {
+        data = {
+            user: data[0],
+            groups: data[1],
+            friends: data[2]
+        };
+        // res.json(data);
+        res.render('pages/home', {
+            user: data.user,
+            groups: data.groups,
+            friends: data.friends
         });
+    });
+
 });
 
 
@@ -71,28 +73,37 @@ router.get('/group/:id', function(req, res, next) {
         knex('bills').where({group_id:Number(req.params.id)}),
         knex('messages_in_group').where({group_id:Number(req.params.id)})
     ).then(function(data) {
+
+      res.render('pages/group', {
+          data: data
+      });
+
         //Promise.join will join the data of multiple promises
             //So data[0] == bills array, data[1] == messages in that group
         //data = [all-bills, all-messages] for that id
         //try res.json(data); to see all data returned
-        var joined = {
-            bills: data[0],
-            messages: data[1]
-        };
-        if (joined.bills.length === 0) {
-            joined.bills = null;
-        }
-        if (joined.messages.length === 0) {
-            joined.messages = null;
-        }
-        // res.json(joined.bills);
-        //**to use in view, data.bills or data.messages
-        res.render('pages/group', {
-            data: joined
-        });
+        // var joined = {
+        //     bills: data[0],
+        //     messages: data[1]
+        // };
+        //
+        // if (joined.bills.length === 0) {
+        //     joined.bills = null;
+        // }
+        // if (joined.messages.length === 0) {
+        //     joined.messages = null;
+        // }
+        //res.send(joined.bills);
+    //     // res.json(joined.bills);
+    //     // to use in view, data.bills or data.messages
+        // res.render('pages/group', {
+        //     data: joined
+        // });
+        //console.log(data);
     });
 
 });
+
 
 router.get('group/edit', function(req, res, next){
 
@@ -153,8 +164,6 @@ router.get('/group/:id/messages', function(req, res, next){
       // });
   }).catch(next);
 });
-
-
 
 
 

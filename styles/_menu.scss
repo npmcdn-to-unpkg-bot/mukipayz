@@ -1,0 +1,79 @@
+@import "media-query";
+main {
+    z-index: 0;
+}
+.menu-icon {
+    font-size: 1.8em !important;
+    color: white;
+    padding: 15px;
+}
+
+.menu-body {
+    opacity: 0;
+    background: white;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1500;
+    top: 0;
+    right: 0;
+    width: 550px; //desktop
+    min-width: 550px;
+    transform: translateX(630px);
+    transition: transform 450ms cubic-bezier(.36,.02,.11,.95);
+    // border-left: solid 1px rgba(98, 98, 98, 0.32);
+    box-shadow: 0 0 3px rgba(26, 26, 26, 0.89);
+    overflow: scroll;
+    @include tablet {
+        width: 100%;
+        max-width: 768px;
+        transform: translateX(768px);
+        transition: transform 350ms cubic-bezier(.36,.02,.11,.95);
+    }
+    @include mobile {
+        width: 100%;
+        min-width: 320px;
+        transform: translateX(768px);
+        transition: transform 250ms cubic-bezier(.36,.02,.11,.95);
+    }
+    &.open {
+        opacity: 1;
+        transform: translateX(0px);
+        transition: all 250ms cubic-bezier(.36,.02,.11,.95);
+        @include tablet {
+            transition: all 350ms cubic-bezier(.36,.02,.11,.95);
+        }
+        @include mobile {
+            transition: all 450ms cubic-bezier(.36,.02,.11,.95);
+        }
+    }
+    &.fade {
+        opacity: 0;
+        transition: all 300ms cubic-bezier(.36,.02,.11,.95);
+    }
+    .close-menu {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 18px;
+        font-size: 2.5em;
+        cursor: pointer;
+    }
+    .go-home {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 18px;
+        font-size: 2.5em;
+        cursor: pointer;
+    }
+    .menu-inner {
+        height: 75px;
+        top: 0;
+        .menu-title {
+            text-align: center;
+            margin: 0;
+            padding: 19px;
+        }
+    }
+}

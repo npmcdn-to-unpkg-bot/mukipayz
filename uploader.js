@@ -5,6 +5,7 @@ var fs = require('fs'),
     Promise = require('bluebird'),
     slugify = require('slug'),
     knex = require('./db/knex');
+    // alter = require('imagemagick');
 
 function Bills() {
     return knex('bills');
