@@ -2,12 +2,10 @@
 
 var express = require('express');
 var router = express.Router();
-var bcrypt = require('bcrypt');
 var knex = require('../../db/knex');
-var promise_result= require('../../promise');
 var Mailgun = require('mailgun-js');
 var bodyParser = require('body-parser');
-
+var randomstring = require("randomstring");
 
 //api key, from Mailgun’s Control Panel
 var api_key = 'key-1e7f337e6b0b7ae89562027bc23e334d';
