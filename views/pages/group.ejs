@@ -15,13 +15,12 @@ should be link for users to invite other's via email -->
         <% include ../partials/header %>
     </header>
     <main>
-<%# console.log(data.bills); %>
-            <% data.bills.forEach(function(group) { %>
+            <% data[0].forEach(function(group) { %>
               <% console.log(group); %>
                 <ul>
                     <li>
                         <h1>
-                            <a href="/groups/:id/bills/:id"><%= group.title %></h1>
+                            <a href="/group/<%= group.group_id %>/bills/<%= group.id %>"><%= group.title %></h1>
                         </a>
                     </li>
                 </div>
