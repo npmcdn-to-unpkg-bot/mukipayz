@@ -6,6 +6,8 @@ var bcrypt = require('bcrypt');
 var knex = require('../../db/knex');
 var promise_result= require('../../promise');
 
+const hour = 3600000;
+
 
 //login stuff
 router.get('/login', function(req, res, next) {
@@ -29,6 +31,8 @@ router.post('/login', function (req, res, next){
     if (data.length === 1){
       bcrypt.compare(req.body.password, data[0].password, function(err, result){
         if(result){
+            //stay logged in only for 24 hours
+            req.sessionOptions.maxAge = hour * 24;
             req.session.user = {
                 loggedIn: true,
                 email: data[0].email,
