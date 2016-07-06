@@ -5,6 +5,7 @@ var router = express.Router();
 // var bcrypt = require('bcrypt');
 var knex = require('../../db/knex');
 var uploader = require('../../uploader');
+var Promise = require('bluebird');
 // var promise_result= require('./promise');
 
 
@@ -12,6 +13,12 @@ function Bills() {
     //model for bills table
     return knex('bills');
 }
+
+//---------BELOW
+ router.get('/payment', function(req, res, next){
+   res.render('pages/payment');
+ });
+ //-------ABove
 
 router.get('/', function(req, res, next) {
 
@@ -60,18 +67,33 @@ router.post('/group/new', function(req, res, next){
 
 
 router.get('/group/:id', function(req, res, next) {
-    knex('bills')
-    .where({
 
-            group_id: Number(req.params.id)
-        })
-        .then(function(data) {
-
-            res.render('pages/group', {
-                data: data[0]
-            });
+    Promise.join(
+        knex('bills').where({group_id:Number(req.params.id)}),
+        knex('messages_in_group').where({group_id:Number(req.params.id)})
+    ).then(function(data) {
+        //Promise.join will join the data of multiple promises
+            //So data[0] == bills array, data[1] == messages in that group
+        //data = [all-bills, all-messages] for that id
+        //try res.json(data); to see all data returned
+        var joined = {
+            bills: data[0],
+            messages: data[1]
+        };
+        if (joined.bills.length === 0) {
+            joined.bills = null;
+        }
+        if (joined.messages.length === 0) {
+            joined.messages = null;
+        }
+        // res.json(joined.bills);
+        //**to use in view, data.bills or data.messages
+        res.render('pages/group', {
+            data: joined
 
         });
+    });
+
 });
 
 router.get('group/edit', function(req, res, next){
@@ -86,14 +108,22 @@ router.get('/group/:group_id/bills/new', function(req, res, next) {
 });
 
 router.post('/group/:group_id/bills/new', function(req, res, next) {
-    console.log("are you even fucking making it here????");
-    console.log("uploader: ", uploader);
-    uploader.upload(req).then(function(data) {
-        // uploader.toCloud()
-        console.log("data: ", data);
-        res.json({
-            data:data
+    var data = {}
+    uploader.upload(req).then(function(uploaded) {
+        data.uploadData = uploaded;
+        data.uploadData.group_id = req.params.group_id;
+        uploader.toCloud(data.uploadData.image.file).then(function(result) {
+            data.cloudData = result;
+            uploader.toDatabase({cloud:data.cloudData, upload:data.uploadData}).then(function(db_data) {
+                res.redirect('/home/group/'+req.params.group_id);
+            }).catch(function(err) {
+                console.error("Error saving to database", err);
+            });
+        }).catch(function(err) {
+            console.error("Error saving to cloud:", err);
         });
+    }).catch(function(err) {
+        console.error("Error saving to filesystem", err);
     });
 });
 

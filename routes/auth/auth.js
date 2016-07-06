@@ -47,7 +47,7 @@ router.post('/login', function (req, res, next){
       });
     }
     else {
-      res.send('not a user');
+      res.send('whamma whamma ding dong, you are not a user');
       // res.render('user', {
       //   //should change this to a redirect for actual site but sometimes it is easer to see
       //   //this way

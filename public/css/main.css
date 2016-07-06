@@ -39,6 +39,15 @@ body {
   width: 100vw;
   height: 100%;
 }
+/* line 25, ../../styles/_flickity.scss */
+.carousel-cell .cell-title {
+  text-align: center;
+}
+
+/* line 31, ../../styles/_flickity.scss */
+.flickity-prev-next-button {
+  top: 80% !important;
+}
 
 /* line 17, ../../styles/main.scss */
 .mukipayz {
