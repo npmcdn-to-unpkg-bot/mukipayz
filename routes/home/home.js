@@ -59,8 +59,8 @@ router.post('/group/new', function(req, res, next) {
                 group_id: result[0].id
             })
             .then(function(data) {
-                res.send(data);
-                // res.redirect('/');
+
+                res.redirect('/home');
             });
     });
 });
@@ -88,9 +88,14 @@ router.get('/group/:id', function(req, res, next) {
 
 });
 
+
+
 router.delete('/group/:id', function(req, res){
   knex('users_in_group')
-  .where('group_id', req.params.id)
+  .where({'group_id': req.params.id,
+'user_id' : req.session.user.user_id
+})
+  // .where(req.session.user.user_id, 'user_id')
   .del()
   .then(function(){
     res.redirect('/home');
