@@ -19,8 +19,8 @@ can we put the image of the bill on the top of this page if it exists -->
             <%# Bill Details%>
             <div class="carousel-cell details">
                 <h1 class="bill-title"><%= bill.title %></h1>
-                <h3>Total Amount of Bill: <%= bill.amount %></h3>
-                <h3>Total Amount You Owe: <%=bill.amount / data.count   %></h3>
+                <h3>Total Amount of Bill: $ <%= bill.amount %></h3>
+                <h3>Total Amount You Owe: $ <%= totalPerUser   %></h3>
 
             </div>
             <%# Bill Image%>
@@ -40,13 +40,13 @@ can we put the image of the bill on the top of this page if it exists -->
                         </form>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <div class="jumbotron">
                         <form action="^^^^^Update Bill^^^^^">
                             <input type="submit" value="Pay with cash, check, etc.">
                         </form>
                     </div>
-                </div>
+                </div> -->
             </div>%>
         </section>
     </main>
