@@ -73,10 +73,15 @@ router.get('/group/:id', function(req, res, next) {
         knex('bills').where({group_id:Number(req.params.id)}),
         knex('messages_in_group').where({group_id:Number(req.params.id)})
     ).then(function(data) {
-
+      // if(data[0].length>0){
       res.render('pages/group', {
           data: data
+
       });
+    // }
+    // else{
+    //   res.send("AHHHH");
+    // }
 
         //Promise.join will join the data of multiple promises
             //So data[0] == bills array, data[1] == messages in that group
