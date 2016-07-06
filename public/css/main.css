@@ -231,3 +231,13 @@ main {
 .body-text {
   font-family: "Lato", sans-serif;
 }
+
+/* line 24, ../../styles/main.scss */
+.middle {
+  padding-left: 10%;
+}
+
+/* line 27, ../../styles/main.scss */
+.right {
+  padding-left: 10%;
+}
