@@ -64,8 +64,8 @@ router.post('/submit', function(req,res) {
         //Else we can greet    and leave
         else {
             //Here "submitted.ejs" is the view file for this landing page
-            //We pass the variable "email" from the url parameter in an object rendered by Jade
-            res.render('email/submitted', { email : req.params.mail });
+            //We pass the variable "email" from the url parameter in an object rendered by ejs
+            res.render('pages/newgroup');
             console.log(body);
         }
     });
