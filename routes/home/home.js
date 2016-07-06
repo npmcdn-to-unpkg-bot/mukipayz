@@ -39,7 +39,6 @@ router.get('/', function(req, res, next) {
             friends: data.friends
         });
     });
-
 });
 
 

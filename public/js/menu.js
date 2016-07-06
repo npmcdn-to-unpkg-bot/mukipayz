@@ -27,7 +27,7 @@
 
         // menu.classList.add('fade');
         var menuInner = document.createElement('div');
-           menuInner.className = "menu-inner container";
+           menuInner.className = "menu-inner container-fluid";
         var menuTitle = document.createElement('h1');
            menuTitle.className = "menu-title";
            menuTitle.innerHTML = "Menu";
@@ -56,6 +56,43 @@
             logout.addEventListener('click', handleLogout);
 
 
+        var footer = document.createElement('div');
+            footer.className = 'col-md-12 force-bottom';
+        var footerBody = document.createElement('div');
+            footerBody.className = 'footer panel panel-default';
+        var panelBody = document.createElement('div');
+            panelBody.className = 'panel-body';
+            var git = document.createElement('a');
+                git.className = 'footer-item';
+                git.href = 'https://github.com/mukipuz/mukipay';
+                var git_icon = document.createElement('i');
+                    git_icon.className = "fa fa-github footer-icon";
+                    git_icon.ariaHidden = "true";
+                git_icon.innerHTML = "<p>GitHub</p>";
+                git.insertBefore(git_icon, git.children[0]);
+            var email = document.createElement('a');
+                email.className = 'footer-item';
+                email.href = 'mukipayz@gmail.com';
+                var email_icon = document.createElement('i');
+                    email_icon.className = "fa fa-envelope footer-icon";
+                    email_icon.ariaHidden = "true";
+                email_icon.innerHTML = "<p>Email Us</p>";
+                email.insertBefore(email_icon, email.children[0]);
+            var dwolla = document.createElement('a');
+                dwolla.className = 'footer-item';
+                dwolla.href = 'https://www.dwolla.com/';
+                var dwolla_icon = document.createElement('i');
+                    dwolla_icon.className = "fa fa-usd footer-icon";
+                    dwolla_icon.ariaHidden = "true";
+                dwolla_icon.innerHTML = "<p>Dwolla</p>";
+                dwolla.insertBefore(dwolla_icon, dwolla.children[0]);
+
+        panelBody.appendChild(git);
+        panelBody.appendChild(email);
+        panelBody.appendChild(dwolla);
+        footerBody.appendChild(panelBody);
+        footer.appendChild(footerBody);
+
         menuInner.appendChild(returnHome);
         menuInner.appendChild(close);
         menuInner.appendChild(menuTitle);
@@ -64,6 +101,8 @@
         menuInner.appendChild(newGroup);
 
         menuInner.appendChild(logout);
+
+        menuInner.appendChild(footer);
 
         menu.appendChild(menuInner);
 
