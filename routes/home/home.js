@@ -15,10 +15,10 @@ function Bills() {
 }
 
 //---------BELOW
- router.get('/payment', function(req, res, next){
-   res.render('pages/payment');
- });
- //-------ABove
+router.get('/payment', function(req, res, next) {
+    res.render('pages/payment');
+});
+//-------ABove
 
 router.get('/', function(req, res, next) {
     Promise.join(
@@ -51,79 +51,68 @@ router.get('/group/new', function(req, res, next) {
     }).catch(next);
 });
 
-router.post('/group/new', function(req, res, next){
+router.post('/group/new', function(req, res, next) {
     knex('groups').insert({
         group_name: req.body.groupName
     }).returning('*').then(function(result) {
         knex('users_in_group').insert({
-            user_id: req.session.user.user_id,
-            group_id: result[0].id
-        })
-        .then(function(data){
-            res.send(data);
-            // res.redirect('/');
-        });
+                user_id: req.session.user.user_id,
+                group_id: result[0].id
+            })
+            .then(function(data) {
+                res.send(data);
+                // res.redirect('/');
+            });
     });
 });
+
 
 
 
 router.get('/group/:id', function(req, res, next) {
     Promise.join(
-        knex('bills').where({group_id:Number(req.params.id)}),
-        knex('messages_in_group').where({group_id:Number(req.params.id)})
+        knex('bills').where({
+            group_id: Number(req.params.id)
+        }),
+        knex('messages_in_group').where({
+            group_id: Number(req.params.id)
+        })
     ).then(function(data) {
-      // res.json(data[0].length);
-      // if(data[0].length>0){
-      res.render('pages/group', {
-          data: data,
-          group_id: req.params.id
-      });
-    // }
-    // else{
-    //   res.send("AHHHH");
-    // }
+        // res.json(data[0].length);
+        // if(data[0].length>0){
+        res.render('pages/group', {
+            data: data,
+            group_id: req.params.id
+        });
 
-        //Promise.join will join the data of multiple promises
-            //So data[0] == bills array, data[1] == messages in that group
-        //data = [all-bills, all-messages] for that id
-        //try res.json(data); to see all data returned
-        // var joined = {
-        //     bills: data[0],
-        //     messages: data[1]
-        // };
-        //
-        // if (joined.bills.length === 0) {
-        //     joined.bills = null;
-        // }
-        // if (joined.messages.length === 0) {
-        //     joined.messages = null;
-        // }
-        //res.send(joined.bills);
-    //     // res.json(joined.bills);
-    //     // to use in view, data.bills or data.messages
-        // res.render('pages/group', {
-        //     data: joined
-        // });
-        //console.log(data);
     });
 
 });
 
+router.delete('/group/:id', function(req, res){
+  knex('users_in_group')
+  .where('group_id', req.params.id)
+  .del()
+  .then(function(){
+    res.redirect('/home');
+  });
+});
 
-router.get('group/edit', function(req, res, next){
-  knex('groups').then(function(data) {
-      res.render('pages/group/edit', {
-          data: data
-      });
-  }).catch(next);
+router.get('group/edit', function(req, res, next) {
+    knex('groups').then(function(data) {
+        res.render('pages/group/edit', {
+            data: data
+        });
+    }).catch(next);
 });
 
 router.get('/group/:group_id/bills/new', function(req, res, next) {
     var group = {
         id: req.params.group_id
     };
-    res.render('pages/newBill', {group:group});
+    res.render('pages/newBill', {
+        group: group
+    });
 });
 
 router.post('/group/:group_id/bills/new', function(req, res, next) {
@@ -133,8 +122,11 @@ router.post('/group/:group_id/bills/new', function(req, res, next) {
         data.uploadData.group_id = req.params.group_id;
         uploader.toCloud(data.uploadData.image.file).then(function(result) {
             data.cloudData = result;
-            uploader.toDatabase({cloud:data.cloudData, upload:data.uploadData}).then(function(db_data) {
-                res.redirect('/home/group/'+req.params.group_id);
+            uploader.toDatabase({
+                cloud: data.cloudData,
+                upload: data.uploadData
+            }).then(function(db_data) {
+                res.redirect('/home/group/' + req.params.group_id);
             }).catch(function(err) {
                 console.error("Error saving to database", err);
             });
@@ -146,7 +138,7 @@ router.post('/group/:group_id/bills/new', function(req, res, next) {
     });
 });
 
-router.get('/group/bills/:id/pay', function(req, res, next){
+router.get('/group/bills/:id/pay', function(req, res, next) {
 
 
 });
@@ -161,18 +153,20 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
             /**FIXME: Redirect Routes for Errors */
             res.send('bill not found');
         }
-        res.render('pages/billview', {bill:bill})
+        res.render('pages/billview', {
+            bill: bill
+        })
     });
 });
 
 
-router.get('/group/:id/messages', function(req, res, next){
-  knex('messages_in_group').then(function(data) {
-    res.send(data);
-      // res.render('pages/group', {
-      //     data: data[0]
-      // });
-  }).catch(next);
+router.get('/group/:id/messages', function(req, res, next) {
+    knex('messages_in_group').then(function(data) {
+        res.send(data);
+        // res.render('pages/group', {
+        //     data: data[0]
+        // });
+    }).catch(next);
 });
 
 

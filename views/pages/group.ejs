@@ -30,9 +30,17 @@ should be link for users to invite other's via email -->
         <% }); %>
 
 
-    
+
     <% } %>
     <a href="./<%= group_id %>/bills/new"> add bill </a>
+
+    <form method="POST" action="/home/group/<%= group_id %>?_method=delete">
+<div>
+    <button type="submit">
+        Leave Group
+    </button>
+</div>
+</form>
 
     </main>
 
