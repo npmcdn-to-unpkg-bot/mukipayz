@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <% include ../partials/head %>
+    </head>
+
+    <body class="container">
+
+        <header>
+            <% include ../partials/navbar %>
+        </header>
+
+        <form action='/home/group/<%= group.id %>/messages/new' method='post'>
+            <fieldset class="form-group">
+                <label for="message" class="control-label">Enter a new message</label>
+                <textarea name="message" class="form-control" id="message" data-error="This cannot be blank" required rows="10"></textarea>
+            </fieldset>
+
+
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Send Message</button>
+        </form>
+
+<%- include('../partials/ejsEnd') %>
