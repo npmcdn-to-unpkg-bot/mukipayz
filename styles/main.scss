@@ -2,6 +2,7 @@
 
 //other imported files
 @import "flickity";
+@import "index";
 
 //font imports
 @import 'https://fonts.googleapis.com/css?family=Comfortaa|Lato:300';
@@ -13,23 +14,9 @@
 $header-font: 'Comfortaa', cursive;
 $body-font: 'Lato', sans-serif;
 
-//other styling here
-.mukipayz {
-  font-family: $header-font;
-  font-size: 100px;
-  color: #0075E1;
-  text-shadow: 2px 2px blue;
-}
-
-.p2p {
-  font-family: $body-font;
-}
-.footer{
-
-}
-.font1 {
+.header-text {
     font-family: $header-font
 }
-.font2 {
+.body-text {
   font-family:  $body-font;
 }

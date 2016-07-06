@@ -157,6 +157,4 @@ router.get('/group/:id/messages', function(req, res, next){
 
 
 
-
-
 module.exports = router;

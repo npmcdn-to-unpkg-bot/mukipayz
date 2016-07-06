@@ -12,28 +12,29 @@
     </header>
 
     <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
+
+        <div class="col-md-12">
+
             <h4 class="text-center">Let's Get You Enrolled for a Free Account</h4>
             <form action='/auth/signup' method='post' data-toggle="validator" >
               <fieldset class="form-group">
                 <label for="firstName" class="control-label">First Name</label>
-                <input name="first_name" type="text" class="form-control" id="firstName" placeholder="Enter First Name" required>
+                <input name="first_name" type="text" class="form-control" id="firstName" placeholder="Casey" required>
               </fieldset>
 
               <fieldset class="form-group">
                 <label for="lastName" class="control-label">Last Name</label>
-                <input name="last_name" type="text" class="form-control" id="lasttName" placeholder="Enter Last Name" required>
+                <input name="last_name" type="text" class="form-control" id="lastName" placeholder="Jones" required>
               </fieldset>
 
               <fieldset class="form-group">
                 <label for="email" class="control-label">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Email" data-error="Bruh, that email address is invalid" required>
+                <input type="email" class="form-control" id="email" placeholder="wharf_rat@gmail.com" data-error="Bruh, that email address is invalid" required>
                 <div class="help-block with-errors"></div>
               </fieldset>
 
                 <fieldset class="form-group">
-                  <input type="email" class="form-control" name="email" id="email" data-match="email" data-match-error="Whoops, these don't match" placeholder="Confirm Email" required>
+                  <input type="email" class="form-control" name="email" id="email" data-match="email" data-match-error="Whoops, these don't match" placeholder="Confirm your email" required>
                   <div class="help-block with-errors"></div>
                 </fieldset>
 
@@ -44,26 +45,23 @@
                   <div class="help-block">Minimum of 6 characters</div>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control" id="inputPasswordConfirm" data-match="password" data-match-error="Whoops, these don't match" placeholder="Confirm" required>
+                  <input type="password" class="form-control" id="inputPasswordConfirm" data-match="password" data-match-error="Whoops, these don't match" placeholder="Confirm Password" required>
                   <div class="help-block with-errors"></div>
                 </div>
               </div>
 
-              <input type="submit" value="Add User" />
+              <button class="btn btn-primary btn-block btn-lg" type="submit">Sign me up!</button>
 
               </div>
             </form>
         </div>
 
 
+        <hr>
     <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <div class="jumbotron">
-                <form action="/login">
-                    <input type="submit" value="Oops, I am aready a user, can I log in please?">
-                </form>
-            </div>
+        <div class="col-md-12">
+            <label for="">Already a user?</label>
+            <a href="/auth/login" class="btn btn-info btn-block btn-lg">Log me in please!</a>
         </div>
     </div>
     <%- include('../partials/footer') %>
