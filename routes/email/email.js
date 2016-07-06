@@ -43,12 +43,12 @@ router.post('/submit', function(req,res) {
 
     //We pass the api_key and domain to the wrapper, or it won't be able to identify + send emails
     var mailgun = new Mailgun({apiKey: api_key, domain: domain});
-
+      // console.log(req.body);
     var data = {
     //Specify email data
       from: from_who,
     //The email to contact
-      to: req.body.mail,
+      to: req.body.invite_email,
     //Subject and text data
       subject: 'You Have Been Summoned to Mukipayz',
       html: 'You have a friend at Mukipayz. Mukipayz makes cost sharing easy. Come join your friend and help share the costs!'
