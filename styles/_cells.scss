@@ -1,5 +1,6 @@
 
-
+$message-blue: rgba(52, 98, 187, 0.39);
+$message-green: rgba(53, 188, 59, 0.39);
 
 .cell-list-block {
     list-style: none;
@@ -27,11 +28,11 @@
         border: solid 0px;
         width: 85%;
         &.green {
-            background: rgba(53, 188, 59, 0.39);
+            background: $message-green;
             float: right;
         }
         &.blue {
-            background: rgba(52, 98, 187, 0.39);
+            background: $message-blue;
             float: left;
         }
         &.green::before {
@@ -44,7 +45,7 @@
             width: 0;
             right: 10px;
             border-width: 12px 0 0 30px;
-            border-color: rgba(53, 188, 59, 0.39) transparent;
+            border-color: $message-green transparent;
         }
         &.blue::before {
             content: "";
@@ -53,7 +54,7 @@
             border-style: solid;
             display: block;
             width: 0;
-            border-color: rgba(15, 75, 190, 0.39) transparent;
+            border-color: $message-blue transparent;
             left: 10px;
             border-width: 12px 30px 0 0;
         }

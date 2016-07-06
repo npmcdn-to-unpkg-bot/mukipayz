@@ -1,7 +1,6 @@
 'use strict';
 var knex = require('./db/knex');
 var Promise = require('bluebird');
-var moment = require('moment');
 
 function Users() {
     return knex('users');
@@ -72,20 +71,6 @@ function getGroupMessages(group_id, currUser_id) {
             .select('users.id as user_id', 'content', 'users.first_name', 'users.last_name', 'messages_in_group.created_at')
             .orderBy('messages_in_group.created_at', 'desc')
             .then(function(messages) {
-                messages.map(function(message) {
-                    message.fromMe = false;
-                    message.last_name = message.last_name.substr(0, 1) + '.';
-                    message.created_at = moment(message.created_at).fromNow();
-                    //setup bubbling
-                    console.log("currUser_id: ", currUser_id);
-                    if (currUser_id) {
-                        if (currUser_id === message.user_id) {
-                            message.fromMe = true;
-                        } else {
-                            message.fromMe = false;
-                        }
-                    }
-                });
                 resolve(messages);
             }).catch(reject);
     });
@@ -105,7 +90,6 @@ function numberOfMembersPerGroup(group_id) {
     return new Promise(function(resolve, reject) {
         Users_In_Group().where({group_id: group_id})
             .count('*')
-            // .select('first_name', 'last_name', 'email', 'users.id')
             .then(function(num_users) {
                 resolve(num_users);
             }).catch(reject);
