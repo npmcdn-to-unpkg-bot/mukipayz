@@ -14,6 +14,9 @@ function Bills() {
     //model for bills table
     return knex('bills');
 }
+function Messages() {
+    return knex('messages_in_group');
+}
 
 //---------BELOW
 router.get('/payment', function(req, res, next) {
@@ -239,15 +242,39 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
 
 });
 
-
-router.get('/group/:id/messages', function(req, res, next) {
-    knex('messages_in_group').then(function(data) {
-        res.send(data);
-        // res.render('pages/group', {
-        //     data: data[0]
-        // });
-    }).catch(next);
+//creat new message
+router.get('/group/:id/messages/new', function(req, res, next) {
+    res.render('pages/newMessage', {
+        group: {
+            id: req.params.id
+        }
+    });
 });
+
+router.post('/group/:id/messages/new', function(req, res, next) {
+    var user = {
+        id: req.session.user.user_id
+    }
+    Messages().insert({
+        content: req.body.message,
+        user_id: req.session.user.user_id,
+        group_id: req.params.id
+    }).then(function(data) {
+        res.redirect('/home/group/'+req.params.id+'/');
+    }).catch(function(err) {
+        console.error("error saving message");
+    });
+});
+//
+// Promise.join(
+//     db_model.numberOfMembersPerGroup(req.params.group_id),
+//     knex('bills').where({group_id: req.params.group_id})
+// ).then(function(data) {
+//     data[0] = count: #,
+//     data[1] = all bills
+// }).catch(function(err) {
+//     console.error(err);
+// });
 
 
 

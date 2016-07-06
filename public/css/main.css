@@ -314,6 +314,7 @@ main {
   font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
+  color: rgba(43, 43, 43, 0.5);
 }
 
 /* line 21, ../../styles/main.scss */
