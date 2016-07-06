@@ -25,7 +25,8 @@ var routes = {
     index: require('./routes/index'),
     auth : require('./routes/auth/auth'),
     home: require('./routes/home/home'),
-    dwolla: require('./routes/auth/dwolla')
+    dwolla: require('./routes/auth/dwolla'),
+    email: require('./routes/email/email')
 };
 
 //app middleware
@@ -47,6 +48,7 @@ app.use('/auth', routes.auth);
 app.use('/', routes.index);
 app.use('/home', mware.isLoggedIn, routes.home);
 app.use('/dwolla', routes.dwolla);
+app.use('/email', routes.email);
 
 const port = process.env.PORT || 3000;
 app.listen(port, function() {

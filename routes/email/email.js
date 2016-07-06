@@ -63,9 +63,9 @@ router.post('/submit', function(req,res) {
         }
         //Else we can greet    and leave
         else {
-            //Here "submitted.jade" is the view file for this landing page
+            //Here "submitted.ejs" is the view file for this landing page
             //We pass the variable "email" from the url parameter in an object rendered by Jade
-            res.render('submitted', { email : req.params.mail });
+            res.render('email/submitted', { email : req.params.mail });
             console.log(body);
         }
     });
