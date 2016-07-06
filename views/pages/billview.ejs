@@ -17,37 +17,29 @@ can we put the image of the bill on the top of this page if it exists -->
 
         <div class="main-carousel">
             <%# Bill Details%>
-            <div class="carousel-cell details">
-                <h1 class="bill-title"><%= bill.title %></h1>
-                <h3>Total Amount of Bill: $ <%= bill.amount %></h3>
-                <h3>Total Amount You Owe: $ <%= totalPerUser   %></h3>
+            <div class="carousel-cell details container">
+                <h1 class="bill-title text-center font1"><%= numUsers[0].title %></h1>
+                <h3 class="text-center font1">Total Amount of Bill: $ <%= numUsers[0].amount %></h3>
+                <h3 class="text-center font1">Total Amount You Owe: $ <%= totalPerUser   %></h3>
 
             </div>
             <%# Bill Image%>
-            <div class="carousel-cell img">
-                <img height="300" src="<%= bill.image_url %>" alt="<%= bill.title %>" />
+            <div class="carousel-cell img container">
+                <img height="300" src="<%= numUsers[0].image_url %>" alt="<%= numUsers[0].title %>" />
             </div>
-        </div>
+
 
             <%# Pay Bill%>
-        <section>
+          <div class="carousel-cell payBill container">
             <h1 class="text-center font1">Make A Payment</h1>
-              <h3 class="text-center font2">Payment For: <%= bill.title =></h3>
-                  <h3 class="text-center font2">Amount Owed:
+              <h3 class="text-center font2">Payment For: <%= numUsers[0].title %></h3>
+                  <h3 class="text-center font2">Amount Owed: $
                       <%= totalPerUser %>
                   </h3>
+                        <a class="center-block btn btn-primary" href="/auth/dwolla" role="button" type="submit">Click Here To Pay With Dwolla</a>
+          </div>
+        </div>
 
-                        <form action="/auth/dwolla">
-                            <input type="submit" value="Click Here To Pay With Dwolla">
-                        </form>
-
-                <!-- <div class="col-md-4">
-                    <div class="jumbotron">
-                        <form action="^^^^^Update Bill^^^^^">
-                            <input type="submit" value="Pay with cash, check, etc.">
-                        </form>
-                    </div>
-                </div> -->
 
         </section>
     </main>
