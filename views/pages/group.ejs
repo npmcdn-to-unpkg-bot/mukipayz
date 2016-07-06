@@ -5,44 +5,81 @@ should be link for users to invite other's via email -->
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <% include ../partials/head %>
-</head>
+    <head>
+        <% include ../partials/head %>
+    </head>
 
-<body class="container">
+    <body class="container">
 
-    <header>
-        <% include ../partials/navbar %>
-    </header>
-    <main>
-        <h1 class="header-text">Group</h1>
+        <header>
+            <% include ../partials/navbar %>
+        </header>
+        <main>
+            <h1 class="header-text cell-title"><%= group.group_name %></h1>
+            <hr>
 
-      <% if (data[0].length > 0) { %>
-            <% data[0].forEach(function(group) { %>
-                <ul>
-                    <li>
-                        <h1>
-                             <a href="./<%= group.group_id %>/bills/<%= group.id %>"><%= group.title %></h1>
-                        </a>
-                    </li>
+            <div class="main-carousel ">
+                <div class="carousel-cell bills container">
+                    <h1 class="header-text cell-title">Bills</h1>
+                    <a href="/home/group/<%= group.id %>/bills/new"><button class="btn btn-primary btn-sm btn-block" name="button">Add Bill</button></a>
+                    <% if (bills.length > 0) { %>
+                        <ul class="cell-list-block">
+                            <% bills.forEach(function(bill) { %>
+                                <li class="cell-list-item">
+                                    <a href="/home/group/<%= group.id %>/bills/<%= bill.id %>">
+                                        <h1 class="col-xs-12"><%= bill.title %></h1>
+                                        <h3 class="col-xs-6">$<%= bill.amount %></h3>
+                                        <img class="col-xs-4" src="<%= bill.image_url%>" alt="img" height="70" width="70"/>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    <% } %>
+
                 </div>
-            </ul>
-        <% }); %>
+                <div class="carousel-cell messages container">
+                    <h1 class="header-text cell-title">Messages</h1>
+                    <a href="/home/group/<%= group.id %>/bills/new"><button class="btn btn-primary btn-sm btn-block" name="button">New Message</button></a>
+                    <% if (messages.length > 0) { %>
+                        <ul class="messages-box cell-list-block">
+                            <% messages.forEach(function(message) { %>
+                                <li class="message">
+                                    <div class="col-xs-12 message-content">
+                                        <p><%= message.content %></p>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-6 sub-content">
+                                            <%= message.first_name %> <%= message.last_name %>
+                                        </div>
+                                        <div class="col-xs-6 sub-content">
+                                            <%= message.created_at %>
+                                        </div>
+                                    </div>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    <% } %>
+
+                </div>
+                <div class="carousel-cell friends container">
+                    <h1 class="header-text cell-title">Members</h1>
+                    <% if (friends.length > 0) { %>
+                        <ul class="cell-list-block">
+                            <% friends.forEach(function(friend) { %>
+                                <li class="friend"><%= friend.first_name %> <%= friend.last_name %></li>
+                            <% }); %>
+                        </ul>
+                    <% } %>
+                </div>
+            </div>
 
 
-
-    <% } %>
-    <a href="./<%= group_id %>/bills/new"> add bill </a>
-
-    <form method="POST" action="/home/group/<%= group_id %>?_method=delete">
-<div>
-    <button type="submit">
-        Leave Group
-    </button>
-</div>
-</form>
+        <form method="POST" action="/home/group/<%= group.id %>?_method=delete">
+            <button class="btn btn-danger btn-sm btn-block" name="button" type="submit">Leave Group</button>
+        </form>
 
     </main>
 
+    <%- include('../partials/flickity/scripts') %>
 
 <%- include('../partials/ejsEnd') %>
