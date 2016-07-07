@@ -195,7 +195,6 @@ router.get('/group/:group_id/add', function(req, res, next) {
 router.post('/group/:group_id/add', function(req, res, next) {
 console.log(req.body.invite_email);
 
-
     console.log(req.params.group_id);
     knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
         // knex('users_in_group')
@@ -271,6 +270,7 @@ router.get('/group/bills/:id/pay', function(req, res, next) {
 
 });
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
+
     Promise.join(
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
@@ -301,10 +301,12 @@ router.get('/group/:id/messages/new', function(req, res, next) {
             id: req.params.id
 
         }
-      });
+
+
+        });
         res.render('pages/billview', {
             bill: bill
-        });
+    });
 
 });
 
