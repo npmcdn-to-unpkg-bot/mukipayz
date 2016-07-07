@@ -6,18 +6,15 @@ var router = express.Router();
 var knex = require('../../db/knex');
 var uploader = require('../../uploader');
 var Promise = require('bluebird');
-var moment = require('moment');
 // var promise_result= require('./promise');
 var db_model = require('../../db_models');
 var promise_result = require('../../promise');
 var randomstring = require("randomstring");
 var email = require('../../emailer');
+
 function Bills() {
     //model for bills table
     return knex('bills');
-}
-function Messages() {
-    return knex('messages_in_group');
 }
 
 //---------BELOW
@@ -47,6 +44,7 @@ router.get('/', function(req, res, next) {
     });
 });
 
+
 router.get('/group/new', function(req, res, next) {
     knex('groups').then(function(data) {
         res.render('pages/newgroup', {
@@ -71,8 +69,9 @@ router.post('/group/new', function(req, res, next) {
 });
 
 
+
+
 router.get('/group/:id', function(req, res, next) {
-    console.log("req.session.user: ", req.session.user);
     Promise.join(
         db_model.getGroup(Number(req.params.id)),
         knex('bills').where({
@@ -87,19 +86,6 @@ router.get('/group/:id', function(req, res, next) {
             messages: data[2],
             friends: data[3]
         };
-        data.messages.map(function(message) {
-            message.fromMe = false;
-            message.last_name = message.last_name.substr(0, 1) + '.';
-            message.created_at = moment(message.created_at).fromNow();
-            //setup bubbling
-            if (req.session.user.user_id) {
-                if (req.session.user.user_id === message.user_id) {
-                    message.fromMe = true;
-                } else {
-                    message.fromMe = false;
-                }
-            }
-        });
         // res.json(data);
         // if(data[0].length>0){
         res.render('pages/group', data);
@@ -176,13 +162,21 @@ router.get('/group/:group_id/add', function(req, res, next) {
     });
 });
 
-router.post('/group/:group_id/add', function(req, res, next) {
-    console.log(req.body.invite_email);
 
+router.post('/group/:group_id/add', function(req, res, next) {
+console.log(req.body.invite_email);
+
+<<<<<<< HEAD
     console.log(req.params.group_id);
     knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
         // knex('users_in_group')
         .then(function(data) {
+=======
+console.log(req.params.group_id);
+knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
+    // knex('users_in_group')
+    .then(function(data) {
+>>>>>>> payment
             console.log(data);
 
             if (data.length > 0) {
@@ -214,32 +208,39 @@ router.post('/group/:group_id/add', function(req, res, next) {
                                 group_id: req.params.group_id
                             }).returning('*')
                             .then(function(result) {
-                                res.send('do it');
+                                //res.send('do it');
                                 //call email
                                 email(req.body.invite_email, function(err, body) {
-                                    if (err) {
-                                        res.render('email/error', {
-                                            error: err
-                                        });
-                                        console.log("got an error: ", err);
-                                    }
-                                    // //Else we can greet    and leave
-                                    else {
-                                        //Here "submitted.ejs" is the view file for this landing page
-                                        //We pass the variable "email" from the url parameter in an object rendered by ejs
-                                        res.render('pages/addUserGroup', {
-                                            success: "you invited a user"
-                                        });
-                                        console.log(body);
-                                    }
-                                });
+
+                                        if (err) {
+                                            res.render('email/error', {
+                                                error: err
+                                            });
+                                            console.log("got an error: ", err);
+                                        }
+                                        // //Else we can greet    and leave
+                                        else {
+                                            var group = {
+                                                 id: req.params.group_id
+
+                                            };
+                                            //Here "submitted.ejs" is the view file for this landing page
+                                            //We pass the variable "email" from the url parameter in an object rendered by ejs
+
+                                            res.render('pages/addUserGroup', {
+                                                group: group
+                                            });
+                                        //});
+                                }
 
                             });
+
                     });
-            }
-        }).catch(function(err) {
-            console.error("ERROR: ", err);
-        });
+            });
+    }
+}).catch(function(err) {
+console.error("ERROR: ", err);
+});
 });
 
 
@@ -248,8 +249,8 @@ router.get('/group/bills/:id/pay', function(req, res, next) {
 
 
 });
-
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
+<<<<<<< HEAD
     Promise.join(
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
@@ -261,7 +262,7 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
         bill : data[1],
         numUsers: data[0],
 
-        totalPerUser: Number(Number(data[0][0].amount) / Number(data[1][0].count).toFixed(2))
+        totalPerUser: Number((Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2))
 
       }
         // res.json(obj);
@@ -278,21 +279,34 @@ router.get('/group/:id/messages/new', function(req, res, next) {
     res.render('pages/newMessage', {
         group: {
             id: req.params.id
+=======
+    Bills().where({
+        group_id: req.params.group_id,
+        id: req.params.bill_id
+    }).then(function(bill) {
+        bill = bill[0];
+        if (bill === undefined) {
+            console.log("no bill");
+            /**FIXME: Redirect Routes for Errors */
+            res.send('bill not found');
+>>>>>>> payment
         }
+        res.render('pages/billview', {
+            bill: bill
+        })
     });
 });
 
-router.post('/group/:id/messages/new', function(req, res, next) {
-    Messages().insert({
-        content: req.body.message,
-        user_id: req.session.user.user_id,
-        group_id: req.params.id
-    }).then(function(data) {
-        res.redirect('/home/group/'+req.params.id+'/');
-    }).catch(function(err) {
-        console.error("error saving message");
-    });
+
+router.get('/group/:id/messages', function(req, res, next) {
+    knex('messages_in_group').then(function(data) {
+        res.send(data);
+        // res.render('pages/group', {
+        //     data: data[0]
+        // });
+    }).catch(next);
 });
+
 
 
 module.exports = router;
