@@ -13,7 +13,7 @@ function email(emailAddress, password, callback) {
     // console.log(req.body);
     var data = {
         //Specify email data
-        from: process.env.from_who,
+        from: process.env.FROM_WHO,
         //The email to contact
         to: emailAddress,
         //Subject and text data
@@ -23,6 +23,6 @@ function email(emailAddress, password, callback) {
 
     //Invokes the method to send emails given the above data with the helper libraryrs
     mailgun.messages().send(data, callback);
-  
+
 }
 module.exports = email;

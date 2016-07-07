@@ -44,6 +44,21 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.put('/', function(req, res) {
+                knex('users')
+                    .where('id', req.session.user.user_id)
+                    .update({
+                      'first_name': req.body.first_name,
+                    })
+                    .then(function(posts) {
+                        // var timefrom=moment(posts.time).fromNow();
+                        // console.log(timefrom);
+                        res.redirect('/posts');
+                    })
+                    .catch(function(err) {
+                        next(err);
+                    });
+            });
 
 router.get('/group/new', function(req, res, next) {
     knex('groups').then(function(data) {
@@ -166,6 +181,10 @@ router.get('/group/:group_id/add', function(req, res, next) {
 router.post('/group/:group_id/add', function(req, res, next) {
 console.log(req.body.invite_email);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbae0084a7d95c560503e9f4f392059464da3813
     console.log(req.params.group_id);
     knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
         // knex('users_in_group')
@@ -204,7 +223,7 @@ console.log(req.body.invite_email);
                             .then(function(result) {
                                 //res.send('do it');
                                 //call email
-                                email(req.body.invite_email, function(err, body) {
+                                email(req.body.invite_email, password, function(err, body) {
 
                                         if (err) {
                                             res.render('email/error', {
@@ -214,23 +233,20 @@ console.log(req.body.invite_email);
                                         }
                                         // //Else we can greet    and leave
                                         else {
-                                            var group = {
-                                                 id: req.params.group_id
-
-                                            };
-                                            //Here "submitted.ejs" is the view file for this landing page
-                                            //We pass the variable "email" from the url parameter in an object rendered by ejs
-
-                                            res.render('pages/addUserGroup', {
-                                                group: group
-                                            });
-                                        //});
-                                }
+                                          var group = {
+                                              id: req.params.group_id
+                                          };
+                                          //console.log(group);
+                                          res.render('pages/addUserGroup', {
+                                              group: group
+                                          });
+                                        }
+                                });
 
                             });
 
                     });
-            });
+            // });
     }
 }).catch(function(err) {
 console.error("ERROR: ", err);
@@ -275,11 +291,19 @@ router.get('/group/:id/messages/new', function(req, res, next) {
             id: req.params.id
 
         }
-    
+<<<<<<< HEAD
+
         });
         res.render('pages/billview', {
             bill: bill
     });
+=======
+      });
+        res.render('pages/billview', {
+            bill: bill
+        });
+
+>>>>>>> dbae0084a7d95c560503e9f4f392059464da3813
 });
 
 
