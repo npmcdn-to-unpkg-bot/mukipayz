@@ -18,11 +18,6 @@
                     <h1 class="text-center">Add Users to Group</h1>
 
 
-                    <form id="mgform" action="/email/submit" method="post" data-toggle="validator" role="form">
-                        <fieldset class="form-group">
-                            <label for="inputEmail" class="control-label">Invite Your Friends, As Many As You Want!</label>
-                            <input type="email" class="form-control" id="inputEmail" name="invite_email" placeholder="Enter Your Friend's Email" data-error="Bruh, that email address is invalid" required>
-                            <div class="help-block with-errors"></div>
 
 
                       <form action='/home/group/<%= group.id %>/add' method='post' data-toggle="validator" role="form">

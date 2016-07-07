@@ -17,9 +17,17 @@ function Messages() {
 
 function getUser(email) {
     return new Promise(function(resolve, reject) {
-        Users().where({email: email}).then(function(user){
-            resolve(user[0]);
-        }).catch(reject);
+        email = String(email);
+        if (email.indexOf('@') === -1) {
+            var id = email;
+            Users().where({id: id}).then(function(user){
+                resolve(user[0]);
+            }).catch(reject);
+        } else {
+            Users().where({email: email}).then(function(user){
+                resolve(user[0]);
+            }).catch(reject);
+        }
     });
 }
 function getGroup(group_id) {
