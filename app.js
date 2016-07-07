@@ -32,7 +32,7 @@ var routes = {
     auth : require('./routes/auth/auth'),
     home: require('./routes/home/home'),
     dwolla: require('./routes/auth/dwolla'),
-    email: require('./routes/email/email')
+    // email: require('./routes/email/email')
 };
 
 //app middleware
