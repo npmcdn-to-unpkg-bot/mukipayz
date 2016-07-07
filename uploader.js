@@ -111,7 +111,10 @@ var uploader = {
         return new Promise(function(resolve, reject) {
             fs.unlink(UPLOAD_DIR+"/"+data.image.file, function(err, success) {
                 if (err) {reject(err);}
-                resolve(success);
+                fs.rmdir(UPLOAD_DIR, function(err, success) {
+                    if (err) {reject(err);}
+                    resolve(success);
+                })
             });
         });
     }
