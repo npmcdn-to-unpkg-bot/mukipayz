@@ -249,16 +249,17 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
     Promise.join(
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
+        //grab the data from users who have paid (add comma to above), will be data[2]
     ).then(function(data) {
 
       var obj = {
         bill : data[1],
         numUsers: data[0],
-        totalPerUser: Number(data[0][0].amount) / Number(data[1][0].count)
+        totalPerUser: (Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2)
       }
-      // res.json(obj);
-
+        // res.json(obj);
        res.render('pages/billview', obj);
+
    }).catch(function(err) {
        console.error(err);
    });
