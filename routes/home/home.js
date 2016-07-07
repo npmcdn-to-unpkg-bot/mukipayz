@@ -209,7 +209,13 @@ router.post('/group/:group_id/add', function(req, res, next) {
                                         console.log("got an error: ", err);
                                     }
                                     else {
-                                        res.render('pages/addUserGroup');
+                                      var group = {
+                                          id: req.params.group_id
+                                      };
+                                      console.log(group);
+                                      res.render('pages/addUserGroup', {
+                                          group: group
+                                      });
                                     }
                                 });
 
