@@ -243,7 +243,7 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
       var obj = {
         bill : data[1],
         numUsers: data[0],
-        totalPerUser: Number(data[0][0].amount) / Number(data[1][0].count)
+        totalPerUser: Number(Number(data[0][0].amount) / Number(data[1][0].count).toFixed(2))
       }
       // res.json(obj);
 
