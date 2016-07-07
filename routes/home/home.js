@@ -181,10 +181,6 @@ router.get('/group/:group_id/add', function(req, res, next) {
 router.post('/group/:group_id/add', function(req, res, next) {
 console.log(req.body.invite_email);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbae0084a7d95c560503e9f4f392059464da3813
     console.log(req.params.group_id);
     knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
         // knex('users_in_group')
@@ -291,19 +287,13 @@ router.get('/group/:id/messages/new', function(req, res, next) {
             id: req.params.id
 
         }
-<<<<<<< HEAD
+
 
         });
         res.render('pages/billview', {
             bill: bill
     });
-=======
-      });
-        res.render('pages/billview', {
-            bill: bill
-        });
 
->>>>>>> dbae0084a7d95c560503e9f4f392059464da3813
 });
 
 
