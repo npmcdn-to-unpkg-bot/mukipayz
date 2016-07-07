@@ -18,7 +18,7 @@ can we put the image of the bill on the top of this page if it exists -->
             <div class="main-carousel">
                 <%# Bill Details%>
                     <div class="carousel-cell details container">
-                      
+
                         <h1 class="bill-title text-center font1"><%= numUsers[0].title %></h1>
                         <h3 class="text-center font1">Total Amount of Bill: $ <%= numUsers[0].amount %></h3>
                         <h3 class="text-center font1">Total Amount You Owe: $ <%=  totalPerUser   %> </h3>
@@ -39,16 +39,26 @@ can we put the image of the bill on the top of this page if it exists -->
                   </h3>
                                 <div>
                                   <h3>Pay With Dwolla</h3>
+                                  <form data-toggle="validator" role="form" method="" action="ROUTE_TO_UPDATE DATABASE">
+                                      <div class="form-group">
+                                          <label for="DwollaPayment" class="control-label">Amount Paid: </label>
+                                          <input type="number" class="form-control" id="DwollaPayment" name="DwollaPayment" placeholder="$ How much to pay? 25" required>
+                                      </div>
+
+
                                     <a class="center-block btn btn-primary" href="/auth/dwolla" role="button" type="submit">Click Here To Pay With Dwolla</a>
+                                    </form>
                                 </div>
                                 <div>
                                     <h3>Mark as Paid</h3>
-                                    <form data-toggle="validator" role="form" method="" action="ROUTE_TO_UPDATE DATABASE">
+
+                                    <form data-toggle="validator" role="form" method="post" action="/home/billview?_method=put">
                                         <div class="form-group">
                                             <label for="manPayment" class="control-label">Amount Paid: </label>
                                             <input type="number" class="form-control" id="manPayment" name="manPayment" placeholder="$ How much to pay? 25" required>
                                         </div>
-                                        <input type="submit"></input>
+                                          <button class="btn btn-primary btn-block btn-lg" type="submit">Mark As Paid</button>
+
                                     </form>
                                 </div>
                             </div>

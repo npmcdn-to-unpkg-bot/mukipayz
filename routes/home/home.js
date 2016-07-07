@@ -277,14 +277,13 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
 
         //grab the data from users who have paid (add comma to above), will be data[2]
     ).then(function(data) {
-
       var obj = {
         bill : data[1],
         numUsers: data[0],
-
+        group_id: req.params.group_id,
         totalPerUser: Number((Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2))
 
-      }
+      };
         // res.json(obj);
        res.render('pages/billview', obj);
 
@@ -294,6 +293,32 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
 
 });
 
+router.put('/group/:group_id/bills/:bill_id', function(req, res, next) {
+ knex('payments').where('bill_id', req.params.bill_id);
+ console.log(req.session.user.user_id);
+ console.log('payment.user_id');
+ if(req.session.user.user_id === 'payments.user_id'){
+ knex('payments').update({
+   'amount':'payments.amount'+ Number(req.body.manPayment)
+ })
+ .then(function(data){
+   console.log(data);
+   res.send(data);
+ })
+ .catch(function(err){
+   next(err);
+ });
+}
+else{
+  knex('payments').insert({
+    'amount' : Number(req.body.manPayment),
+    'user_id' : req.session.user.user_id,
+    'bill_id': Number(req.params.bill_id)
+  }).then(function(data){
+    console.log(data);
+  });
+}
+});
 //create new message
 router.get('/group/:id/messages/new', function(req, res, next) {
     res.render('pages/newMessage', {
@@ -304,9 +329,7 @@ router.get('/group/:id/messages/new', function(req, res, next) {
 
 
         });
-        res.render('pages/billview', {
-            bill: bill
-    });
+        
 
 });
 
