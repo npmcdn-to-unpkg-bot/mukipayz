@@ -100,7 +100,7 @@ var uploader = {
             console.log("data upload: ", data.upload);
             Bills().insert({
                 title: data.upload.formData.title || '',
-                amount: data.upload.formData.amount || 0,
+                amount: Number(data.upload.formData.amount) || 0,
                 group_id: data.upload.group_id,
                 image_url: data.cloud.url
             }).then(resolve).catch(reject);
