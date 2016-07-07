@@ -43,22 +43,36 @@ router.get('/', function(req, res, next) {
         });
     });
 });
-
-router.put('/', function(req, res) {
+router.get('/userUpdate', function(req, res, next){
+  knex('users').where('id', req.session.user.user_id)
+  .then(function(data) {
+    //console.log(data)
+      res.render('pages/userUpdate', {
+          data: data[0]
+      });
+  }).catch(next);
+});
+router.put('/userUpdate', function(req, res) {
+    promise_result(req.body.password).then(function(result) {
                 knex('users')
                     .where('id', req.session.user.user_id)
+
                     .update({
                       'first_name': req.body.first_name,
+                      'last_name' : req.body.last_name,
+                      'email' : req.body.email,
+                      password: result
                     })
-                    .then(function(posts) {
+                    .then(function(result) {
                         // var timefrom=moment(posts.time).fromNow();
                         // console.log(timefrom);
-                        res.redirect('/posts');
+                        res.redirect('/home');
                     })
                     .catch(function(err) {
                         next(err);
                     });
             });
+          });
 
 router.get('/group/new', function(req, res, next) {
     knex('groups').then(function(data) {
