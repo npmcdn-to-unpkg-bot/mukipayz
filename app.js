@@ -13,6 +13,12 @@ var express = require('express'),
     cookieSession = require("cookie-session"),
     passport = require('passport'),
     mware = require('./middleware');
+
+
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+
 //setup views
 app.set('views', path.join(__dirname, 'views'));
 
@@ -34,6 +40,7 @@ app.use(logger('dev'));
 app.use(express.static(__dirname+'/public'));
 app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieSession({
@@ -50,7 +57,18 @@ app.use('/home', mware.isLoggedIn, routes.home);
 app.use('/dwolla', routes.dwolla);
 // app.use('/email', routes.email);
 
-
+//handle all socket connections
+io.on('connection', function(socket){
+    console.log("socket connected");
+    // console.log("socket.request: ", socket.request.headers);
+    socket.on('messages', function(msg){
+        console.log("INCOMING MESSAGE: ", msg);
+        io.emit('messages', msg);
+    });
+    socket.on('disconnect', function() {
+      console.log('socket disconnected');
+   });
+});
 
 // error handlers
 //handle any other routes that don't exist
@@ -90,7 +108,7 @@ app.use(function(err, req, res, next) {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, function() {
+http.listen(port, function() {
     console.log("listening on", port);
     console.log("All other groups ain't got nuthin' on mukipayz!");
 });
