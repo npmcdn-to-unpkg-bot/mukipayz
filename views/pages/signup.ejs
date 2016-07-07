@@ -16,24 +16,49 @@
         <div class="col-md-12">
 
             <h4 class="text-center">Let's Get You Enrolled for a Free Account</h4>
+
             <form action='/auth/signup' method='post' data-toggle="validator" >
-              <fieldset class="form-group">
+
+
+              <fieldset class="form-group has-success has-feedback">
+                <label for="firstName" class="control-label">First Name</label>
+                <input name="first_name" type="text" class="form-control" id="firstName" placeholder="Casey" aria-describedby="firstName" required>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                <span id="firstName" class="sr-only">(success)</span>
+              </fieldset>
+              <div class="form-group has-error has-feedback">
+              <label class="control-label" for="inputError2">Input with error</label>
+              <input type="text" class="form-control" id="inputError2" aria-describedby="inputError2Status">
+              <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+              <span id="inputError2Status" class="sr-only">(error)</span>
+              </div>
+              <!-- <fieldset class="form-group">
                 <label for="firstName" class="control-label">First Name</label>
                 <input name="first_name" type="text" class="form-control" id="firstName" placeholder="Casey" required>
+              </fieldset> -->
+              <fieldset class="form-group has-success has-feedback">
+                <label for="lastName" class="control-label">Last Name</label>
+                <input name="last_name" type="text" class="form-control" id="lastName" placeholder="Jones" aria-describedby="lastName" required>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                <span id="lastName" class="sr-only">(success)</span>
               </fieldset>
-
-              <fieldset class="form-group">
+              <!-- <fieldset class="form-group">
                 <label for="lastName" class="control-label">Last Name</label>
                 <input name="last_name" type="text" class="form-control" id="lastName" placeholder="Jones" required>
+              </fieldset> -->
+              <fieldset class="form-group has-success has-feedback">
+              <label for="email" class="control-label">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="wharf_rat@gmail.com" data-error="That email address is invalid" aria-describedby="email" required>
+              <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+              <span id="email" class="sr-only">(success)</span>
               </fieldset>
-
-              <fieldset class="form-group">
+              <!-- <fieldset class="form-group has-warning">
                 <label for="email" class="control-label">Email</label>
                 <input type="email" class="form-control" id="email" placeholder="wharf_rat@gmail.com" data-error="That email address is invalid" required>
                 <div class="help-block with-errors"></div>
-              </fieldset>
+              </fieldset> -->
 
-                <fieldset class="form-group">
+                <fieldset class="form-group has-warning">
                   <input type="email" class="form-control" name="email" id="email" data-match="email" data-match-error="Whoops, these don't match" placeholder="Confirm your email" required>
                   <div class="help-block with-errors"></div>
                 </fieldset>
