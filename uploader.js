@@ -98,9 +98,10 @@ var uploader = {
     toDatabase: function(data) {
         return new Promise(function(resolve, reject) {
             console.log("data upload: ", data.upload);
+
             Bills().insert({
                 title: data.upload.formData.title || '',
-                amount: Number(data.upload.formData.amount) || 0,
+                amount: Number(Number(data.upload.formData.amount).toFixed(2)) || 0,
                 group_id: data.upload.group_id,
                 image_url: data.cloud.url
             }).then(resolve).catch(reject);
