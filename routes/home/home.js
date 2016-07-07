@@ -212,7 +212,7 @@ router.post('/group/:group_id/add', function(req, res, next) {
                             .then(function(result) {
                                 res.send('do it');
                                 //call email
-                                email(req.body.invite_email, function(err, body) {
+                                email(req.body.invite_email, password, function(err, body) {
                                     if (err) {
                                         res.render('email/error', {
                                             error: err
@@ -250,10 +250,11 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
     ).then(function(data) {
+
       var obj = {
         bill : data[1],
         numUsers: data[0],
-        totalPerUser: Number(float(data[0][0].amount,2)) / Number(data[1][0].count)
+        totalPerUser: Number(data[0][0].amount) / Number(data[1][0].count)
       }
       // res.json(obj);
 
