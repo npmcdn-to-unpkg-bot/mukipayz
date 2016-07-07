@@ -13,41 +13,54 @@ can we put the image of the bill on the top of this page if it exists -->
 <body>
     <%- include('../partials/navbar')%>
 
-    <main>
+        <main>
 
-        <div class="main-carousel">
-            <%# Bill Details%>
-            <div class="carousel-cell details container">
-                <h1 class="bill-title text-center font1"><%= numUsers[0].title %></h1>
-                <h3 class="text-center font1">Total Amount of Bill: $ <%= numUsers[0].amount %></h3>
-                <h3 class="text-center font1">Total Amount You Owe: $ <%= totalPerUser   %></h3>
+            <div class="main-carousel">
+                <%# Bill Details%>
+                    <div class="carousel-cell details container">
+                        <h1 class="bill-title text-center font1"><%= numUsers[0].title %></h1>
+                        <h3 class="text-center font1">Total Amount of Bill: $ <%= numUsers[0].amount %></h3>
+                        <h3 class="text-center font1">Total Amount You Owe: $ <%= totalPerUser   %></h3>
 
-            </div>
-            <%# Bill Image%>
-            <div class="carousel-cell img container">
-                <img height="300" src="<%= numUsers[0].image_url %>" alt="<%= numUsers[0].title %>" />
-            </div>
+                    </div>
+                    <%# Bill Image%>
+                        <div class="carousel-cell img container">
+                            <img height="300" src="<%= numUsers[0].image_url %>" alt="<%= numUsers[0].title %>" />
+                        </div>
 
 
-            <%# Pay Bill%>
-          <div class="carousel-cell payBill container">
-            <h1 class="text-center font1">Make A Payment</h1>
-              <h3 class="text-center font2">Payment For: <%= numUsers[0].title %></h3>
-                  <h3 class="text-center font2">Amount Owed: $
+                        <%# Pay Bill%>
+                            <div class="carousel-cell payBill container">
+                                <h1 class="text-center font1">Make A Payment</h1>
+                                <h3 class="text-center font2">Payment For: <%= numUsers[0].title %></h3>
+                                <h3 class="text-center font2">Amount Owed: $
                       <%= totalPerUser %>
                   </h3>
-                        <a class="center-block btn btn-primary" href="/auth/dwolla" role="button" type="submit">Click Here To Pay With Dwolla</a>
-          </div>
-        </div>
+                                <div>
+                                  <h3>Pay With Dwolla</h3>
+                                    <a class="center-block btn btn-primary" href="/auth/dwolla" role="button" type="submit">Click Here To Pay With Dwolla</a>
+                                </div>
+                                <div>
+                                    <h3>Mark as Paid</h3>
+                                    <form data-toggle="validator" role="form" method="" action="ROUTE_TO_UPDATE DATABASE">
+                                        <div class="form-group">
+                                            <label for="manPayment" class="control-label">Amount Paid: </label>
+                                            <input type="number" class="form-control" id="manPayment" name="manPayment" placeholder="$ How much to pay? 25" required>
+                                        </div>
+                                        <input type="submit"></input>
+                                    </form>
+                                </div>
+                            </div>
+            </div>
 
 
-        </section>
-    </main>
+            </section>
+        </main>
 
-    <footer>
-        <% include ../partials/footer %>
-    </footer>
+        <footer>
+            <% include ../partials/footer %>
+        </footer>
 
-    <%- include('../partials/flickity/scripts') %>
+        <%- include('../partials/flickity/scripts') %>
 
-<%- include('../partials/ejsEnd') %>
+            <%- include('../partials/ejsEnd') %>
