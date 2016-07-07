@@ -1,9 +1,7 @@
 'use strict';
 var Mailgun = require('mailgun-js');
-var api_key = 'key-1e7f337e6b0b7ae89562027bc23e334d';
-
-//domain, from the Mailgun Control Panel
-var domain = 'sandbox406725ad86c649af95276648504536a6.mailgun.org';
+var api_key = process.env.API_KEY;
+var domain = process.env.DOMAIN;
 
 //sending email address
 var from_who = 'mukipayz@gmail.com';
