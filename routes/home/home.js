@@ -281,7 +281,11 @@ router.post('/group/:id/messages/new', function(req, res, next) {
         user_id: req.session.user.user_id,
         group_id: req.params.id
     }).then(function(data) {
-        res.redirect('/home/group/'+req.params.id+'/');
+        // res.redirect('/home/group/'+req.params.id+'/');
+        res.json({
+            status: 'success',
+            data: req.body.message
+        });
     }).catch(function(err) {
         console.error("error saving message");
     });

@@ -41,7 +41,7 @@ should be link for users to invite other's via email -->
                     <h1 class="header-text cell-title">Messages</h1>
                     <a href="/home/group/<%= group.id %>/messages/new"><button class="btn btn-primary btn-sm btn-block" name="button">New Message</button></a>
                     <% if (messages.length > 0) { %>
-                        <ul class="messages-box cell-list-block">
+                        <ul class="messages-box cell-list-block" id="messages-box">
                             <% messages.forEach(function(message) { %>
                                 <% if (message.fromMe) { %>
                                     <li class="message col-md-12 blue">
@@ -89,5 +89,7 @@ should be link for users to invite other's via email -->
     </main>
 
     <%- include('../partials/flickity/scripts') %>
+
+    <%- include('../partials/socket/listener') %>
 
 <%- include('../partials/ejsEnd') %>
