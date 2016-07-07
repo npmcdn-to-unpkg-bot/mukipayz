@@ -215,23 +215,20 @@ console.log(req.body.invite_email);
                                         }
                                         // //Else we can greet    and leave
                                         else {
-                                            var group = {
-                                                 id: req.params.group_id
-
-                                            };
-                                            //Here "submitted.ejs" is the view file for this landing page
-                                            //We pass the variable "email" from the url parameter in an object rendered by ejs
-
-                                            res.render('pages/addUserGroup', {
-                                                group: group
-                                            });
-                                        //});
-                                }
+                                          var group = {
+                                              id: req.params.group_id
+                                          };
+                                          console.log(group);
+                                          res.render('pages/addUserGroup', {
+                                              group: group
+                                          });
+                                        }
+                                });
 
                             });
 
                     });
-            });
+            // });
     }
 }).catch(function(err) {
 console.error("ERROR: ", err);
