@@ -48,7 +48,7 @@ app.use('/auth', routes.auth);
 app.use('/', routes.index);
 app.use('/home', mware.isLoggedIn, routes.home);
 app.use('/dwolla', routes.dwolla);
-app.use('/email', routes.email);
+// app.use('/email', routes.email);
 
 
 

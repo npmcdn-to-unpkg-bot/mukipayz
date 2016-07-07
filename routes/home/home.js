@@ -179,7 +179,7 @@ router.post('/group/:group_id/add', function(req, res, next) {
     knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
         // knex('users_in_group')
         .then(function(data) {
-            console.log(data);
+            console.log("THIS IS IT: " + data);
 
             if (data.length > 0) {
                 console.log(data[0].id);
@@ -196,13 +196,13 @@ router.post('/group/:group_id/add', function(req, res, next) {
                 promise_result(password)
                     //console.log(promise_result("wow"))
                     .then(function(result) {
-                        console.log("result: ", result);
+
                         return knex('users').insert({
                             email: req.body.invite_email,
                             first_name: 'anonymous',
                             last_name: 'user',
                             password: result
-                        }).returning('*')
+                        }).returning('*');
                     }).then(function(results) {
                         console.log("RESULT from database stuff" + results[0]);
                         return knex('users_in_group').insert({
@@ -212,7 +212,7 @@ router.post('/group/:group_id/add', function(req, res, next) {
                             .then(function(result) {
                                 res.send('do it');
                                 //call email
-                                email(req.body.invite_email, function(err, body) {
+                                email(req.body.invite_email, password, function(err, body) {
                                     if (err) {
                                         res.render('email/error', {
                                             error: err
@@ -249,17 +249,16 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
     Promise.join(
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
-        //grab the data from users who have paid (add comma to above), will be data[2]
     ).then(function(data) {
 
       var obj = {
         bill : data[1],
         numUsers: data[0],
-        totalPerUser: (Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2)
+        totalPerUser: Number(data[0][0].amount) / Number(data[1][0].count)
       }
-        // res.json(obj);
-       res.render('pages/billview', obj);
+      // res.json(obj);
 
+       res.render('pages/billview', obj);
    }).catch(function(err) {
        console.error(err);
    });
