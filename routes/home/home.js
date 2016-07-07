@@ -173,28 +173,19 @@ router.get('/group/:group_id/add', function(req, res, next) {
 });
 
 router.post('/group/:group_id/add', function(req, res, next) {
-    console.log(req.body.invite_email);
-
-    console.log(req.params.group_id);
     knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
-        // knex('users_in_group')
         .then(function(data) {
-            console.log("THIS IS IT: " + data);
-
             if (data.length > 0) {
-                console.log(data[0].id);
                 knex('users_in_group').insert({
                         user_id: data[0].user_id,
                         group_id: req.params.group_id
                     })
-                    //  })
                     .then(function(data) {
                         res.redirect('/home');
                     });
             } else {
                 var password = randomstring.generate(7);
                 promise_result(password)
-                    //console.log(promise_result("wow"))
                     .then(function(result) {
 
                         return knex('users').insert({
@@ -204,14 +195,12 @@ router.post('/group/:group_id/add', function(req, res, next) {
                             password: result
                         }).returning('*');
                     }).then(function(results) {
-                        console.log("RESULT from database stuff" + results[0]);
                         return knex('users_in_group').insert({
                                 user_id: results[0].id,
                                 group_id: req.params.group_id
                             }).returning('*')
                             .then(function(result) {
-                                res.send('do it');
-                                //call email
+                                //res.send('do it');
                                 email(req.body.invite_email, password, function(err, body) {
                                     if (err) {
                                         res.render('email/error', {
@@ -219,14 +208,8 @@ router.post('/group/:group_id/add', function(req, res, next) {
                                         });
                                         console.log("got an error: ", err);
                                     }
-                                    // //Else we can greet    and leave
                                     else {
-                                        //Here "submitted.ejs" is the view file for this landing page
-                                        //We pass the variable "email" from the url parameter in an object rendered by ejs
-                                        res.render('pages/addUserGroup', {
-                                            success: "you invited a user"
-                                        });
-                                        console.log(body);
+                                        res.render('pages/addUserGroup');
                                     }
                                 });
 
