@@ -44,6 +44,21 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.put('/', function(req, res) {
+                knex('users')
+                    .where('id', req.session.user.user_id)
+                    .update({
+                      'first_name': req.body.first_name,
+                    })
+                    .then(function(posts) {
+                        // var timefrom=moment(posts.time).fromNow();
+                        // console.log(timefrom);
+                        res.redirect('/posts');
+                    })
+                    .catch(function(err) {
+                        next(err);
+                    });
+            });
 
 router.get('/group/new', function(req, res, next) {
     knex('groups').then(function(data) {
@@ -205,7 +220,7 @@ console.log(req.body.invite_email);
                             .then(function(result) {
                                 //res.send('do it');
                                 //call email
-                                email(req.body.invite_email, function(err, body) {
+                                email(req.body.invite_email, password, function(err, body) {
 
                                         if (err) {
                                             res.render('email/error', {
@@ -218,7 +233,7 @@ console.log(req.body.invite_email);
                                           var group = {
                                               id: req.params.group_id
                                           };
-                                          console.log(group);
+                                          //console.log(group);
                                           res.render('pages/addUserGroup', {
                                               group: group
                                           });
