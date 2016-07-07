@@ -8,15 +8,28 @@ socketButton.addEventListener('click', function(e) {
     if (!socketMessage.value || socketMessage.value === '') {
         return;
     }
-    socket.emit('messages', socketMessage.value);
-    socket.on('messages', function(msg) {
-        var path = window.location.pathname;
-        var messageVal = {
-            message: msg
-        };
-        ajax('POST', path, messageVal, function(data) {
-            window.location.assign(path.substring(0, path.indexOf('/messages')));
-        });
+    var path = window.location.pathname;
+    var messageVal = {
+       message: socketMessage.value
+    };
+    ajax('POST', path, messageVal, function(data) {
+
+        if (data.status === 'success') {
+            var newMessage = data.message;
+
+            console.log(": ", data);
+            // console.log("user: ", data.user);
+
+            //broadcast to socket
+            socket.emit('messages', data);
+            socket.on('messages', function(data) {
+                //when emit is successful
+                window.location.assign(path.substring(0, path.indexOf('/messages')));
+            });
+
+        }
+
+        // window.location.assign(path.substring(0, path.indexOf('/messages')));
     });
 });
 
