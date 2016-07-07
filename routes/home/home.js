@@ -262,8 +262,21 @@ router.post('/group/:id/messages/new', function(req, res, next) {
         content: req.body.message,
         user_id: req.session.user.user_id,
         group_id: req.params.id
-    }).then(function(data) {
-        res.redirect('/home/group/'+req.params.id+'/');
+    }).returning('*').then(function(data) {
+        var message = data[0];
+        message.created_at = moment(message.created_at).fromNow();
+        // res.redirect('/home/group/'+req.params.id+'/');
+        db_model.getUser(message.user_id).then(function(user) {
+            var user = {
+                first_name: user.first_name,
+                last_name: user.last_name
+            };
+            res.json({
+                status: 'success',
+                message: message,
+                user: user
+            });
+        });
     }).catch(function(err) {
         console.error("error saving message");
     });
