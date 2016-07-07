@@ -107,9 +107,12 @@ var uploader = {
             }).then(resolve).catch(reject);
         });
     },
-    removeFromFile: function(data) {
+    removeFromDir: function(data) {
         return new Promise(function(resolve, reject) {
-            //remove file from uploads
+            fs.unlink(UPLOAD_DIR+"/"+data.image.file, function(err, success) {
+                if (err) {reject(err);}
+                resolve(success);
+            });
         });
     }
 };

@@ -150,6 +150,10 @@ router.post('/group/:group_id/bills/new', function(req, res, next) {
                 cloud: data.cloudData,
                 upload: data.uploadData
             }).then(function(db_data) {
+                console.log("data.uploadData: ", data.uploadData);
+                uploader.removeFromDir(data.uploadData).then(function(success){
+                    //nothing
+                });
                 res.redirect('/home/group/' + req.params.group_id);
             }).catch(function(err) {
                 console.error("Error saving to database", err);
