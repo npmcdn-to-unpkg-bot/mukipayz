@@ -23,5 +23,6 @@ function email(emailAddress, password, callback) {
 
     //Invokes the method to send emails given the above data with the helper libraryrs
     mailgun.messages().send(data, callback);
+    alert("Your Email Been Sent to " + emailAddress);
 }
 module.exports = email;
