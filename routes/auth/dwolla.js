@@ -4,6 +4,17 @@ var express = require('express'),
     passport = require('passport'),
     DwollaStrategy = require('passport-dwolla').Strategy;
 
+    DwollaStrategy.options = ({
+        // authorizationURL: 
+    });
+
+var knex = require('../../db/knex');
+var DB = {
+    Dwolla: function() {
+        return knex('dwolla');
+    }
+};
+
 
 
 // Passport session setup.
@@ -65,11 +76,16 @@ router.get('/',
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 router.get('/callback',
-  passport.authenticate('dwolla', { failureRedirect: '/auth/dwolla', successRedirect: '/' }),
-  function(req, res) {
-      console.log("req: " ,req);
-    res.redirect('/');
-  });
+    passport.authenticate('dwolla', { failureRedirect: '/auth/dwolla', successRedirect: '/' }),
+    function(req, res) {
+
+        if (req.user) {
+            console.log("DWOLLA USER: ", req.user);
+            // DB.Dwolla().insert({})
+        }
+
+        res.redirect('/');
+    });
 
 router.get('/logout', function(req, res){
   req.logout();
