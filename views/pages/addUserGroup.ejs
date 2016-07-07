@@ -17,10 +17,11 @@
                 <div>
                     <h1 class="text-center">Add Users to Group</h1>
                       <form action='/home/group/<%= group.id %>/add' method='post' data-toggle="validator" role="form">
+
                         <%# <form id="mgform" action="/email/submit" method="post" data-toggle="validator" role="form">%>
                          <fieldset class="form-group">
-                            <label for="mail" class="control-label">Invite Your Friends, As Many As You Want!</label>
-                            <input type="text" class="form-control" id="invite_email" name="invite_email" placeholder="Enter Your Friend's Email" required>
+                            <label for="invite_email" class="control-label">Invite Your Friends, As Many As You Want!</label>
+                            <input type="email" class="form-control" id="invite_email" name="invite_email" placeholder="Enter Your Friend's Email" required>
                           </fieldset>
                         <input type="submit" onclick="alert('Your Invite Has Been Sent. Please send as many invites as needed.')" value="Send Invite"></input>
                       </form>

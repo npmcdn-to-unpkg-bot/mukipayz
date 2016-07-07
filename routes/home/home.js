@@ -275,7 +275,6 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
 
-        //grab the data from users who have paid (add comma to above), will be data[2]
     ).then(function(data) {
       var obj = {
         bill : data[1],
