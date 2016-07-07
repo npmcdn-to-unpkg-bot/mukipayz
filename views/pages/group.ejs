@@ -70,7 +70,11 @@ should be link for users to invite other's via email -->
                     <% if (friends.length > 0) { %>
                         <ul class="cell-list-block">
                             <% friends.forEach(function(friend) { %>
-                                <li class="friend"><%= friend.first_name %> <%= friend.last_name %></li>
+                                <% if (friend.first_name.toLowerCase() === 'anonymous') { %>
+                                    <li class="friend"><%= friend.email %> pending registration</li>
+                                <% } else { %>
+                                    <li class="friend"><%= friend.first_name %> <%= friend.last_name %></li>
+                                <% } %>
                             <% }); %>
                         </ul>
                     <% } %>
