@@ -7,7 +7,7 @@
 ---
 http://www.mukipayz.com Mukipayz Homepage (not live yet)
 
-LINK TO VIDEO WE WILL MAKE FRIDAY
+ [Checkout our video!](https://www.youtube.com/watch?v=kDXBWoJwB1A&feature=youtu.e).
 
   When tasked with designing a quarter 2 project that encompassed creating and deploying a complete CRUD (create, read, update, delete) app, our group decided on a peer to peer cost sharing platform called Mukipayz.
 
