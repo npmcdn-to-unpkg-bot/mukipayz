@@ -98,10 +98,10 @@ router.post('/group/new', function(req, res, next) {
     });
 });
 
-//group exists middleware
+//user has access to that group middleware
 router.use('/group/:group_id', mware.hasAccessToGroup);
 
-//user has access to that group middleware
+//group exists middleware
 router.use('/group/:group_id', mware.groupExists);
 
 
@@ -126,7 +126,6 @@ router.get('/group/:id', function(req, res, next) {
     });
 
 });
-
 
 
 router.delete('/group/:id', function(req, res) {
@@ -279,6 +278,11 @@ router.post('/group/:group_id/add', function(req, res, next) {
 //
 //
 // });
+
+
+//user has access to that group middleware
+router.use('/group/:group_id/bills/:bill_id', mware.billExists);
+
 
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
   Promise.join(

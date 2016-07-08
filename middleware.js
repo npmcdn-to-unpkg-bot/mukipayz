@@ -33,6 +33,18 @@ var middleware = {
             //group exists, ok to continue
             return next();
         });
+    },
+    billExists: function(req, res, next) {
+        knex('bills').where({id: req.params.bill_id}).then(function(bill) {
+            if (!bill[0]) {
+                //group doesn't exist
+                var path = req.originalUrl;
+                var group = path.substring(0, path.indexOf('/bills'));
+                return res.redirect(group);
+            }
+            //group exists, ok to continue
+            return next();
+        });
     }
 };
 
