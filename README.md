@@ -11,7 +11,7 @@ LINK TO VIDEO WE WILL MAKE FRIDAY
 
   When tasked with designing a quarter 2 project that encompassed creating and deploying a complete CRUD (create, read, update, delete) app, our group decided on a peer to peer cost sharing platform called Mukipayz.
 
-  Mukipayz is an application that allows for easy tracking, sharing, and paying of various group expenses
+  Mukipayz is a mobile application that allows for easy tracking, sharing, and paying of various group expenses
   How Mukipayz Works
   * A user lands at our landing page and if they are interested signs up/logs in
   * Users create groups with group names
