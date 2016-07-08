@@ -136,7 +136,7 @@ router.post('/group/:group_id/bills/new', function(req, res, next) {
                 cloud: data.cloudData,
                 upload: data.uploadData
             }).then(function(db_data) {
-                console.log("data.uploadData: ", data.uploadData);
+                // console.log("data.uploadData: ", data.uploadData);
                 uploader.removeFromDir(data.uploadData).then(function(success){
                     //nothing
                 });
@@ -156,7 +156,7 @@ router.get('/group/:group_id/add', function(req, res, next) {
     var group = {
         id: req.params.group_id
     };
-    console.log(group);
+    // console.log(group);
     res.render('pages/addUserGroup', {
         group: group
     });
@@ -164,17 +164,17 @@ router.get('/group/:group_id/add', function(req, res, next) {
 
 
 router.post('/group/:group_id/add', function(req, res, next) {
-console.log(req.body.invite_email);
+// console.log(req.body.invite_email);
 
 
-console.log(req.params.group_id);
+// console.log(req.params.group_id);
 knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
     // knex('users_in_group')
     .then(function(data) {
-            console.log(data);
+            // console.log(data);
 
             if (data.length > 0) {
-                console.log(data[0].id);
+                // console.log(data[0].id);
                 knex('users_in_group').insert({
                         user_id: data[0].user_id,
                         group_id: req.params.group_id
@@ -188,7 +188,7 @@ knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where
                 promise_result(password)
                     //console.log(promise_result("wow"))
                     .then(function(result) {
-                        console.log("result: ", result);
+                        // console.log("result: ", result);
                         return knex('users').insert({
                             email: req.body.invite_email,
                             first_name: 'anonymous',
@@ -196,7 +196,7 @@ knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where
                             password: result
                         }).returning('*')
                     }).then(function(results) {
-                        console.log("RESULT from database stuff" + results[0]);
+                        // console.log("RESULT from database stuff" + results[0]);
                         return knex('users_in_group').insert({
                                 user_id: results[0].id,
                                 group_id: req.params.group_id

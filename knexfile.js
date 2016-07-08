@@ -4,7 +4,11 @@
 
   development: {
     client: 'pg',
-    connection: 'postgres://localhost/mukipayz'
+    connection: 'postgres://localhost/mukipayz',
+    pool: {
+        min: 1,
+        max: 10
+    }
   },
 
   production: {
