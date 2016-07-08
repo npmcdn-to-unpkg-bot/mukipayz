@@ -54,7 +54,7 @@ app.use(cookieSession({
 app.use('/auth', routes.auth);
 app.use('/', routes.index);
 app.use('/home', mware.isLoggedIn, routes.home);
-app.use('/dwolla', routes.dwolla);
+app.use('/dwolla', mware.isLoggedIn, routes.dwolla);
 // app.use('/email', routes.email);
 
 //handle all socket connections
