@@ -11,6 +11,7 @@ var db_model = require('../../db_models');
 var promise_result = require('../../promise');
 var randomstring = require("randomstring");
 var email = require('../../emailer');
+var mware = require('../../middleware');
 
 function Bills() {
     //model for bills table
@@ -97,7 +98,11 @@ router.post('/group/new', function(req, res, next) {
     });
 });
 
+//group exists middleware
+router.use('/group/:group_id', mware.hasAccessToGroup);
 
+//user has access to that group middleware
+router.use('/group/:group_id', mware.groupExists);
 
 
 router.get('/group/:id', function(req, res, next) {
@@ -270,15 +275,12 @@ router.post('/group/:group_id/add', function(req, res, next) {
         });
 });
 
-
-
-router.get('/group/bills/:id/pay', function(req, res, next) {
-
-
-});
+// router.get('/group/bills/:id/pay', function(req, res, next) {
+//
+//
+// });
 
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
-
   Promise.join(
       Bills().where({
           group_id: req.params.group_id,
