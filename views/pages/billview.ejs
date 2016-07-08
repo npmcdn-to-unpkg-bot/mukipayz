@@ -25,9 +25,16 @@ can we put the image of the bill on the top of this page if it exists -->
 
                     </div>
                     <%# Bill Image%>
+                        <% if(numUsers[0].image_url){ %>
+
                         <div class="carousel-cell img container">
                             <img height="300" src="<%= numUsers[0].image_url %>" alt="<%= numUsers[0].title %>" />
                         </div>
+
+                        <% }else { %>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png" alt="no image available">
+                            <h1>There is no picture available for this bill!</h1>
+                          <% } %>
 
 
                         <%# Pay Bill%>
