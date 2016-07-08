@@ -25,9 +25,17 @@ can we put the image of the bill on the top of this page if it exists -->
 
                     </div>
                     <%# Bill Image%>
+
+
+
                         <div class="carousel-cell img container">
-                            <img height="300" src="<%= numUsers[0].image_url %>" alt="<%= numUsers[0].title %>" />
+                            <% if (numUsers[0].image_url) { %>
+                              <img height="300" src="<%= numUsers[0].image_url %>" alt="<%= numUsers[0].title %>" />
+                            <% } else { %>
+                              <img height="300" src="/assets/placeholder.png" alt="<%= numUsers[0].title %>" />
+                            <%}%>
                         </div>
+
 
 
                         <%# Pay Bill%>
@@ -53,7 +61,7 @@ can we put the image of the bill on the top of this page if it exists -->
                                 </div>
                                 <div>
                                     <h3>Mark as Paid</h3>
-                                    <form data-toggle="validator" role="form" method="" action="ROUTE_TO_UPDATE DATABASE">
+                                    <form data-toggle="validator" role="form" method="post" action="/home/group/<%= group_id %>/bills/<%= bill_id %>">
                                         <div class="form-group">
                                             <label for="manPayment" class="control-label">Amount Paid: </label>
                                             <input type="number" step="0.01" class="form-control" id="manPayment" name="manPayment" placeholder="$ How much to pay? 5, 9.29, or 20 dollars?" required>

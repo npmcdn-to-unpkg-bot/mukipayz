@@ -43,36 +43,36 @@ router.get('/', function(req, res, next) {
         });
     });
 });
-router.get('/userUpdate', function(req, res, next){
-  knex('users').where('id', req.session.user.user_id)
-  .then(function(data) {
-    //console.log(data)
-      res.render('pages/userUpdate', {
-          data: data[0]
-      });
-  }).catch(next);
+router.get('/userUpdate', function(req, res, next) {
+    knex('users').where('id', req.session.user.user_id)
+        .then(function(data) {
+            //console.log(data)
+            res.render('pages/userUpdate', {
+                data: data[0]
+            });
+        }).catch(next);
 });
 router.put('/userUpdate', function(req, res) {
     promise_result(req.body.password).then(function(result) {
-                knex('users')
-                    .where('id', req.session.user.user_id)
+        knex('users')
+            .where('id', req.session.user.user_id)
 
-                    .update({
-                      'first_name': req.body.first_name,
-                      'last_name' : req.body.last_name,
-                      'email' : req.body.email,
-                      password: result
-                    })
-                    .then(function(result) {
-                        // var timefrom=moment(posts.time).fromNow();
-                        // console.log(timefrom);
-                        res.redirect('/home');
-                    })
-                    .catch(function(err) {
-                        next(err);
-                    });
+        .update({
+                'first_name': req.body.first_name,
+                'last_name': req.body.last_name,
+                'email': req.body.email,
+                password: result
+            })
+            .then(function(result) {
+                // var timefrom=moment(posts.time).fromNow();
+                // console.log(timefrom);
+                res.redirect('/home');
+            })
+            .catch(function(err) {
+                next(err);
             });
-          });
+    });
+});
 
 router.get('/group/new', function(req, res, next) {
     knex('groups').then(function(data) {
@@ -166,7 +166,6 @@ router.post('/group/:group_id/bills/new', function(req, res, next) {
                 cloud: data.cloudData,
                 upload: data.uploadData
             }).then(function(db_data) {
-                // console.log("data.uploadData: ", data.uploadData);
                 uploader.removeFromDir(data.uploadData).then(function(success){
                     //nothing
                 });
@@ -194,7 +193,7 @@ router.get('/group/:group_id/add', function(req, res, next) {
 
 
 router.post('/group/:group_id/add', function(req, res, next) {
-console.log(req.body.invite_email);
+    console.log(req.body.invite_email);
 
     console.log(req.params.group_id);
     knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
@@ -211,13 +210,13 @@ console.log(req.body.invite_email);
                     })
                     //  })
                     .then(function(data) {
-                      var group = {
-                          id: req.params.group_id
-                      };
-                      //console.log(group);
-                      res.render('pages/addUserGroup', {
-                          group: group
-                      });
+                        var group = {
+                            id: req.params.group_id
+                        };
+                        //console.log(group);
+                        res.render('pages/addUserGroup', {
+                            group: group
+                        });
 
                     });
             } else {
@@ -243,32 +242,32 @@ console.log(req.body.invite_email);
                                 //call email
                                 email(req.body.invite_email, password, function(err, body) {
 
-                                        if (err) {
-                                            res.render('email/error', {
-                                                error: err
-                                            });
-                                            console.log("got an error: ", err);
-                                        }
-                                        // //Else we can greet    and leave
-                                        else {
-                                          var group = {
-                                              id: req.params.group_id
-                                          };
-                                          //console.log(group);
-                                          res.render('pages/addUserGroup', {
-                                              group: group
-                                          });
-                                        }
+                                    if (err) {
+                                        res.render('email/error', {
+                                            error: err
+                                        });
+                                        console.log("got an error: ", err);
+                                    }
+                                    // //Else we can greet    and leave
+                                    else {
+                                        var group = {
+                                            id: req.params.group_id
+                                        };
+                                        //console.log(group);
+                                        res.render('pages/addUserGroup', {
+                                            group: group
+                                        });
+                                    }
                                 });
 
                             });
 
                     });
-            // });
-    }
-}).catch(function(err) {
-console.error("ERROR: ", err);
-});
+                // });
+            }
+        }).catch(function(err) {
+            console.error("ERROR: ", err);
+        });
 });
 
 
@@ -277,63 +276,116 @@ router.get('/group/bills/:id/pay', function(req, res, next) {
 
 
 });
+
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
-    Promise.join(
-      Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
-        db_model.numberOfMembersPerGroup(req.params.group_id)
-    ).then(function(data) {
-        console.log("data: ", data);
+
+  Promise.join(
+      Bills().where({
+          group_id: req.params.group_id,
+          id: req.params.bill_id
+      }),
+      db_model.numberOfMembersPerGroup(req.params.group_id),
+      knex('payments').where({
+          user_id: req.session.user.user_id,
+          bill_id: req.params.bill_id
+      }).sum('amount')
+  ).then(function(data) {
+
+      var count = Number(data[1][0].count);
+      var totalAmount = Number(data[0][0].amount);
+      var sum = Number(data[2][0].sum);
+      var owed= Number(((totalAmount/count)-sum).toFixed(2));
+      if(Number(((totalAmount/count)-sum).toFixed(2)) <= 0){
+        owed=0;
+        // knex("bills").insert({paid: true}).then(function(data){
+        //   res.end();
+        // });
+      }
       var obj = {
         bill : data[1],
         numUsers: data[0],
         group_id: req.params.group_id,
         bill_id: req.params.bill_id,
-        totalPerUser: Number((Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2))
+        totalPerUser: owed
 
       };
-        // res.json(obj);
-       res.render('pages/billview', obj);
-
-   }).catch(function(err) {
-       console.error(err);
-   });
-
+      res.render('pages/billview', obj);
+});
 });
 
 router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
-  knex('payments').insert({
-    'amount' : Number(req.body.manPayment),
-    'user_id' : req.session.user.user_id,
-    'bill_id': Number(req.params.bill_id)
-  }).then(function(data){
-    Promise.join(
-      Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
-        db_model.numberOfMembersPerGroup(req.params.group_id)
-    ).then(function(data, req) {
-      console.log(data);
-      console.log(req.session.user.user_id);
-      var amount=0;
-    for(var i=0; i<data.length; i++){
-      if(req.session.user.user_id === data[i][0].user_id){
-        amount++;
-      }
-    }
-      var paymentAmount=amount;
-console.log(paymentAmount);
-      var obj = {
-        bill : data[1],
-        numUsers: data[0],
-        group_id: req.params.group_id,
-        bill_id: req.params.bill_id,
-        totalPerUser: Number((Number(data[0][0].amount)/ Number(data[1][0].count)).toFixed(2))-paymentAmount
+    knex('payments').insert({
+        'amount': Number(req.body.manPayment),
+        'user_id': req.session.user.user_id,
+        'bill_id': Number(req.params.bill_id)
+    }).then(function(data) {
+        Promise.join(
+            Bills().where({
+                group_id: req.params.group_id,
+                id: req.params.bill_id
+            }),
+            db_model.numberOfMembersPerGroup(req.params.group_id),
+            knex('payments').where({
+                user_id: req.session.user.user_id,
+                bill_id: req.params.bill_id
+            }).sum('amount')
+        ).then(function(data) {
 
-      };
+            var count = Number(data[1][0].count);
+            var totalAmount = Number(data[0][0].amount);
+            var sum = Number(data[2][0].sum);
+            var owed= Number(((totalAmount/count)-sum).toFixed(2));
+            if(Number(((totalAmount/count)-sum).toFixed(2)) <= 0){
+              owed=0;
+              // knex("bills").insert({paid: true}).then(function(data){
+              //   res.end();
+              // });
+            }
 
-        // res.json(obj);
-       res.render('pages/billview', obj);
-  });
-});
-});
+
+            var obj = {
+              bill : data[1],
+              numUsers: data[0],
+              group_id: req.params.group_id,
+              bill_id: req.params.bill_id,
+              totalPerUser: owed
+
+            };
+               //res.json(obj);
+             res.render('pages/billview', obj);
+
+        });
+    });
+    });
+
+
+
+// array = [bill @ id, count: 1, [payments]]
+
+// var amount = 0;
+// for (var i = 0; i < data.length; i++) {
+//     console.log(data[i][0]);
+//     if (req.session.user.user_id === data[i][0].user_id) {
+//         amount++;
+//     }
+// }
+// var paymentAmount = amount;
+// console.log(paymentAmount);
+// var obj = {
+//     bill: data[1],
+//     numUsers: data[0],
+//     group_id: req.params.group_id,
+//     bill_id: req.params.bill_id,
+//     totalPerUser: Number((Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2)) - paymentAmount
+//
+// };
+//
+// res.json(obj);
+// res.render('pages/billview', obj);
+// });
+// });
+// });
+// });
 
 
 //create new message
@@ -342,7 +394,9 @@ router.get('/group/:id/messages/new', function(req, res, next) {
         group: {
             id: req.params.id
         }
+
     });
+
 });
 
 

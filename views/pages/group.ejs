@@ -29,7 +29,15 @@ should be link for users to invite other's via email -->
                                     <a href="/home/group/<%= group.id %>/bills/<%= bill.id %>">
                                         <h1 class="col-xs-12"><%= bill.title %></h1>
                                         <h3 class="col-xs-6">$<%= bill.amount %></h3>
-                                        <img class="col-xs-4" src="<%= bill.image_url%>" alt="img" height="70" width="70"/>
+
+
+                                        <% if (bill.image_url) { %>
+                                          <img class="col-xs-4" src="<%= bill.image_url%>" alt="img" height="70" width="70"/>
+                                        <% } else { %>
+                                          <img class="col-xs-4"  src="/assets/placeholder.png" alt="img" height="70" width="70" />
+                                        <%}%>
+
+
                                     </a>
                                 </li>
                             <% }); %>
