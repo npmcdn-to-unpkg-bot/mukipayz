@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <% include ../partials/head %>
-</head>
+    <head>
+        <% include ../partials/head %>
+    </head>
 
-<body class="container">
+    <body class="container">
 
-    <header>
-        <% include ../partials/header %>
-    </header>
+        <header>
+            <% include ../partials/header %>
+        </header>
 
-    <div class="row">
+        <div class="row">
 
-        <% if (error) { %>
-            <div class="alert alert-danger" role="alert">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <span class="sr-only">Error:</span>
-                <%= error.message %>
-                <p><a href="/auth/signup"><%= error.signup %></a></p>
-            </div>
-        <% } %>
+            <% if (error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    <%= error.message %>
+                    <p>
+                        <a href="/auth/signup"><%= error.signup %></a>
+                    </p>
+                </div>
+            <% } %>
 
-        <div class="col-md-12">
+            <div class="col-md-12">
 
-        <form action='/auth/login' method='post'>
-              <fieldset class="form-group">
-                  <label for="email" class="control-label">Email</label>
-                  <input type="email" name="email" class="form-control" id="email" placeholder="Email" data-error="Bruh, that email address is invalid" required>
-                  <div class="help-block with-errors"></div>
-                </fieldset>
-
-
+                <form action='/auth/login' method='post'>
+                    <fieldset class="form-group">
+                        <label for="email" class="control-label">Email</label>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Email" data-error="Bruh, that email address is invalid" required>
+                        <div class="help-block with-errors"></div>
+                    </fieldset>
 
                     <fieldset class="form-group">
                         <label for="password ">Password</label>
@@ -51,4 +51,4 @@
 
     <%- include('../partials/footer') %>
 
-<%- include('../partials/ejsEnd') %>
+    <%- include('../partials/ejsEnd') %>

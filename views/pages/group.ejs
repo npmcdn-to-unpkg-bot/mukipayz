@@ -21,7 +21,9 @@ should be link for users to invite other's via email -->
             <div class="main-carousel ">
                 <div class="carousel-cell bills container">
                     <h1 class="header-text cell-title">Bills</h1>
-                    <a href="/home/group/<%= group.id %>/bills/new"><button class="btn btn-primary btn-sm btn-block" name="button">Add Bill</button></a>
+                    <a href="/home/group/<%= group.id %>/bills/new">
+                        <button class="btn btn-primary btn-sm btn-block" name="button">Add Bill</button>
+                    </a>
                     <% if (bills.length > 0) { %>
                         <ul class="cell-list-block">
                             <% bills.forEach(function(bill) { %>
@@ -30,13 +32,11 @@ should be link for users to invite other's via email -->
                                         <h1 class="col-xs-12"><%= bill.title %></h1>
                                         <h3 class="col-xs-6">$<%= bill.amount %></h3>
 
-
                                         <% if (bill.image_url) { %>
-                                          <img class="col-xs-4" src="<%= bill.image_url%>" alt="img" height="70" width="70"/>
+                                            <img class="col-xs-4" src="<%= bill.image_url%>" alt="img" height="70" width="70"/>
                                         <% } else { %>
-                                          <img class="col-xs-4"  src="/assets/placeholder.png" alt="img" height="70" width="70" />
+                                            <img class="col-xs-4" src="/assets/placeholder.png" alt="img" height="70" width="70"/>
                                         <%}%>
-
 
                                     </a>
                                 </li>
@@ -47,21 +47,24 @@ should be link for users to invite other's via email -->
                 </div>
                 <div class="carousel-cell messages container">
                     <h1 class="header-text cell-title">Messages</h1>
-                    <a href="/home/group/<%= group.id %>/messages/new"><button class="btn btn-primary btn-sm btn-block" name="button">New Message</button></a>
+                    <a href="/home/group/<%= group.id %>/messages/new">
+                        <button class="btn btn-primary btn-sm btn-block" name="button">New Message</button>
+                    </a>
                     <% if (messages.length > 0) { %>
                         <ul class="messages-box cell-list-block" id="messages-box">
                             <% messages.forEach(function(message) { %>
                                 <% if (message.fromMe) { %>
                                     <li class="message col-md-12 blue">
-                                <% } else { %>
+                                    <% } else { %>
                                     <li class="message col-md-12 green">
-                                <% } %>
+                                    <% } %>
                                     <div class="col-xs-12 message-content">
                                         <p><%= message.content %></p>
                                     </div>
                                     <div class="col-xs-12">
                                         <div class="col-xs-6 sub-content">
-                                            <%= message.first_name %> <%= message.last_name %>
+                                            <%= message.first_name %>
+                                            <%= message.last_name %>
                                         </div>
                                         <div class="col-xs-6 sub-content">
                                             <%= message.created_at %>
@@ -75,14 +78,18 @@ should be link for users to invite other's via email -->
                 </div>
                 <div class="carousel-cell friends container">
                     <h1 class="header-text cell-title">Members</h1>
-                      <a href="/home/group/<%= group.id %>/add"><button class="btn btn-primary btn-sm btn-block" name="button">Add user</button></a>
+                    <a href="/home/group/<%= group.id %>/add">
+                        <button class="btn btn-primary btn-sm btn-block" name="button">Add user</button>
+                    </a>
                     <% if (friends.length > 0) { %>
                         <ul class="cell-list-block">
                             <% friends.forEach(function(friend) { %>
                                 <% if (friend.first_name.toLowerCase() === 'anonymous') { %>
-                                    <li class="friend"><%= friend.email %> pending registration</li>
+                                    <li class="friend"><%= friend.email %>
+                                        pending registration</li>
                                 <% } else { %>
-                                    <li class="friend"><%= friend.first_name %> <%= friend.last_name %></li>
+                                    <li class="friend"><%= friend.first_name %>
+                                        <%= friend.last_name %></li>
                                 <% } %>
                             <% }); %>
                         </ul>
@@ -90,15 +97,14 @@ should be link for users to invite other's via email -->
                 </div>
             </div>
 
+            <form method="POST" action="/home/group/<%= group.id %>?_method=delete">
+                <button class="btn btn-danger btn-sm btn-block" name="button" type="submit">Leave Group</button>
+            </form>
 
-        <form method="POST" action="/home/group/<%= group.id %>?_method=delete">
-            <button class="btn btn-danger btn-sm btn-block" name="button" type="submit">Leave Group</button>
-        </form>
+        </main>
 
-    </main>
+        <%- include('../partials/flickity/scripts') %>
 
-    <%- include('../partials/flickity/scripts') %>
+        <%- include('../partials/socket/listener') %>
 
-    <%- include('../partials/socket/listener') %>
-
-<%- include('../partials/ejsEnd') %>
+        <%- include('../partials/ejsEnd') %>

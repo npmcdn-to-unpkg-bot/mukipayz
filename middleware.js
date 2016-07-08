@@ -9,7 +9,7 @@ var middleware = {
             //if user is not logged in
             return res.redirect('/auth/login');
         }
-        return next()
+        return next();
     },
     hasAccessToGroup: function(req, res, next) {
         knex('users_in_group').where({
@@ -25,7 +25,9 @@ var middleware = {
     },
     groupExists: function(req, res, next) {
         //check if that group @ id exists, if not, route to /home
-        knex('groups').where({id: req.params.group_id}).then(function(group) {
+        knex('groups').where({
+            id: req.params.group_id
+        }).then(function(group) {
             if (!group[0]) {
                 //group doesn't exist
                 return res.redirect('/home');
@@ -35,7 +37,9 @@ var middleware = {
         });
     },
     billExists: function(req, res, next) {
-        knex('bills').where({id: req.params.bill_id}).then(function(bill) {
+        knex('bills').where({
+            id: req.params.bill_id
+        }).then(function(bill) {
             if (!bill[0]) {
                 //group doesn't exist
                 var path = req.originalUrl;

@@ -1,55 +1,75 @@
 <!-- views/pages/index.ejs -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <% include ../partials/head %>
-</head>
+    <head>
+        <% include ../partials/head %>
+    </head>
 
-<body class="container">
+    <body class="container">
 
-    <header>
-        <% include ../partials/header %>
-    </header>
+        <header>
+            <% include ../partials/header %>
+        </header>
 
-    <main>
-        <section>
-            <div class="row">
-                <div class="jumbotron">
-                    <h3 class="header-text">What Can Mukipayz Do For You</h3>
-                    <p class="body-text">Are you tired of asking the waitress to split the bill three ways, or paying the electric bill month after month? Mukipayz makes it easy and convient to split expenses amongst groups of any size. Want to make living with roommates
-                        easier? Use mukipayz to create a group, consisting of you an your roomies. Every time a bill comes, snap a photo of the bill and post it to your group. Your roommates can then pay their share of the bill to you directly on
-                        Mukipayz using Dwolla. Are you taking an epic road trip this summer? Use Mukipayz to make cost sharing amongst your peers easier than ever.</p>
-                    <div class="container">
-                        <ul>
-                            <div class="col-md-6">
-                                <li><p class="body-text">Upload photos of bills and recipets</p></li>
-                                <li><p class="body-text">You create the groups</p></li>
-                            </div>
-                            <div class="col-md-6">
-                                <li><p class="body-text">Anyone can use Mukipayz</p></li>
-                                <li><p class="body-text">'Mukipayz is the App that Keeps Track'</p></li>
-                            </div>
-                        </ul>
+        <main>
+            <section>
+                <div class="row">
+                    <div class="jumbotron">
+                        <h3 class="header-text">What Can Mukipayz Do For You</h3>
+                        <p class="body-text">Are you tired of asking the waitress to split the bill three ways, or paying the electric bill month after month? Mukipayz makes it easy and convient to split expenses amongst groups of any size. Want to make living with
+                            roommates easier? Use mukipayz to create a group, consisting of you an your roomies. Every time a bill comes, snap a photo of the bill and post it to your group. Your roommates can then pay their share of the bill to you directly on Mukipayz using
+                            Dwolla. Are you taking an epic road trip this summer? Use Mukipayz to make cost sharing amongst your peers easier than ever.</p>
+                        <div class="container">
+                            <ul>
+                                <div class="col-md-6">
+                                    <li>
+                                        <p class="body-text">Upload photos of bills and recipets</p>
+                                    </li>
+                                    <li>
+                                        <p class="body-text">You create the groups</p>
+                                    </li>
+                                </div>
+                                <div class="col-md-6">
+                                    <li>
+                                        <p class="body-text">Anyone can use Mukipayz</p>
+                                    </li>
+                                    <li>
+                                        <p class="body-text">'Mukipayz is the App that Keeps Track'</p>
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="jumbotron">
+                        <div class="security">
+                            <h3 class="header-text">Feel Secure, We Do, We Use Dwolla</h3>
+                            <h5 class="header-text">A Word From Dwolla</h5>
+                            <ul>
+                                <li>
+                                    <p class="body-text">We built our platform with security in mind</p>
+                                </li>
+                                <li>
+                                    <p class="body-text">Our platform puts you in control of your information.</p>
+                                </li>
+                                <li>
+                                    <p class="body-text">Transactions do not pass sensitive financial information to recipients, removing significant information security risk.</p>
+                                </li>
+                                <li>
+                                    <p class="body-text">We utilize tokenization that replaces high-value data in a financial transaction with a time-based, tokenized message.</p>
+                                </li>
+                                <li>
+                                    <p class="body-text">Our platform and systems are monitored and undergo routine penetration and intrusion testing to protect our community.</p>
+                                </li>
+                                <li>
+                                    <p class="body-text">We offer two-factor authentication, an optional feature that helps safeguard your account at login."</p>
+                                </li>
+                            </ul>
+
+                        </div>
                     </div>
 
                 </div>
-                <div class="jumbotron">
-                    <div class="security">
-                        <h3 class="header-text">Feel Secure, We Do, We Use Dwolla</h3>
-                        <h5 class="header-text">A Word From Dwolla</h5>
-                        <ul>
-                            <li><p class="body-text">We built our platform with security in mind</p></li>
-                            <li><p class="body-text">"Our platform puts you in control of your information.</p></li>
-                            <li><p class="body-text">Transactions do not pass sensitive financial information to recipients, removing significant information security risk.</p></li>
-                            <li><p class="body-text">We utilize tokenization that replaces high-value data in a financial transaction with a time-based, tokenized message.</p></li>
-                            <li><p class="body-text">Our platform and systems are monitored and undergo routine penetration and intrusion testing to protect our community.</p></li>
-                            <li><p class="body-text">We offer two-factor authentication, an optional feature that helps safeguard your account at login."</p></li>
-                        </ul>
-
-                    </div>
-                </div>
-
-            </div>
 
             </div>
         </section>
@@ -57,11 +77,9 @@
             <section>
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="/auth/signup" class="btn btn-success btn-block btn-lg" >Sign up now!</a>
+                        <a href="/auth/signup" class="btn btn-success btn-block btn-lg">Sign up now!</a>
                     </div>
-                    <div class="col-md-12">
-
-                    </div>
+                    <div class="col-md-12"></div>
                     <div class="col-md-12">
                         <a href="/auth/login" class="btn btn-info btn-block btn-lg">Already a User? Click Here to Login</a>
 
@@ -70,9 +88,7 @@
             </section>
         </section>
 
-
-
     </main>
 
     <%- include('../partials/footer') %>
-<%- include('../partials/ejsEnd') %>
+    <%- include('../partials/ejsEnd') %>

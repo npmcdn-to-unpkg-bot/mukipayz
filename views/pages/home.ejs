@@ -1,41 +1,44 @@
 <!-- this is the home page the user is taken once they successfully login -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <% include ../partials/head %>
-</head>
+    <head>
+        <% include ../partials/head %>
+    </head>
 
-<body class="container">
-    <header>
-        <% include ../partials/navbar %>
-    </header>
+    <body class="container">
+        <header>
+            <% include ../partials/navbar %>
+        </header>
 
-    <h2>Welcome <%= user.first_name %>!</h2>
+        <h2>Welcome
+            <%= user.first_name %>!</h2>
 
-    <div class="main-carousel">
-        <div class="carousel-cell groups container">
-            <h1 class="header-text cell-title">Groups</h1>
-            <% groups.forEach(function(group) { %>
-              <% console.log(group); %>
-                <ul>
-                    <li>
-                        <h1><a href="/home/group/<%= group.group_id %>"><%= group.group_name %></h1></a>
-                    </li>
-                </ul>
-            <% }); %>
-        </div>
-        <div class="carousel-cell options container">
-            <h1 class="header-text cell-title">Options</h1>
-            <div class="col-md-12">
-                <a href="/home/group/new" class="btn btn-primary btn-block">I Want to Start a New Group</a>
+        <div class="main-carousel">
+            <div class="carousel-cell groups container">
+                <h1 class="header-text cell-title">Groups</h1>
+                <% groups.forEach(function(group) { %>
+                    <% console.log(group); %>
+                    <ul>
+                        <li>
+                            <h1>
+                                <a href="/home/group/<%= group.group_id %>"><%= group.group_name %></h1>
+                            </a>
+                        </li>
+                    </ul>
+                <% }); %>
+            </div>
+            <div class="carousel-cell options container">
+                <h1 class="header-text cell-title">Options</h1>
+                <div class="col-md-12">
+                    <a href="/home/group/new" class="btn btn-primary btn-block">I Want to Start a New Group</a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <footer>
-        <% include ../partials/footer %>
-    </footer>
+        <footer>
+            <% include ../partials/footer %>
+        </footer>
 
-    <%- include('../partials/flickity/scripts') %>
+        <%- include('../partials/flickity/scripts') %>
 
-<%- include('../partials/ejsEnd') %>
+        <%- include('../partials/ejsEnd') %>
