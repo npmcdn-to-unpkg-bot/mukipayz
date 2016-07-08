@@ -210,7 +210,14 @@ console.log(req.body.invite_email);
                     })
                     //  })
                     .then(function(data) {
-                        res.redirect('/home');
+                      var group = {
+                          id: req.params.group_id
+                      };
+                      //console.log(group);
+                      res.render('pages/addUserGroup', {
+                          group: group
+                      });
+                    
                     });
             } else {
                 var password = randomstring.generate(7);
@@ -274,12 +281,16 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
     Promise.join(
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
+      // ).then(function(data){
+      //   usersTotal
+      // })
 
     ).then(function(data) {
       var obj = {
         bill : data[1],
         numUsers: data[0],
         group_id: req.params.group_id,
+        bill_id: req.params.bill_id,
         totalPerUser: Number((Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2))
 
       };
@@ -292,32 +303,16 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
 
 });
 
-router.put('/group/:group_id/bills/:bill_id', function(req, res, next) {
- knex('payments').where('bill_id', req.params.bill_id);
- console.log(req.session.user.user_id);
- console.log('payment.user_id');
- if(req.session.user.user_id === 'payments.user_id'){
- knex('payments').update({
-   'amount':'payments.amount'+ Number(req.body.manPayment)
- })
- .then(function(data){
-   console.log(data);
-   res.send(data);
- })
- .catch(function(err){
-   next(err);
- });
-}
-else{
+router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
   knex('payments').insert({
     'amount' : Number(req.body.manPayment),
     'user_id' : req.session.user.user_id,
     'bill_id': Number(req.params.bill_id)
   }).then(function(data){
-    console.log(data);
+    console.log("INFO " + data);
   });
-}
 });
+
 //create new message
 router.get('/group/:id/messages/new', function(req, res, next) {
     res.render('pages/newMessage', {
@@ -328,7 +323,7 @@ router.get('/group/:id/messages/new', function(req, res, next) {
 
 
         });
-        
+
 
 });
 

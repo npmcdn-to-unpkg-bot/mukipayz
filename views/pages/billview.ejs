@@ -39,25 +39,25 @@ can we put the image of the bill on the top of this page if it exists -->
                   </h3>
                                 <div>
                                   <h3>Pay With Dwolla</h3>
-                                  <form data-toggle="validator" role="form" method="" action="ROUTE_TO_UPDATE DATABASE">
+                                  <form data-toggle="validator" role="form" method="post" action="/home/group/<%= group_id %>/bills/<%= bill_id %>">
                                       <div class="form-group">
                                           <label for="DwollaPayment" class="control-label">Amount Paid: </label>
                                           <input type="number" class="form-control" id="DwollaPayment" name="DwollaPayment" placeholder="$ How much to pay? 25" required>
                                       </div>
 
+                                      <button class="btn btn-primary btn-block btn-lg" type="submit">Click Here To Pay With Dwolla</button>
 
-                                    <a class="center-block btn btn-primary" href="/auth/dwolla" role="button" type="submit">Click Here To Pay With Dwolla</a>
                                     </form>
                                 </div>
                                 <div>
                                     <h3>Mark as Paid</h3>
 
-                                    <form data-toggle="validator" role="form" method="post" action="/home/billview?_method=put">
+                                    <form data-toggle="validator" role="form" method="post" action="/home/group/<%= group_id %>/bills/<%= bill_id %>">
                                         <div class="form-group">
                                             <label for="manPayment" class="control-label">Amount Paid: </label>
                                             <input type="number" class="form-control" id="manPayment" name="manPayment" placeholder="$ How much to pay? 25" required>
                                         </div>
-                                          <button class="btn btn-primary btn-block btn-lg" type="submit">Mark As Paid</button>
+                                          <button class="btn btn-primary btn-block btn-lg" type="submit">Mark Other Payments</button>
 
                                     </form>
                                 </div>
