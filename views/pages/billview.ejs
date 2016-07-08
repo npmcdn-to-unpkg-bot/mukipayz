@@ -25,9 +25,17 @@ can we put the image of the bill on the top of this page if it exists -->
 
                     </div>
                     <%# Bill Image%>
+
+
+
                         <div class="carousel-cell img container">
-                            <img height="300" src="<%= numUsers[0].image_url %>" alt="<%= numUsers[0].title %>" />
+                            <% if (numUsers[0].image_url) { %>
+                              <img height="300" src="<%= numUsers[0].image_url %>" alt="<%= numUsers[0].title %>" />
+                            <% } else { %>
+                              <img height="300" src="/assets/placeholder.png" alt="<%= numUsers[0].title %>" />
+                            <%}%>
                         </div>
+
 
 
                         <%# Pay Bill%>
