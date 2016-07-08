@@ -276,32 +276,31 @@ router.get('/group/bills/:id/pay', function(req, res, next) {
 
 
 });
+router.get('/group/bills/:id/pay', function(req, res, next) {
+
+
+});
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
 
     Promise.join(
-        Bills().where({
-            group_id: req.params.group_id,
-            id: req.params.bill_id
-        }),
+      Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
 
     ).then(function(data) {
-        var obj = {
-            bill: data[1],
-            numUsers: data[0],
-            user_id: req.session.user_id,
-            group_id: req.params.group_id,
-            bill_id: req.params.bill_id,
-            totalPerUser: Number((Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2))
-        };
-        // for (var keys in obj[3]){
-        //   console.log(keys.amount);
-        // }
+      var obj = {
+        bill : data[1],
+        numUsers: data[0],
+        group_id: req.params.group_id,
+        bill_id: req.params.bill_id,
+        totalPerUser: Number((Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2))
 
+      };
+        // res.json(obj);
+       res.render('pages/billview', obj);
 
-    }).catch(function(err) {
-        console.error(err);
-    });
+   }).catch(function(err) {
+       console.error(err);
+   });
 
 });
 
@@ -320,17 +319,36 @@ router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
             knex('payments').where({
                 user_id: req.session.user.user_id,
                 bill_id: req.params.bill_id
-            })
+            }).sum('amount')
         ).then(function(data) {
-            console.log(data);
-            res.json(data);
+
+            var count = Number(data[1][0].count);
+            var totalAmount = Number(data[0][0].amount);
+            var sum = Number(data[2][0].sum);
+            var owed= Number(((totalAmount/count)-sum).toFixed(2));
+            if(Number(((totalAmount/count)-sum).toFixed(2)) <= 0){
+              owed=0;
+            }
+
+
+            var obj = {
+              bill : data[1],
+              numUsers: data[0],
+              group_id: req.params.group_id,
+              bill_id: req.params.bill_id,
+              totalPerUser: owed
+
+            };
+               //res.json(obj);
+             res.render('pages/billview', obj);
+
         });
     });
 });
 
-//
+
 // array = [bill @ id, count: 1, [payments]]
-//
+
 // var amount = 0;
 // for (var i = 0; i < data.length; i++) {
 //     console.log(data[i][0]);
@@ -351,6 +369,7 @@ router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
 //
 // res.json(obj);
 // res.render('pages/billview', obj);
+// });
 // });
 // });
 // });
