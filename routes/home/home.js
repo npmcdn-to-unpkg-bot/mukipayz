@@ -159,6 +159,7 @@ router.post('/group/:group_id/bills/new', function(req, res, next) {
     uploader.upload(req).then(function(uploaded) {
         data.uploadData = uploaded;
         data.uploadData.group_id = req.params.group_id;
+        data.uploadData.bill_owner = req.session.user.user_id;
         uploader.toCloud(data.uploadData.image.file).then(function(result) {
             data.cloudData = result;
             uploader.toDatabase({
@@ -280,8 +281,8 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
     Promise.join(
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
-
     ).then(function(data) {
+        console.log("data: ", data);
       var obj = {
         bill : data[1],
         numUsers: data[0],

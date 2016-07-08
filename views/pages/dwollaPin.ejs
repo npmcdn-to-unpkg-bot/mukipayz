@@ -7,12 +7,27 @@
 
     <body class="container">
 
-        <form action='/auth/login' method='post'>
+        <div class="jumbotron">
+            <h1>Payment Confirmation</h1>
+            <h3>Please confirm that you will be paying: $<%=payment.amount%></h3>
+            <h4>to <%=payment.owner.first_name%> <%=payment.owner.last_name%></h4>
+        </div>
+
+        <form action='/dwolla/payment/send' method='post'>
             <fieldset class="form-group">
-                <label for="pin" class="control-label">Please enter your 4 digit Dwolla Pin</label>
-                <input type="number" min="1000" max="9999" name="pin" class="form-control" id="pin" placeholder="4 Digit Dwolla Pin" data-error="Invalid Pin" required>
+                <label for="pin" class="control-label">Please enter your 4 digit Dwolla Pin to finalize the payment</label>
+                <input type="number" min="1000" max="9999" name="pin" class="form-control" placeholder="4 Digit Dwolla Pin" data-error="Invalid Pin" required>
                 <div class="help-block with-errors"></div>
             </fieldset>
+
+            <input type="hidden" value="<%=payment.amount%>" name="amount" />
+
+            <input type="hidden" value="<%=payment.dwolla.sender.dwolla_id%>" name="sender_id" />
+            <input type="hidden" value="<%=payment.dwolla.sender.dwolla_account_id%>" name="sender_account_id" />
+
+            <input type="hidden" value="<%=payment.dwolla.owner.dwolla_id%>" name="owner_id" />
+            <input type="hidden" value="<%=payment.dwolla.owner.dwolla_account_id%>" name="owner_account_id" />
+
             <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
         </form>
         <a href="https://www.dwolla.com/login" target="_blank" class="btn btn-info btn-lg btn-block" type="button">I forgot my Dwolla Pin</a>
