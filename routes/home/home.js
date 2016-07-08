@@ -217,7 +217,7 @@ console.log(req.body.invite_email);
                       res.render('pages/addUserGroup', {
                           group: group
                       });
-                    
+
                     });
             } else {
                 var password = randomstring.generate(7);
@@ -281,9 +281,6 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
     Promise.join(
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
-      // ).then(function(data){
-      //   usersTotal
-      // })
 
     ).then(function(data) {
       var obj = {
@@ -309,9 +306,35 @@ router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
     'user_id' : req.session.user.user_id,
     'bill_id': Number(req.params.bill_id)
   }).then(function(data){
-    console.log("INFO " + data);
+    Promise.join(
+      Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
+        db_model.numberOfMembersPerGroup(req.params.group_id)
+    ).then(function(data, req) {
+      console.log(data);
+      console.log(req.session.user.user_id);
+      var amount=0;
+    for(var i=0; i<data.length; i++){
+      if(req.session.user.user_id === data[i][0].user_id){
+        amount++;
+      }
+    }
+      var paymentAmount=amount;
+console.log(paymentAmount);
+      var obj = {
+        bill : data[1],
+        numUsers: data[0],
+        group_id: req.params.group_id,
+        bill_id: req.params.bill_id,
+        totalPerUser: Number((Number(data[0][0].amount)/ Number(data[1][0].count)).toFixed(2))-paymentAmount
+
+      };
+
+        // res.json(obj);
+       res.render('pages/billview', obj);
   });
 });
+});
+
 
 //create new message
 router.get('/group/:id/messages/new', function(req, res, next) {
