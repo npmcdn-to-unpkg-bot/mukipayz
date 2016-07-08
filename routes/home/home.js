@@ -210,7 +210,14 @@ console.log(req.body.invite_email);
                     })
                     //  })
                     .then(function(data) {
-                        res.render('/home');
+                      var group = {
+                          id: req.params.group_id
+                      };
+                      //console.log(group);
+                      res.render('pages/addUserGroup', {
+                          group: group
+                      });
+                    
                     });
             } else {
                 var password = randomstring.generate(7);
