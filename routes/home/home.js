@@ -400,19 +400,32 @@ router.get('/group/:id/messages/new', function(req, res, next) {
         group: {
             id: req.params.id
         }
-
     });
-
 });
 
-
-router.get('/group/:id/messages', function(req, res, next) {
-    knex('messages_in_group').then(function(data) {
-        res.send(data);
-        // res.render('pages/group', {
-        //     data: data[0]
-        // });
-    }).catch(next);
+router.post('/group/:id/messages/new', function(req, res, next) {
+    Messages().insert({
+        content: req.body.message,
+        user_id: req.session.user.user_id,
+        group_id: req.params.id
+    }).returning('*').then(function(data) {
+        var message = data[0];
+        message.created_at = moment(message.created_at).fromNow();
+        // res.redirect('/home/group/'+req.params.id+'/');
+        db_model.getUser(message.user_id).then(function(user) {
+            var user = {
+                first_name: user.first_name,
+                last_name: user.last_name
+            };
+            res.json({
+                status: 'success',
+                message: message,
+                user: user
+            });
+        });
+    }).catch(function(err) {
+        console.error("error saving message");
+    });
 });
 
 
