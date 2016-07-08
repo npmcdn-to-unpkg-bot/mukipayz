@@ -76,9 +76,6 @@ router.get('/signup', function(req, res, next) {
     //by using a required promise.
     router.post('/signup', function(req, res, next) {
 
-        // req.body is undefined for some reason (?)
-        console.log("user signup details", req.body);
-
         promise_result(req.body.password).then(function(result) {
 
             knex('users').insert({
@@ -99,7 +96,6 @@ router.get('/logout', function(req, res) {
     //logout main session user
     req.sessionOptions.maxAge = 0;
     req.session = null;
-    //logout passport-dwolla session too
     res.redirect('/');
 });
 
