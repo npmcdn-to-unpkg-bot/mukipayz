@@ -12,6 +12,7 @@ var promise_result = require('../../promise');
 var randomstring = require("randomstring");
 var email = require('../../emailer');
 var mware = require('../../middleware');
+var moment = require('moment');
 //end variables
 function Bills() {
     //model for bills table
@@ -334,16 +335,16 @@ router.get('/group/:id/messages/new', function(req, res, next) {
 
 
 router.post('/group/:id/messages/new', function(req, res, next) {
-    Messages().insert({
+    knex('messages_in_group').insert({
         content: req.body.message,
         user_id: req.session.user.user_id,
         group_id: req.params.id
     }).returning('*').then(function(data) {
         var message = data[0];
         message.created_at = moment(message.created_at).fromNow();
-        // res.redirect('/home/group/'+req.params.id+'/');
-        db_model.getUser(message.user_id).then(function(user) {
-            var user = {
+        knex('users').where({id:message.user_id}).then(function(user) {
+            user = user[0];
+            user = {
                 first_name: user.first_name,
                 last_name: user.last_name
             };
@@ -352,9 +353,11 @@ router.post('/group/:id/messages/new', function(req, res, next) {
                 message: message,
                 user: user
             });
+        }).catch(function(err) {
+            console.error("error saving message: ",err);
         });
     }).catch(function(err) {
-        console.error("error saving message");
+        console.error("error saving message: ", err);
     });
 });
 

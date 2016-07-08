@@ -100,7 +100,6 @@ router.get('/logout', function(req, res) {
     req.sessionOptions.maxAge = 0;
     req.session = null;
     //logout passport-dwolla session too
-    req.logout();
     res.redirect('/');
 });
 
