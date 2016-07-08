@@ -276,32 +276,41 @@ router.get('/group/bills/:id/pay', function(req, res, next) {
 
 
 });
-router.get('/group/bills/:id/pay', function(req, res, next) {
 
-
-});
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
 
-    Promise.join(
-      Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
-        db_model.numberOfMembersPerGroup(req.params.group_id)
+  Promise.join(
+      Bills().where({
+          group_id: req.params.group_id,
+          id: req.params.bill_id
+      }),
+      db_model.numberOfMembersPerGroup(req.params.group_id),
+      knex('payments').where({
+          user_id: req.session.user.user_id,
+          bill_id: req.params.bill_id
+      }).sum('amount')
+  ).then(function(data) {
 
-    ).then(function(data) {
+      var count = Number(data[1][0].count);
+      var totalAmount = Number(data[0][0].amount);
+      var sum = Number(data[2][0].sum);
+      var owed= Number(((totalAmount/count)-sum).toFixed(2));
+      if(Number(((totalAmount/count)-sum).toFixed(2)) <= 0){
+        owed=0;
+        // knex("bills").insert({paid: true}).then(function(data){
+        //   res.end();
+        // });
+      }
       var obj = {
         bill : data[1],
         numUsers: data[0],
         group_id: req.params.group_id,
         bill_id: req.params.bill_id,
-        totalPerUser: Number((Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2))
+        totalPerUser: owed
 
       };
-        // res.json(obj);
-       res.render('pages/billview', obj);
-
-   }).catch(function(err) {
-       console.error(err);
-   });
-
+      res.render('pages/billview', obj);
+});
 });
 
 router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
@@ -328,6 +337,9 @@ router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
             var owed= Number(((totalAmount/count)-sum).toFixed(2));
             if(Number(((totalAmount/count)-sum).toFixed(2)) <= 0){
               owed=0;
+              // knex("bills").insert({paid: true}).then(function(data){
+              //   res.end();
+              // });
             }
 
 
@@ -344,7 +356,8 @@ router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
 
         });
     });
-});
+    });
+
 
 
 // array = [bill @ id, count: 1, [payments]]
