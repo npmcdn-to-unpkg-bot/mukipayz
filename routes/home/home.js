@@ -281,15 +281,15 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
             totalPerUser: owed
 
         };
-        res.render('pages/billview', obj);
+        return res.render('pages/billview', obj);
     });
 });
 
 router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
     knex('payments').insert({
-        'amount': Number(req.body.manPayment),
-        'user_id': req.session.user.user_id,
-        'bill_id': Number(req.params.bill_id)
+        amount: parseFloat(req.body.manPayment),
+        user_id: req.session.user.user_id,
+        bill_id: Number(req.params.bill_id)
     }).then(function(data) {
         Promise.join(
             Bills().where({
@@ -302,33 +302,26 @@ router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
                 bill_id: req.params.bill_id
             }).sum('amount')
         ).then(function(data) {
-
             var count = Number(data[1][0].count);
             var totalAmount = Number(data[0][0].amount);
             var sum = Number(data[2][0].sum);
             var owed = Number(((totalAmount / count) - sum).toFixed(2));
             if (Number(((totalAmount / count) - sum).toFixed(2)) <= 0) {
                 owed = 0;
-                knex("bills").insert({
+                knex("bills").update({
                     paid: true
-                }).then(function(data) {
-                    res.end();
+                }).where({id: req.params.bill_id}).then(function(data) {
+                    return res.redirect('/home/group/'+req.params.group_id+'/bills/'+req.params.bill_id);
                 });
+            } else {
+                return res.redirect('/home/group/'+req.params.group_id+'/bills/'+req.params.bill_id);
             }
-            var obj = {
-                bill: data[1],
-                numUsers: data[0],
-                group_id: req.params.group_id,
-                bill_id: req.params.bill_id,
-                totalPerUser: owed
-
-            };
-            res.json(obj);
-            res.render('pages/billview', obj);
-            res.redirect('pages/billview');
-
+        }).catch(function(err) {
+            return res.redirect('/home/group/'+req.params.group_id+'/bills/'+req.params.bill_id);
         });
-    });
+    }).catch(function(err) {
+        return res.redirect('/home/group/'+req.params.group_id+'/bills/'+req.params.bill_id);
+    });;
 });
 //create new message
 router.get('/group/:id/messages/new', function(req, res, next) {

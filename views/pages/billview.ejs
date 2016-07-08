@@ -48,12 +48,13 @@ can we put the image of the bill on the top of this page if it exists -->
                     <div>
                         <h3>Pay With Dwolla</h3>
 
-                        <form data-toggle="validator" role="form" method="post" action="/dwolla/payment?bill=<%=bill_id%>">
-                            <div class="form-group">
-                                <label for="DwollaPayment" class="control-label">Amount Paid:
-                                </label>
-                                <input type="number" class="form-control" id="DwollaPayment" name="DwollaPayment" placeholder="$ How much to pay? 25" required>
-                            </div>
+                        <form data-toggle="validator" id="dwolla_payment" role="form" method="post" action="/dwolla/payment?bill=<%=bill_id%>">
+                            <fieldset class="form-group">
+                                <label for="DwollaPayment" class="control-label">Amount Paid:</label>
+                                <input type="number" step="0.01" class="form-control" id="DwollaPayment" name="DwollaPayment" placeholder="$ How much to pay? 25" required/>
+                            </fieldset>
+
+                            <input type="hidden" name="group_id" value="<%=group_id%>">
 
                             <button class="btn btn-primary btn-block btn-lg" type="submit">Click Here To Pay With Dwolla</button>
 
@@ -62,13 +63,12 @@ can we put the image of the bill on the top of this page if it exists -->
                     </div>
                     <div>
                         <h3>Mark as Paid</h3>
-                        <form data-toggle="validator" role="form" method="post" action="/home/group/<%= group_id %>/bills/<%= bill_id %>">
-                            <div class="form-group">
-                                <label for="manPayment" class="control-label">Amount Paid:
-                                </label>
-                                <input type="number" step="0.01" class="form-control" id="manPayment" name="manPayment" placeholder="$ How much to pay? 5, 9.29, or 20 dollars?" required>
-                            </div>
-                            <input type="submit"></input>
+                        <form data-toggle="validator" id="manual_payment" role="form" method="post" action="/home/group/<%= group_id %>/bills/<%= bill_id %>">
+                            <fieldset class="form-group">
+                                <label for="manPayment" class="control-label">Amount Paid:</label>
+                                <input type="number" step="0.01" class="form-control" id="manPayment" name="manPayment" placeholder="$ How much to pay? 5, 9.29, or 20 dollars?" required/>
+                            </fieldset>
+                            <button class="btn btn-primary btn-block btn-lg" type="submit">Mark As Paid</button>
                         </form>
                     </div>
                 </div>
@@ -76,10 +76,6 @@ can we put the image of the bill on the top of this page if it exists -->
 
         </section>
     </main>
-
-    <footer>
-        <% include ../partials/footer %>
-    </footer>
 
     <%- include('../partials/flickity/scripts') %>
 

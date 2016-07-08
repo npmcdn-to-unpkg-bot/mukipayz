@@ -8,5 +8,6 @@ var setup = new Flickity( flick, {
     setGallerySize: false,
     wrapAround: true,
     pageDots: false,
-    contain: true
+    contain: true,
+    draggable:false
 });

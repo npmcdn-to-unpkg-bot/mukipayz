@@ -5,7 +5,6 @@ var messageBox = document.getElementById('messages-box');
 // console.log("msg: ", messageBox);
 //listening for new message addition
 socket.on('messages', function(data) {
-    console.log("data", data);
     var li = document.createElement('li');
         li.className = "message col-md-12 green";
         var div = document.createElement('div');
@@ -21,7 +20,10 @@ socket.on('messages', function(data) {
         div.appendChild(p);
         div.appendChild(user);
         div.appendChild(timestamp);
-
         li.appendChild(div);
-    messageBox.insertBefore(li,messageBox.children[0]);
+    if (messageBox.children > 0) {
+        messageBox.insertBefore(li,messageBox.children[0]);
+    } else {
+        messageBox.appendChild(li);
+    }
 });

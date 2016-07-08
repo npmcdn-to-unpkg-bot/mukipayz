@@ -15,9 +15,7 @@ socketButton.addEventListener('click', function(e) {
     ajax('POST', path, messageVal, function(data) {
 
         if (data.status === 'success') {
-            var newMessage = data.message;
 
-            console.log(": ", data);
             // console.log("user: ", data.user);
 
             //broadcast to socket
@@ -28,7 +26,6 @@ socketButton.addEventListener('click', function(e) {
             });
 
         }
-
         // window.location.assign(path.substring(0, path.indexOf('/messages')));
     });
 });

@@ -9,13 +9,14 @@ var request = require('request');
 var moment = require('moment');
 
 
-const redirect_uri = 'http://localhost:3000/dwolla/auth/callback';
+const REDIRECT_URI = process.env.DWOLLA_REDIRECT || 'http://localhost:3000/dwolla/auth/callback';
+// const PAYMENT_URL = process.env.PAYMENT_URL
 
 // use sandbox API environment
 dwolla.sandbox = true;
 
 router.get('/login', function(req, res) {
-    var authUrl = dwolla.authUrl(redirect_uri, 'AccountInfoFull|Transactions|Balance|Send|Request');
+    var authUrl = dwolla.authUrl(REDIRECT_URI, 'AccountInfoFull|Transactions|Balance|Send|Request');
     return res.redirect(authUrl);
 });
 
@@ -39,7 +40,15 @@ router.get('/auth/callback', function(req, res) {
     if (!req.query.code) {
         return res.redirect('/dwolla/login');
     }
-    dwolla.finishAuth(req.query.code, redirect_uri, function(error, auth) {
+    dwolla.finishAuth(req.query.code, REDIRECT_URI, function(error, auth) {
+        if (!auth.access_token) {
+            var r_token = req.session.refresh_token;
+            if (!r_token) {
+                r_token = auth.refresh_token;
+            }
+            return res.redirect('/dwolla/refresh?refreshToken='+r_token);
+        }
+
         dwolla.setToken(auth.access_token);
         req.session.access_token = auth.access_token;
         req.session.refresh_token = auth.refresh_token;
@@ -59,7 +68,10 @@ router.get('/refresh', function(req, res) {
         dwolla.setToken(auth.access_token);
         req.session.access_token = auth.access_token;
         req.session.refresh_token = auth.refresh_token;
-        return res.redirect('/dwolla/user/setup');
+        dwolla.fullAccountInfo(function(err, user) {
+            req.session.user.dwolla = user;
+            return res.redirect('/dwolla/user/setup');
+        });
     });
 });
 
@@ -116,6 +128,9 @@ router.get('/user/setup', function(req, res) {
 });
 
 router.get('/payment', function(req, res) {
+    if (!req.session.access_token) {
+        return res.redirect('/dwolla/login');
+    }
     if (!req.session.dwolla_payment_path) {
         return res.redirect('/dwolla/login');
     } else {
@@ -123,18 +138,27 @@ router.get('/payment', function(req, res) {
             return res.redirect('/dwolla/login')
         } else {
             var bill = req.session.dwolla_payment_path.bill;
-            return request.post('/dwolla/payment?bill='+bill);
+            return request.post('http://localhost:3000/dwolla/payment?bill='+bill, {});
         }
     }
 });
 
 router.post('/payment', function(req, res) {
+    // return res.json({
+    //     path: req.body.group_id
+    // })
+
     req.session.dwolla_payment_path = {
         payroute: true,
         amount: req.body.DwollaPayment,
         source: req.session.user,
-        bill: req.query.bill
+        bill: req.query.bill,
+        origin_group: req.body.group_id
     };
+
+    if (!req.session.access_token) {
+        return res.redirect('/dwolla/login');
+    }
 
     if (!req.session.access_token || !req.session.refresh_token) {
         return res.redirect('/dwolla/login');
@@ -167,7 +191,9 @@ router.post('/payment', function(req, res) {
                 req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
                 req.session.dwolla_payment_path.result = {
                     status: 'failure',
-                    message: "Your bill owner doesn't have a Dwolla account! Once they create an account you can pay them!"
+                    message: "Your bill owner doesn't have a Dwolla account! Once they create an account you can pay them!",
+                    origin_group: req.session.dwolla_payment_path.origin_group,
+                    origin_bill: req.session.dwolla_payment_path.bill,
                 };
                 return res.redirect('/dwolla/payment/result');
             }
@@ -221,7 +247,9 @@ router.post('/payment/send', function(req, res) {
             req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
             req.session.dwolla_payment_path.result = {
                 status: 'failure',
-                message: "Your Dwolla account balance is too low to make a payment of " + amountRequested + ". Please add more funds to your account."
+                message: "Your Dwolla account balance is too low to make a payment of " + amountRequested + ". Please add more funds to your account.",
+                origin_group: req.session.dwolla_payment_path.origin_group,
+                origin_bill: req.session.dwolla_payment_path.bill
             };
             return res.redirect('/dwolla/payment/result');
         } else {
@@ -244,7 +272,9 @@ router.post('/payment/send', function(req, res) {
                     } else {
                         req.session.dwolla_payment_path.result = {
                             status: 'failure',
-                            message: "It is likely that your payment was process successfully once. Check your account and your bill before trying again."
+                            message: "It is likely that your payment was process successfully once. Check your account and your bill before trying again.",
+                            origin_group: req.session.dwolla_payment_path.origin_group,
+                            origin_bill: req.session.dwolla_payment_path.bill,
                         };
                         return res.redirect('/dwolla/payment/result');
                     }
@@ -261,15 +291,34 @@ router.post('/payment/send', function(req, res) {
         var dest = req.body.owner_account_id;
         dwolla.send(pin, dest, amount, function(err, transaction_id) {
             if (!err) {
-                req.session.dwolla_payment_path.result = {
-                    status: 'failure',
-                    message: "Your payment was process successfully! Your Dwolla transaction id is " + transaction_id
-                };
-                return res.redirect('/dwolla/payment/result');
+                knex('payments').insert({
+                    amount: amount,
+                    user_id: req.session.user.user_id,
+                    bill_id: req.session.dwolla_payment_path.bill
+                }).then(function(payment) {
+                    req.session.dwolla_payment_path.result = {
+                        status: 'failure',
+                        message: "Your payment was process successfully! Your Dwolla transaction id is " + transaction_id,
+                        origin_group: req.session.dwolla_payment_path.origin_group,
+                        origin_bill: req.session.dwolla_payment_path.bill,
+                    };
+                    return res.redirect('/dwolla/payment/result');
+                }).catch(function(err) {
+                    req.session.dwolla_payment_path.result = {
+                        status: 'failure',
+                        message: "Your payment was process successfully, but we were unable to save it to your payments records... Your Dwolla transaction id is " + transaction_id,
+                        origin_group: req.session.dwolla_payment_path.origin_group,
+                        origin_bill: req.session.dwolla_payment_path.bill,
+                    };
+                    return res.redirect('/dwolla/payment/result');
+                });
             } else {
+                req.session.access_token = null;
                 req.session.dwolla_payment_path.result = {
                     status: 'failure',
-                    message: "There was an error processing your payment, please try again."
+                    message: "There was an error processing your payment, please try again.",
+                    origin_group: req.session.dwolla_payment_path.origin_group,
+                    origin_bill: req.session.dwolla_payment_path.bill,
                 };
                 return res.redirect('/dwolla/payment/result');
             }
@@ -280,7 +329,9 @@ router.post('/payment/send', function(req, res) {
 router.get('/payment/result', function(req, res) {
     var result = {
         status: 'failure',
-        message: 'Oops, something went wrong... Please try again'
+        message: 'Oops, something went wrong... Please try again',
+        origin_group: req.session.dwolla_payment_path.origin_group,
+        origin_bill: req.session.dwolla_payment_path.bill,
     };
     if (req.session.dwolla_payment_path && req.session.dwolla_payment_path.result) {
         result = req.session.dwolla_payment_path.result;
