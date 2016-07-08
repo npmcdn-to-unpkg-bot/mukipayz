@@ -76,6 +76,7 @@ router.get('/refresh', function(req, res) {
 });
 
 router.get('/user/setup', function(req, res) {
+    console.log("req.session: ", req.session);
     knex('dwolla').where({
         user_id: req.session.user.user_id
     }).then(function(user) {
@@ -128,6 +129,7 @@ router.get('/user/setup', function(req, res) {
 });
 
 router.get('/payment', function(req, res) {
+    console.log("here??")
     if (!req.session.access_token) {
         return res.redirect('/dwolla/login');
     }
@@ -138,23 +140,28 @@ router.get('/payment', function(req, res) {
             return res.redirect('/dwolla/login')
         } else {
             var bill = req.session.dwolla_payment_path.bill;
-            return request.post(PAYMENT_URL+'?bill='+bill, {});
+            if (!req.session.dwolla_payment_path.origin_group) {
+                return res.redirect('/home');
+            } else {
+                var g = req.session.dwolla_payment_path.origin_group;
+                var b = req.session.dwolla_payment_path.bill;
+                return res.redirect('/home/group/'+g+'/bills/'+b);
+            }
         }
     }
 });
 
 router.post('/payment', function(req, res) {
-    // return res.json({
-    //     path: req.body.group_id
-    // })
 
-    req.session.dwolla_payment_path = {
-        payroute: true,
-        amount: req.body.DwollaPayment,
-        source: req.session.user,
-        bill: req.query.bill,
-        origin_group: req.body.group_id
-    };
+    if (!req.session.dwolla_payment_path) {
+        req.session.dwolla_payment_path = {
+            payroute: true,
+            amount: req.body.DwollaPayment,
+            source: req.session.user,
+            bill: req.query.bill,
+            origin_group: req.body.group_id
+        }
+    }
 
     if (!req.session.access_token) {
         return res.redirect('/dwolla/login');
@@ -169,7 +176,7 @@ router.post('/payment', function(req, res) {
 
         var fullbill = {
             bill: bill[0],
-            payment: req.body.DwollaPayment,
+            payment: req.session.dwolla_payment_path.amount,
             path: req.session.dwolla_payment_path
         };
 
@@ -217,8 +224,27 @@ router.post('/payment', function(req, res) {
                 error:null,
                 payment: paymentDetails
             });
+        }).catch(function(err) {
+            req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
+            req.session.dwolla_payment_path.result = {
+                status: 'failure',
+                message: "There was an unexpected error, please try again.",
+                origin_group: req.session.dwolla_payment_path.origin_group,
+                origin_bill: req.session.dwolla_payment_path.bill
+            };
+            return res.redirect('/dwolla/payment/result');
         });
+    }).catch(function(err) {
+        req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
+        req.session.dwolla_payment_path.result = {
+            status: 'failure',
+            message: "There was an unexpected error, please try again.",
+            origin_group: req.session.dwolla_payment_path.origin_group,
+            origin_bill: req.session.dwolla_payment_path.bill
+        };
+        return res.redirect('/dwolla/payment/result');
     });
+
 });
 
 router.post('/payment/send', function(req, res) {
@@ -265,8 +291,7 @@ router.post('/payment/send', function(req, res) {
                 if (mostRecentTransaction.Status === 'processed') {
                     var t_date = moment.utc(mostRecentTransaction.Date);
                     var now = moment().utc();
-                    console.log("now.diff(t_date): ", now.diff(t_date, 'minutes'));
-                    //wait 5 minutes between transactions
+                    //wait 2 minutes between transactions
                     if (now.diff(t_date, 'minutes') >= 2) {
                         makePayment();
                     } else {
@@ -287,7 +312,7 @@ router.post('/payment/send', function(req, res) {
     function makePayment() {
         req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
         var pin = req.body.pin;
-        var amount = Number(req.body.amount);
+        var amount = Number(req.body.amount) || Number(dwolla_payment_path.amount);
         var dest = req.body.owner_account_id;
         dwolla.send(pin, dest, amount, function(err, transaction_id) {
             if (!err) {
