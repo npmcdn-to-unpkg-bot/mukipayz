@@ -25,16 +25,9 @@ can we put the image of the bill on the top of this page if it exists -->
 
                     </div>
                     <%# Bill Image%>
-                        <% if(numUsers[0].image_url){ %>
-
                         <div class="carousel-cell img container">
                             <img height="300" src="<%= numUsers[0].image_url %>" alt="<%= numUsers[0].title %>" />
                         </div>
-
-                        <% }else { %>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png" alt="no image available">
-                            <h1>There is no picture available for this bill!</h1>
-                          <% } %>
 
 
                         <%# Pay Bill%>
@@ -46,26 +39,16 @@ can we put the image of the bill on the top of this page if it exists -->
                   </h3>
                                 <div>
                                   <h3>Pay With Dwolla</h3>
-                                  <form data-toggle="validator" role="form" method="post" action="/home/group/<%= group_id %>/bills/<%= bill_id %>">
-                                      <div class="form-group">
-                                          <label for="DwollaPayment" class="control-label">Amount Paid: </label>
-                                          <input type="number" class="form-control" id="DwollaPayment" name="DwollaPayment" placeholder="$ How much to pay? 25" required>
-                                      </div>
-
-                                      <button class="btn btn-primary btn-block btn-lg" type="submit">Click Here To Pay With Dwolla</button>
-
-                                    </form>
+                                    <a class="center-block btn btn-primary" href="/auth/dwolla" role="button" type="submit">Click Here To Pay With Dwolla</a>
                                 </div>
                                 <div>
                                     <h3>Mark as Paid</h3>
-
-                                    <form data-toggle="validator" role="form" method="post" action="/home/group/<%= group_id %>/bills/<%= bill_id %>">
+                                    <form data-toggle="validator" role="form" method="" action="ROUTE_TO_UPDATE DATABASE">
                                         <div class="form-group">
                                             <label for="manPayment" class="control-label">Amount Paid: </label>
-                                            <input type="number" class="form-control" id="manPayment" name="manPayment" placeholder="$ How much to pay? 25" required>
+                                            <input type="number" step="0.01" class="form-control" id="manPayment" name="manPayment" placeholder="$ How much to pay? 5, 9.29, or 20 dollars?" required>
                                         </div>
-                                          <button class="btn btn-primary btn-block btn-lg" type="submit">Mark Other Payments</button>
-
+                                        <input type="submit"></input>
                                     </form>
                                 </div>
                             </div>
