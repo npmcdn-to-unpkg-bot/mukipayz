@@ -43,7 +43,36 @@ router.get('/', function(req, res, next) {
         });
     });
 });
+router.get('/userUpdate', function(req, res, next){
+  knex('users').where('id', req.session.user.user_id)
+  .then(function(data) {
+    //console.log(data)
+      res.render('pages/userUpdate', {
+          data: data[0]
+      });
+  }).catch(next);
+});
+router.put('/userUpdate', function(req, res) {
+    promise_result(req.body.password).then(function(result) {
+                knex('users')
+                    .where('id', req.session.user.user_id)
 
+                    .update({
+                      'first_name': req.body.first_name,
+                      'last_name' : req.body.last_name,
+                      'email' : req.body.email,
+                      password: result
+                    })
+                    .then(function(result) {
+                        // var timefrom=moment(posts.time).fromNow();
+                        // console.log(timefrom);
+                        res.redirect('/home');
+                    })
+                    .catch(function(err) {
+                        next(err);
+                    });
+            });
+          });
 
 router.get('/group/new', function(req, res, next) {
     knex('groups').then(function(data) {
@@ -164,14 +193,14 @@ router.get('/group/:group_id/add', function(req, res, next) {
 
 
 router.post('/group/:group_id/add', function(req, res, next) {
-// console.log(req.body.invite_email);
+console.log(req.body.invite_email);
 
+    console.log(req.params.group_id);
+    knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
+        // knex('users_in_group')
+        .then(function(data) {
 
-// console.log(req.params.group_id);
-knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
-    // knex('users_in_group')
-    .then(function(data) {
-            // console.log(data);
+            console.log(data);
 
             if (data.length > 0) {
                 // console.log(data[0].id);
@@ -181,7 +210,14 @@ knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where
                     })
                     //  })
                     .then(function(data) {
-                        res.redirect('/home');
+                      var group = {
+                          id: req.params.group_id
+                      };
+                      //console.log(group);
+                      res.render('pages/addUserGroup', {
+                          group: group
+                      });
+
                     });
             } else {
                 var password = randomstring.generate(7);
@@ -204,7 +240,7 @@ knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where
                             .then(function(result) {
                                 //res.send('do it');
                                 //call email
-                                email(req.body.invite_email, function(err, body) {
+                                email(req.body.invite_email, password, function(err, body) {
 
                                         if (err) {
                                             res.render('email/error', {
@@ -214,23 +250,20 @@ knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where
                                         }
                                         // //Else we can greet    and leave
                                         else {
-                                            var group = {
-                                                 id: req.params.group_id
-
-                                            };
-                                            //Here "submitted.ejs" is the view file for this landing page
-                                            //We pass the variable "email" from the url parameter in an object rendered by ejs
-
-                                            res.render('pages/addUserGroup', {
-                                                group: group
-                                            });
-                                        //});
-                                }
+                                          var group = {
+                                              id: req.params.group_id
+                                          };
+                                          //console.log(group);
+                                          res.render('pages/addUserGroup', {
+                                              group: group
+                                          });
+                                        }
+                                });
 
                             });
 
                     });
-            });
+            // });
     }
 }).catch(function(err) {
 console.error("ERROR: ", err);
@@ -247,17 +280,19 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
     Promise.join(
       Bills().where({group_id: req.params.group_id, id: req.params.bill_id}),
         db_model.numberOfMembersPerGroup(req.params.group_id)
+      // ).then(function(data){
+      //   usersTotal
+      // })
 
-        //grab the data from users who have paid (add comma to above), will be data[2]
     ).then(function(data) {
-
       var obj = {
         bill : data[1],
         numUsers: data[0],
-
+        group_id: req.params.group_id,
+        bill_id: req.params.bill_id,
         totalPerUser: Number((Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2))
 
-      }
+      };
         // res.json(obj);
        res.render('pages/billview', obj);
 
@@ -265,6 +300,16 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
        console.error(err);
    });
 
+});
+
+router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
+  knex('payments').insert({
+    'amount' : Number(req.body.manPayment),
+    'user_id' : req.session.user.user_id,
+    'bill_id': Number(req.params.bill_id)
+  }).then(function(data){
+    console.log("INFO " + data);
+  });
 });
 
 //create new message
