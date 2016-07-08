@@ -167,7 +167,7 @@ router.post('/payment', function(req, res) {
                 req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
                 req.session.dwolla_payment_path.result = {
                     status: 'failure',
-                    message: "Your payment was process successfully! Your Dwolla transaction id is " + transaction_id
+                    message: "Your bill owner doesn't have a Dwolla account! Once they create an account you can pay them!"
                 };
                 return res.redirect('/dwolla/payment/result');
             }

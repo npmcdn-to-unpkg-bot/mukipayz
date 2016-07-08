@@ -55,9 +55,9 @@ should be link for users to invite other's via email -->
                             <% messages.forEach(function(message) { %>
                                 <% if (message.fromMe) { %>
                                     <li class="message col-md-12 blue">
-                                    <% } else { %>
+                                <% } else { %>
                                     <li class="message col-md-12 green">
-                                    <% } %>
+                                <% } %>
                                     <div class="col-xs-12 message-content">
                                         <p><%= message.content %></p>
                                     </div>

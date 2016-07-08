@@ -116,8 +116,14 @@ router.get('/group/:id', function(req, res, next) {
             messages: data[2],
             friends: data[3]
         };
-        // res.json(data);
-        // if(data[0].length>0){
+
+        data.messages.map(function(message) {
+            message.fromMe = false;
+            if (message.user_id === req.session.user.user_id) {
+                message.fromMe = true;
+            }
+        });
+
         res.render('pages/group', data);
     });
 });
