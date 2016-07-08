@@ -1,5 +1,5 @@
 'use strict';
-
+//variables
 var express = require('express');
 var router = express.Router();
 // var bcrypt = require('bcrypt');
@@ -12,7 +12,7 @@ var promise_result = require('../../promise');
 var randomstring = require("randomstring");
 var email = require('../../emailer');
 var mware = require('../../middleware');
-
+//end variables
 function Bills() {
     //model for bills table
     return knex('bills');
@@ -92,19 +92,14 @@ router.post('/group/new', function(req, res, next) {
                 group_id: result[0].id
             })
             .then(function(data) {
-
                 res.redirect('/home');
             });
     });
 });
-
 //user has access to that group middleware
 router.use('/group/:group_id', mware.hasAccessToGroup);
-
 //group exists middleware
 router.use('/group/:group_id', mware.groupExists);
-
-
 router.get('/group/:id', function(req, res, next) {
     Promise.join(
         db_model.getGroup(Number(req.params.id)),
@@ -124,9 +119,7 @@ router.get('/group/:id', function(req, res, next) {
         // if(data[0].length>0){
         res.render('pages/group', data);
     });
-
 });
-
 
 router.delete('/group/:id', function(req, res) {
     knex('users_in_group')
@@ -159,7 +152,7 @@ router.get('/group/:group_id/bills/new', function(req, res, next) {
 });
 
 router.post('/group/:group_id/bills/new', function(req, res, next) {
-    var data = {}
+    var data = {};
     uploader.upload(req).then(function(uploaded) {
         data.uploadData = uploaded;
         data.uploadData.group_id = req.params.group_id;
@@ -170,9 +163,7 @@ router.post('/group/:group_id/bills/new', function(req, res, next) {
                 cloud: data.cloudData,
                 upload: data.uploadData
             }).then(function(db_data) {
-                uploader.removeFromDir(data.uploadData).then(function(success){
-                    //nothing
-                });
+                uploader.removeFromDir(data.uploadData).then(function(success) {});
                 res.redirect('/home/group/' + req.params.group_id);
             }).catch(function(err) {
                 console.error("Error saving to database", err);
@@ -197,22 +188,14 @@ router.get('/group/:group_id/add', function(req, res, next) {
 
 
 router.post('/group/:group_id/add', function(req, res, next) {
-    console.log(req.body.invite_email);
-
-    console.log(req.params.group_id);
     knex('users').join('users_in_group', 'users.id', 'users_in_group.user_id').where('users.email', req.body.invite_email)
         // knex('users_in_group')
         .then(function(data) {
-
-            console.log(data);
-
             if (data.length > 0) {
-                // console.log(data[0].id);
                 knex('users_in_group').insert({
                         user_id: data[0].user_id,
                         group_id: req.params.group_id
                     })
-                    //  })
                     .then(function(data) {
                         var group = {
                             id: req.params.group_id
@@ -221,14 +204,11 @@ router.post('/group/:group_id/add', function(req, res, next) {
                         res.render('pages/addUserGroup', {
                             group: group
                         });
-
                     });
             } else {
                 var password = randomstring.generate(7);
                 promise_result(password)
-                    //console.log(promise_result("wow"))
                     .then(function(result) {
-                        // console.log("result: ", result);
                         return knex('users').insert({
                             email: req.body.invite_email,
                             first_name: 'anonymous',
@@ -236,87 +216,66 @@ router.post('/group/:group_id/add', function(req, res, next) {
                             password: result
                         }).returning('*')
                     }).then(function(results) {
-                        // console.log("RESULT from database stuff" + results[0]);
                         return knex('users_in_group').insert({
                                 user_id: results[0].id,
                                 group_id: req.params.group_id
                             }).returning('*')
                             .then(function(result) {
-                                //res.send('do it');
-                                //call email
                                 email(req.body.invite_email, password, function(err, body) {
-
                                     if (err) {
                                         res.render('email/error', {
                                             error: err
                                         });
                                         console.log("got an error: ", err);
-                                    }
-                                    // //Else we can greet    and leave
-                                    else {
+                                    } else {
                                         var group = {
                                             id: req.params.group_id
                                         };
-                                        //console.log(group);
                                         res.render('pages/addUserGroup', {
                                             group: group
                                         });
                                     }
                                 });
-
                             });
-
                     });
-                // });
             }
         }).catch(function(err) {
             console.error("ERROR: ", err);
         });
 });
-
-// router.get('/group/bills/:id/pay', function(req, res, next) {
-//
-//
-// });
-
-
 //user has access to that group middleware
 router.use('/group/:group_id/bills/:bill_id', mware.billExists);
 
-
 router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
-  Promise.join(
-      Bills().where({
-          group_id: req.params.group_id,
-          id: req.params.bill_id
-      }),
-      db_model.numberOfMembersPerGroup(req.params.group_id),
-      knex('payments').where({
-          user_id: req.session.user.user_id,
-          bill_id: req.params.bill_id
-      }).sum('amount')
-  ).then(function(data) {
+    Promise.join(
+        Bills().where({
+            group_id: req.params.group_id,
+            id: req.params.bill_id
+        }),
+        db_model.numberOfMembersPerGroup(req.params.group_id),
+        knex('payments').where({
+            user_id: req.session.user.user_id,
+            bill_id: req.params.bill_id
+        }).sum('amount')
+    ).then(function(data) {
 
-      var count = Number(data[1][0].count);
-      var totalAmount = Number(data[0][0].amount);
-      var sum = Number(data[2][0].sum);
-      var owed= Number(((totalAmount/count)-sum).toFixed(2));
-      if(Number(((totalAmount/count)-sum).toFixed(2)) <= 0){
-        owed=0;
-        // knex("bills").insert({paid: true}).then(function(data){
-        //   res.end();
-        // });
-      }
-      var obj = {
-        bill : data[1],
-        numUsers: data[0],
-        group_id: req.params.group_id,
-        bill_id: req.params.bill_id,
-        totalPerUser: owed
+        var count = Number(data[1][0].count);
+        var totalAmount = Number(data[0][0].amount);
+        var sum = Number(data[2][0].sum);
+        var owed = Number(((totalAmount / count) - sum).toFixed(2));
+        if (Number(((totalAmount / count) - sum).toFixed(2)) <= 0) {
+            owed = 0;
+        }
+        var obj = {
+            bill: data[1],
+            numUsers: data[0],
+            group_id: req.params.group_id,
+            bill_id: req.params.bill_id,
+            totalPerUser: owed
 
-      };
-      res.render('pages/billview', obj);
-});
+        };
+        res.render('pages/billview', obj);
+    });
 });
 
 router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
@@ -340,60 +299,30 @@ router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
             var count = Number(data[1][0].count);
             var totalAmount = Number(data[0][0].amount);
             var sum = Number(data[2][0].sum);
-            var owed= Number(((totalAmount/count)-sum).toFixed(2));
-            if(Number(((totalAmount/count)-sum).toFixed(2)) <= 0){
-              owed=0;
-              // knex("bills").insert({paid: true}).then(function(data){
-              //   res.end();
-              // });
+            var owed = Number(((totalAmount / count) - sum).toFixed(2));
+            if (Number(((totalAmount / count) - sum).toFixed(2)) <= 0) {
+                owed = 0;
+                knex("bills").insert({
+                    paid: true
+                }).then(function(data) {
+                    res.end();
+                });
             }
-
-
             var obj = {
-              bill : data[1],
-              numUsers: data[0],
-              group_id: req.params.group_id,
-              bill_id: req.params.bill_id,
-              totalPerUser: owed
+                bill: data[1],
+                numUsers: data[0],
+                group_id: req.params.group_id,
+                bill_id: req.params.bill_id,
+                totalPerUser: owed
 
             };
-               //res.json(obj);
-             res.render('pages/billview', obj);
+            res.json(obj);
+            res.render('pages/billview', obj);
+            res.redirect('pages/billview');
 
         });
     });
-    });
-
-
-
-// array = [bill @ id, count: 1, [payments]]
-
-// var amount = 0;
-// for (var i = 0; i < data.length; i++) {
-//     console.log(data[i][0]);
-//     if (req.session.user.user_id === data[i][0].user_id) {
-//         amount++;
-//     }
-// }
-// var paymentAmount = amount;
-// console.log(paymentAmount);
-// var obj = {
-//     bill: data[1],
-//     numUsers: data[0],
-//     group_id: req.params.group_id,
-//     bill_id: req.params.bill_id,
-//     totalPerUser: Number((Number(data[0][0].amount) / Number(data[1][0].count)).toFixed(2)) - paymentAmount
-//
-// };
-//
-// res.json(obj);
-// res.render('pages/billview', obj);
-// });
-// });
-// });
-// });
-
-
+});
 //create new message
 router.get('/group/:id/messages/new', function(req, res, next) {
     res.render('pages/newMessage', {
@@ -404,7 +333,6 @@ router.get('/group/:id/messages/new', function(req, res, next) {
     });
 
 });
-
 
 router.get('/group/:id/messages', function(req, res, next) {
     knex('messages_in_group').then(function(data) {

@@ -11,7 +11,7 @@ var express = require('express'),
     methodOverride = require('method-override'),
     bodyParser = require('body-parser'),
     cookieSession = require("cookie-session"),
-    passport = require('passport'),
+    //passport = require('passport'),
     mware = require('./middleware');
 
 
@@ -27,7 +27,6 @@ app.set('view engine', 'ejs');
 
 //required routes
 var routes = {
-    landing: require('./routes/landing'),
     index: require('./routes/index'),
     auth : require('./routes/auth/auth'),
     home: require('./routes/home/home'),
