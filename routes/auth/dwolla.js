@@ -10,7 +10,7 @@ var moment = require('moment');
 
 
 const REDIRECT_URI = process.env.DWOLLA_REDIRECT || 'http://localhost:3000/dwolla/auth/callback';
-// const PAYMENT_URL = process.env.PAYMENT_URL
+const PAYMENT_URL = process.env.PAYMENT_URL || 'http://localhost:3000/dwolla/payment';
 
 // use sandbox API environment
 dwolla.sandbox = true;
@@ -138,7 +138,7 @@ router.get('/payment', function(req, res) {
             return res.redirect('/dwolla/login')
         } else {
             var bill = req.session.dwolla_payment_path.bill;
-            return request.post('http://localhost:3000/dwolla/payment?bill='+bill, {});
+            return request.post(PAYMENT_URL+'?bill='+bill, {});
         }
     }
 });
