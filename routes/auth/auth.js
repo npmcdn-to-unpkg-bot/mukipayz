@@ -70,9 +70,10 @@ router.post('/login', function(req, res, next) {
 router.get('/signup', function(req, res, next) {
 
     knex('users').then(function(data) {
-        res.render('pages/signup', {
-            data: data
-        });
+        res.render('pages/signup')
+        //, {
+            //data: data
+        //});
     }).catch(next);
 
 
