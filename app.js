@@ -41,12 +41,12 @@ app.use(express.static(__dirname+'/public'));
 app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(cookieSession({
     name: 'mukipayz',
     keys: [process.env.SECRET_ONE, process.env.SECRET_TWO]
 }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 
 //routes middleware
@@ -72,7 +72,7 @@ io.on('connection', function(socket){
 
 // error handlers
 //handle any other routes that don't exist
-app.get('*', function(req, res, next) {
+app.use('*', function(req, res, next) {
     var err = new Error('Page Not Found');
     err.status = 404;
     next(err);

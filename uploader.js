@@ -102,6 +102,7 @@ var uploader = {
                 title: data.upload.formData.title || '',
                 amount: Number(Number(data.upload.formData.amount).toFixed(2)) || 0,
                 group_id: data.upload.group_id,
+                bill_owner: data.upload.bill_owner,
                 image_url: data.cloud.url
             }).then(resolve).catch(reject);
         });

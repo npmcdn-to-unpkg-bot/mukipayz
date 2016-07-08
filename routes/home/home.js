@@ -159,14 +159,14 @@ router.post('/group/:group_id/bills/new', function(req, res, next) {
     uploader.upload(req).then(function(uploaded) {
         data.uploadData = uploaded;
         data.uploadData.group_id = req.params.group_id;
+        data.uploadData.bill_owner = req.session.user.user_id;
         uploader.toCloud(data.uploadData.image.file).then(function(result) {
             data.cloudData = result;
             uploader.toDatabase({
                 cloud: data.cloudData,
                 upload: data.uploadData
             }).then(function(db_data) {
-                console.log("data.uploadData: ", data.uploadData);
-                uploader.removeFromDir(data.uploadData).then(function(success) {
+                uploader.removeFromDir(data.uploadData).then(function(success){
                     //nothing
                 });
                 res.redirect('/home/group/' + req.params.group_id);
@@ -185,7 +185,7 @@ router.get('/group/:group_id/add', function(req, res, next) {
     var group = {
         id: req.params.group_id
     };
-    console.log(group);
+    // console.log(group);
     res.render('pages/addUserGroup', {
         group: group
     });
@@ -203,7 +203,7 @@ router.post('/group/:group_id/add', function(req, res, next) {
             console.log(data);
 
             if (data.length > 0) {
-                console.log(data[0].id);
+                // console.log(data[0].id);
                 knex('users_in_group').insert({
                         user_id: data[0].user_id,
                         group_id: req.params.group_id
@@ -224,7 +224,7 @@ router.post('/group/:group_id/add', function(req, res, next) {
                 promise_result(password)
                     //console.log(promise_result("wow"))
                     .then(function(result) {
-                        console.log("result: ", result);
+                        // console.log("result: ", result);
                         return knex('users').insert({
                             email: req.body.invite_email,
                             first_name: 'anonymous',
@@ -232,7 +232,7 @@ router.post('/group/:group_id/add', function(req, res, next) {
                             password: result
                         }).returning('*')
                     }).then(function(results) {
-                        console.log("RESULT from database stuff" + results[0]);
+                        // console.log("RESULT from database stuff" + results[0]);
                         return knex('users_in_group').insert({
                                 user_id: results[0].id,
                                 group_id: req.params.group_id
@@ -393,12 +393,9 @@ router.get('/group/:id/messages/new', function(req, res, next) {
     res.render('pages/newMessage', {
         group: {
             id: req.params.id
-
         }
 
-
     });
-
 
 });
 

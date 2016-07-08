@@ -48,7 +48,7 @@ can we put the image of the bill on the top of this page if it exists -->
                                 <div>
                                   <h3>Pay With Dwolla</h3>
 
-                                  <form data-toggle="validator" role="form" method="post" action="/dwolla/payment">
+                                  <form data-toggle="validator" role="form" method="post" action="/dwolla/payment?bill=<%=bill_id%>">
                                       <div class="form-group">
                                           <label for="DwollaPayment" class="control-label">Amount Paid: </label>
                                           <input type="number" class="form-control" id="DwollaPayment" name="DwollaPayment" placeholder="$ How much to pay? 25" required>

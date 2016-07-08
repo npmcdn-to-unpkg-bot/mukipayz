@@ -1,73 +1,23 @@
 'use strict';
+var dwolla = require('dwolla-node'),
+    dwolla = dwolla(process.env.DWOLLA_KEY_SANDBOX, process.env.DWOLLA_SECRET_SANDBOX); // initialize API client
 var express = require('express'),
-    router  = express.Router(),
-    passport = require('passport'),
-    DwollaStrategy = require('passport-dwolla').Strategy;
-
-    DwollaStrategy.options = ({
-        // authorizationURL: 
-    });
-
+    router  = express.Router();
 var knex = require('../../db/knex');
-var DB = {
-    Dwolla: function() {
-        return knex('dwolla');
-    }
-};
+var Promise = require('bluebird');
+var request = require('request');
+var moment = require('moment');
 
 
+const redirect_uri = 'http://localhost:3000/dwolla/auth/callback';
 
-// Passport session setup.
-//   To support persistent login sessions, Passport needs to be able to
-//   serialize users into and deserialize users out of the session.  Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing.  However, since this example does not
-//   have a database of user records, the complete Dwolla profile is
-//   serialized and deserialized.
-passport.serializeUser(function(user, done) {
-  done(null, user);
+// use sandbox API environment
+dwolla.sandbox = true;
+
+router.get('/login', function(req, res) {
+    var authUrl = dwolla.authUrl(redirect_uri, 'AccountInfoFull|Transactions|Balance|Send|Request');
+    return res.redirect(authUrl);
 });
-
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
-
-
-// Use the DwollaStrategy within Passport.
-//   Strategies in Passport require a `verify` function, which accept
-//   credentials (in this case, an accessToken, refreshToken, and Dwolla
-//   profile), and invoke a callback with a user object.
-passport.use(new DwollaStrategy({
-    clientID: process.env.DWOLLA_KEY,
-    clientSecret: process.env.DWOLLA_SECRET,
-    callbackURL: "http://localhost:3000/auth/dwolla/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-      console.log("profile: ", profile);
-    //   req.session.user = profile;
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-
-      // To keep the example simple, the user's Dwolla profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Dwolla account with a user record in your database,
-      // and return that user instead.
-      return done(null, profile);
-    });
-  }
-));
-
-// GET /auth/dwolla
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  The first step in Dwolla authentication will involve
-//   redirecting the user to dwolla.com.  After authorization, Dwolla
-//   will redirect the user back to this application at /auth/dwolla/callback
-router.get('/',
-  passport.authenticate('dwolla', { scope: 'AccountInfoFull|Contacts|Transactions|Balance|Send|Request' }),
-  function(req, res){
-    // The request will be redirected to Dwolla for authentication, so this
-    // function will not be called.
-  });
 
 
 // GET /auth/dwolla/callback
@@ -75,23 +25,273 @@ router.get('/',
 //   request.  If authentication fails, the user will be redirected back to the
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
-router.get('/callback',
-    passport.authenticate('dwolla', { failureRedirect: '/auth/dwolla', successRedirect: '/' }),
-    function(req, res) {
+// router.get('/auth/callback',
+//     passport.authenticate('dwolla', { failureRedirect: '/dwolla', successRedirect: '/dwolla/user/setup' }),
+//     function(req, res) {
+//         if (req.user) {
+//             res.redirect('/dwolla/user/setup');
+//         } else {
+//             res.redirect('/dwolla');
+//         }
+//     });
 
-        if (req.user) {
-            console.log("DWOLLA USER: ", req.user);
-            // DB.Dwolla().insert({})
-        }
-
-        res.redirect('/');
-    });
-
-router.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
+router.get('/auth/callback', function(req, res) {
+    if (!req.query.code) {
+        return res.redirect('/dwolla/login');
+    }
+    dwolla.finishAuth(req.query.code, redirect_uri, function(error, auth) {
+        dwolla.setToken(auth.access_token);
+        req.session.access_token = auth.access_token;
+        req.session.refresh_token = auth.refresh_token;
+        // console.log("dwolla: ", dwolla.getToken());
+        var token = dwolla.getToken();
+        dwolla.fullAccountInfo(function(err, user) {
+            req.session.user.dwolla = user;
+            res.redirect('/dwolla/user/setup');
+        });
+   });
 });
 
 
+router.get('/refresh', function(req, res) {
+    dwolla.refreshAuth(req.query.refreshToken, function(error, auth) {
+        if (error) return res.redirect('/dwolla/login');
+        dwolla.setToken(auth.access_token);
+        req.session.access_token = auth.access_token;
+        req.session.refresh_token = auth.refresh_token;
+        return res.redirect('/dwolla/user/setup');
+    });
+});
+
+router.get('/user/setup', function(req, res) {
+    knex('dwolla').where({
+        user_id: req.session.user.user_id
+    }).then(function(user) {
+        if (!user[0]) {
+            //if user doesn't exist in database yet
+            knex('dwolla').insert({
+                user_id: req.session.user.user_id,
+                dwolla_id: req.session.user.dwolla.Id,
+                dwolla_account_id: req.session.user.dwolla.AccountId
+            }).then(function(dwolla_user) {
+                handleRedirect();
+            }).catch(function(err) {
+                req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
+                req.session.dwolla_payment_path.result = {
+                    status: 'failure',
+                    message: "There was an error saving your Dwolla Account details. Please try again."
+                };
+                return res.redirect('/dwolla/payment/result');
+            });
+        } else {
+            if (user[0].dwolla_id !== req.session.user.dwolla.Id) {
+                knex('dwolla').where({user_id: req.session.user.user_id}).update({
+                    dwolla_id: req.session.user.dwolla.Id,
+                    dwolla_account_id: req.session.user.dwolla.AccountId
+                }).then(function(dwolla_user) {
+                    handleRedirect(true);
+                }).catch(function(err) {
+                    req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
+                    req.session.dwolla_payment_path.result = {
+                        status: 'failure',
+                        message: "There was an error updating your Dwolla Account details. Please try again."
+                    };
+                    return res.redirect('/dwolla/payment/result');
+                });
+            } else {
+                //user exists in database and is logged in as same user
+                return handleRedirect(false);
+            }
+        }
+    });
+
+    function handleRedirect(user_updated) {
+        if (req.session.dwolla_payment_path) {
+            //user is coming from /payment route and wants to pay
+            return res.redirect('/dwolla/payment');
+        }
+        //user not coming from payments route
+        return res.redirect('/home');
+    }
+});
+
+router.get('/payment', function(req, res) {
+    if (!req.session.dwolla_payment_path) {
+        return res.redirect('/dwolla/login');
+    } else {
+        if (!req.session.dwolla_payment_path.bill) {
+            return res.redirect('/dwolla/login')
+        } else {
+            var bill = req.session.dwolla_payment_path.bill;
+            return request.post('/dwolla/payment?bill='+bill);
+        }
+    }
+});
+
+router.post('/payment', function(req, res) {
+    req.session.dwolla_payment_path = {
+        payroute: true,
+        amount: req.body.DwollaPayment,
+        source: req.session.user,
+        bill: req.query.bill
+    };
+
+    if (!req.session.access_token || !req.session.refresh_token) {
+        return res.redirect('/dwolla/login');
+    }
+
+
+    knex('bills').where({id: req.query.bill}).then(function(bill) {
+
+        var fullbill = {
+            bill: bill[0],
+            payment: req.body.DwollaPayment,
+            path: req.session.dwolla_payment_path
+        };
+
+        Promise.join(
+            knex('users').where({id: fullbill.bill.bill_owner}).select('id', 'first_name', 'last_name', 'email'),
+            knex('dwolla').where({user_id: fullbill.bill.bill_owner}),
+            // knex('dwolla').where({user_id: 3}),
+            knex('dwolla').where({user_id: req.session.user.user_id}),
+            knex('users').where({id:req.session.user.user_id}).select('id','first_name','last_name','email')
+        ).then(function(data) {
+
+            var owner = data[0][0];
+            var user = data[3][0];
+            var dwolla_account_owner = data[1][0];
+            var dwolla_account_sender = data[2][0];
+
+            //ensure both users have dwolla account
+            if (!dwolla_account_owner) {
+                req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
+                req.session.dwolla_payment_path.result = {
+                    status: 'failure',
+                    message: "Your payment was process successfully! Your Dwolla transaction id is " + transaction_id
+                };
+                return res.redirect('/dwolla/payment/result');
+            }
+            //
+            if (!dwolla_account_sender) {
+                //sender doesn't have account
+                // return res.json(data);
+                return res.redirect('/dwolla/login');
+            }
+
+            var paymentDetails = {
+                amount: fullbill.payment,
+                sender: user,
+                owner: owner,
+                dwolla: {
+                    sender: dwolla_account_sender,
+                    owner:dwolla_account_owner
+                }
+            };
+            return res.render('pages/dwollaPin', {
+                error:null,
+                payment: paymentDetails
+            });
+        });
+    });
+});
+
+router.post('/payment/send', function(req, res) {
+    req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
+
+    if (!req.session.access_token) {
+        return res.redirect('/dwolla/login');
+    }
+    if (!req.session.access_token && req.session.refresh_token) {
+        return res.redirect('/dwolla/refresh?refreshToken='+req.session.refresh_token);
+    }
+
+    //init token
+    dwolla.setToken(req.session.access_token);
+
+    dwolla.balance(function(err, balance) {
+        if (err) {
+            if (req.session.refresh_token) {
+                return res.redirect('/dwolla/refresh?refreshToken='+req.session.refresh_token);
+            } else {
+                return res.redirect('/dwolla/login');
+            }
+        }
+        var amountRequested = Number(req.body.amount);
+        if (amountRequested > balance) {
+            req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
+            req.session.dwolla_payment_path.result = {
+                status: 'failure',
+                message: "Your Dwolla account balance is too low to make a payment of " + amountRequested + ". Please add more funds to your account."
+            };
+            return res.redirect('/dwolla/payment/result');
+        } else {
+            //must wait at least 3 minutes before processing another payment
+            checkRecentTransactions();
+        }
+    });
+
+    function checkRecentTransactions() {
+        dwolla.transactionsByApp(function(err, transactions) {
+            if (transactions.length > 0) {
+                var mostRecentTransaction = transactions[0];
+                if (mostRecentTransaction.Status === 'processed') {
+                    var t_date = moment.utc(mostRecentTransaction.Date);
+                    var now = moment().utc();
+                    console.log("now.diff(t_date): ", now.diff(t_date, 'minutes'));
+                    //wait 5 minutes between transactions
+                    if (now.diff(t_date, 'minutes') >= 2) {
+                        makePayment();
+                    } else {
+                        req.session.dwolla_payment_path.result = {
+                            status: 'failure',
+                            message: "It is likely that your payment was process successfully once. Check your account and your bill before trying again."
+                        };
+                        return res.redirect('/dwolla/payment/result');
+                    }
+                }
+            }
+        });
+    }
+
+
+    function makePayment() {
+        req.session.dwolla_payment_path = req.session.dwolla_payment_path || {};
+        var pin = req.body.pin;
+        var amount = Number(req.body.amount);
+        var dest = req.body.owner_account_id;
+        dwolla.send(pin, dest, amount, function(err, transaction_id) {
+            if (!err) {
+                req.session.dwolla_payment_path.result = {
+                    status: 'failure',
+                    message: "Your payment was process successfully! Your Dwolla transaction id is " + transaction_id
+                };
+                return res.redirect('/dwolla/payment/result');
+            } else {
+                req.session.dwolla_payment_path.result = {
+                    status: 'failure',
+                    message: "There was an error processing your payment, please try again."
+                };
+                return res.redirect('/dwolla/payment/result');
+            }
+        });
+    }
+});
+
+router.get('/payment/result', function(req, res) {
+    var result = {
+        status: 'failure',
+        message: 'Oops, something went wrong... Please try again'
+    };
+    if (req.session.dwolla_payment_path && req.session.dwolla_payment_path.result) {
+        result = req.session.dwolla_payment_path.result;
+    }
+    req.session.dwolla_payment_path = null;
+    return res.render('pages/paymentResult', {result:result});
+});
+
+//anthing else route to home page
+router.get('*', function(req, res) {
+    res.redirect('/home');
+});
 
 module.exports = router;
