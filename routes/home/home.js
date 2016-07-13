@@ -285,12 +285,16 @@ router.get('/group/:group_id/bills/:bill_id', function(req, res, next) {
     });
 });
 
+
+// using promises here still resulting in the "pyramid" look
 router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
     knex('payments').insert({
         amount: parseFloat(req.body.manPayment),
         user_id: req.session.user.user_id,
         bill_id: Number(req.params.bill_id)
     }).then(function(data) {
+      // return this promise and you could attach the then one level up.
+      // ask me if you have any questions.
         Promise.join(
             Bills().where({
                 group_id: req.params.group_id,
@@ -311,15 +315,19 @@ router.post('/group/:group_id/bills/:bill_id', function(req, res, next) {
                 knex("bills").update({
                     paid: true
                 }).where({id: req.params.bill_id}).then(function(data) {
+                    // there is no need to return.
                     return res.redirect('/home/group/'+req.params.group_id+'/bills/'+req.params.bill_id);
                 });
             } else {
+                // there is no need to return
                 return res.redirect('/home/group/'+req.params.group_id+'/bills/'+req.params.bill_id);
             }
         }).catch(function(err) {
+            // there is no need to return
             return res.redirect('/home/group/'+req.params.group_id+'/bills/'+req.params.bill_id);
         });
     }).catch(function(err) {
+        // there is no need to return
         return res.redirect('/home/group/'+req.params.group_id+'/bills/'+req.params.bill_id);
     });;
 });

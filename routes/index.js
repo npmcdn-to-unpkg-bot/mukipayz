@@ -7,6 +7,7 @@ var router = express.Router();
 
 router.get('/', function(req, res, next) {
     res.render('pages/index', {
+        // this seems out of place
         title: 'Express'
     });
 });

@@ -1,4 +1,7 @@
 'use strict';
+
+// file could be named more appropriately
+
 var bcrypt = require('bcrypt');
 
 function hash(password) {
