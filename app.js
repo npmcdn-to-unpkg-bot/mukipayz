@@ -5,7 +5,8 @@ require('dotenv').config();
 
 //main app
 var express = require('express'),
-    httpApp = express(),
+    //httpApp = express(),
+
     app = express(),
     logger = require('morgan'),
     path = require('path'),
@@ -13,11 +14,11 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     cookieSession = require("cookie-session"),
     //passport = require('passport'),
+    forceSSL = require('express-force-ssl'),
     mware = require('./middleware');
 
 // ADDED
-var
-fs = require('fs');
+var fs = require('fs');
 
 
 
@@ -27,9 +28,18 @@ var httpsOptions = {
     cert: fs.readFileSync("./server.crt")
 };
 
-var http = require('http');
+var httpPort = 8080;
+var securePort = process.env.PORT || 8443;
+// app.set('forceSSLOptions', {
+//   enable301Redirects: true,
+//   trustXFPHeader: false,
+//   httpsPort: securePort,
+//   sslRequiredMessage: 'SSL Required.'
+// });
+//var http = require('http');
+var server = require('http').createServer(app);
 var https = require('https').createServer(httpsOptions, app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(https);
 
 
 //setup views
@@ -55,14 +65,16 @@ var routes = {
 //   next();
 // });
 
-httpApp.set('port', process.env.PORT || 8000);
-httpApp.use("*", function (req, res, next) {
-  res.redirect(['https://', req.get('Host'), req.url].join(''));
-      //res.redirect("https://" + req.headers.host + "/" + 3000);
-});
-httpApp.listen(8000);
+// httpApp.set('port', process.env.PORT || 8000);
+// httpApp.use("*", function (req, res, next) {
+//
+//   res.redirect(['https://', req.get('Host'), req.url].join(''));
+//       //res.redirect("https://" + req.headers.host + "/" + 3000);
+// });
+// httpApp.listen(8000);
 
 //app middleware
+app.use(forceSSL);
 app.use(logger('dev'));
 app.use(express.static(__dirname+'/public'));
 app.use(methodOverride('_method'));
@@ -135,9 +147,9 @@ app.use(function(err, req, res, next) {
         }
     });
 });
-
-const port = process.env.PORT || 3000;
-https.listen(port, function() {
-    console.log("https listening on", port);
+// https.listen(3000);
+server.listen(httpPort);
+https.listen(securePort, function() {
+    console.log("https listening on", securePort);
     console.log("All other groups ain't got nuthin' on mukipayz!");
 });
