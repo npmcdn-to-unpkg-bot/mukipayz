@@ -203,7 +203,7 @@ router.post('/group/:group_id/add', function(req, res, next) {
                         user_id: data[0].user_id,
                         group_id: req.params.group_id
                     })
-                    .then(function(data) {
+                    .then(function(data){
                         var group = {
                             id: req.params.group_id
                         };

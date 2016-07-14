@@ -14,6 +14,8 @@ var express = require('express'),
     //passport = require('passport'),
     mware = require('./middleware');
 
+// ADDED
+
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -34,6 +36,14 @@ var routes = {
     // email: require('./routes/email/email')
 };
 
+
+app.use(function(req, res, next) {
+  if(!req.secure) {
+    return res.redirect(['https://', req.get('Host'), req.url].join(''));
+  }
+  next();
+});
+
 //app middleware
 app.use(logger('dev'));
 app.use(express.static(__dirname+'/public'));
@@ -44,6 +54,8 @@ app.use(cookieSession({
     name: 'mukipayz',
     keys: [process.env.SECRET_ONE, process.env.SECRET_TWO]
 }));
+
+
 // app.use(passport.initialize());
 // app.use(passport.session());
 
