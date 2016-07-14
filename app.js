@@ -5,6 +5,7 @@ require('dotenv').config();
 
 //main app
 var express = require('express'),
+    httpApp = express(),
     app = express(),
     logger = require('morgan'),
     path = require('path'),
@@ -15,9 +16,19 @@ var express = require('express'),
     mware = require('./middleware');
 
 // ADDED
+var
+fs = require('fs');
 
 
-var http = require('http').Server(app);
+
+
+var httpsOptions = {
+    key: fs.readFileSync("./server.key"),
+    cert: fs.readFileSync("./server.crt")
+};
+
+var http = require('http');
+var https = require('https').createServer(httpsOptions, app);
 var io = require('socket.io')(http);
 
 
@@ -36,13 +47,20 @@ var routes = {
     // email: require('./routes/email/email')
 };
 
+//
+// httpApp.use(function(req, res, next) {
+//   if(!req.secure) {
+//     return res.redirect(['https://', req.get('Host'), req.url].join(''));
+//   }
+//   next();
+// });
 
-app.use(function(req, res, next) {
-  if(!req.secure) {
-    return res.redirect(['https://', req.get('Host'), req.url].join(''));
-  }
-  next();
+httpApp.set('port', process.env.PORT || 8000);
+httpApp.use("*", function (req, res, next) {
+  res.redirect(['https://', req.get('Host'), req.url].join(''));
+      //res.redirect("https://" + req.headers.host + "/" + 3000);
 });
+httpApp.listen(8000);
 
 //app middleware
 app.use(logger('dev'));
@@ -119,7 +137,7 @@ app.use(function(err, req, res, next) {
 });
 
 const port = process.env.PORT || 3000;
-http.listen(port, function() {
-    console.log("listening on", port);
+https.listen(port, function() {
+    console.log("https listening on", port);
     console.log("All other groups ain't got nuthin' on mukipayz!");
 });
