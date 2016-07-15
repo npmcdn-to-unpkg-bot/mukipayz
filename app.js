@@ -2,10 +2,9 @@
 
 //env
 require('dotenv').config();
-
+var httpServer = require('./server');
 //main app
 var express = require('express'),
-    //httpApp = express(),
 
     app = express(),
     logger = require('morgan'),
@@ -13,8 +12,7 @@ var express = require('express'),
     methodOverride = require('method-override'),
     bodyParser = require('body-parser'),
     cookieSession = require("cookie-session"),
-    //passport = require('passport'),
-    forceSSL = require('express-force-ssl'),
+
     mware = require('./middleware');
 
 // ADDED
@@ -28,16 +26,9 @@ var httpsOptions = {
     cert: fs.readFileSync("./server.crt")
 };
 
-var httpPort = 8080;
+// var httpPort = 8080;
 var securePort = process.env.PORT || 8443;
-// app.set('forceSSLOptions', {
-//   enable301Redirects: true,
-//   trustXFPHeader: false,
-//   httpsPort: securePort,
-//   sslRequiredMessage: 'SSL Required.'
-// });
-//var http = require('http');
-var server = require('http').createServer(app);
+
 var https = require('https').createServer(httpsOptions, app);
 var io = require('socket.io')(https);
 
@@ -51,34 +42,28 @@ app.set('view engine', 'ejs');
 //required routes
 var routes = {
     index: require('./routes/index'),
-    auth : require('./routes/auth/auth'),
+    auth: require('./routes/auth/auth'),
     home: require('./routes/home/home'),
     dwolla: require('./routes/auth/dwolla'),
     // email: require('./routes/email/email')
 };
 
-//
-// httpApp.use(function(req, res, next) {
-//   if(!req.secure) {
-//     return res.redirect(['https://', req.get('Host'), req.url].join(''));
-//   }
-//   next();
-// });
 
-// httpApp.set('port', process.env.PORT || 8000);
-// httpApp.use("*", function (req, res, next) {
-//
-//   res.redirect(['https://', req.get('Host'), req.url].join(''));
-//       //res.redirect("https://" + req.headers.host + "/" + 3000);
+// httpApp.use('/', function (req, res, next) {
+// res.redirect("https://" + req.hostname + ":" + securePort + req.path);
 // });
-// httpApp.listen(8000);
+// httpApp.listen(8000, function(){
+//   console.log("http server started");
+// });
 
 //app middleware
-app.use(forceSSL);
+// app.use(forceSSL);
 app.use(logger('dev'));
-app.use(express.static(__dirname+'/public'));
+app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 app.use(cookieSession({
     name: 'mukipayz',
@@ -99,16 +84,16 @@ app.use('/dwolla', mware.isLoggedIn, routes.dwolla);
 // app.use('/email', routes.email);
 
 //handle all socket connections
-io.on('connection', function(socket){
+io.on('connection', function(socket) {
     console.log("socket connected");
     // console.log("socket.request: ", socket.request.headers);
-    socket.on('messages', function(msg){
+    socket.on('messages', function(msg) {
         console.log("INCOMING MESSAGE: ", msg);
         io.emit('messages', msg);
     });
     socket.on('disconnect', function() {
-      console.log('socket disconnected');
-   });
+        console.log('socket disconnected');
+    });
 });
 
 // error handlers
@@ -147,8 +132,8 @@ app.use(function(err, req, res, next) {
         }
     });
 });
-// https.listen(3000);
-server.listen(httpPort);
+httpServer(securePort);
+
 https.listen(securePort, function() {
     console.log("https listening on", securePort);
     console.log("All other groups ain't got nuthin' on mukipayz!");
