@@ -4,3 +4,5 @@ node_modules
 server.csr
 server.key
 server.crt
+Mukipayz.pem
+ssh_aws.sh
