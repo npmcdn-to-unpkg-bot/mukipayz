@@ -27,7 +27,7 @@ var httpsOptions = {
 };
 
 // var httpPort = 8080;
-var securePort = process.env.PORT || 8443;
+var securePort = process.env.PORT || 443;
 
 var https = require('https').createServer(httpsOptions, app);
 var io = require('socket.io')(https);

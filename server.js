@@ -10,7 +10,7 @@ res.redirect("https://" + req.hostname + ":" + securePort + req.path);
 
 
 });
-httpApp.listen(8000, function(){
+httpApp.listen(80, function(){
   console.log("http server started");
 });
 }
