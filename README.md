@@ -32,3 +32,21 @@ Some Technology We Used
 
 
 As a group we felt that it was important to make a functioning application and also to launch it and make it live. By letting Dwolla handle the payments we were able to keep security top priority.
+
+
+# Comments
+
+### Great things about your project
+- Well designed
+- Creation and usage of promises
+- Using client side javascript.
+- SQL joins are used appropriately.
+- Good use of partials
+- Schema is well designed with good separation of data.
+- Usage of environment variables.
+- good use of validation
+
+
+### Things to watch out for
+- Nested promises that could be flattened out.
+- The addition of controllers would have made your route files look cleaner.
