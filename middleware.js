@@ -6,6 +6,7 @@ var middleware = {
 
         //to access /home routes, user must be logged in
         if (!req.session.user) {
+            // return not necessary
             //if user is not logged in
             return res.redirect('/auth/login');
         }
@@ -17,7 +18,9 @@ var middleware = {
             user_id: req.session.user.user_id
         }).then(function(access) {
             if (!access[0]) {
+
                 //user doesn't have access
+                // return not necessary,
                 return res.redirect('/home');
             }
             return next();
@@ -29,6 +32,7 @@ var middleware = {
             id: req.params.group_id
         }).then(function(group) {
             if (!group[0]) {
+                // return not necessary
                 //group doesn't exist
                 return res.redirect('/home');
             }
@@ -44,6 +48,7 @@ var middleware = {
                 //group doesn't exist
                 var path = req.originalUrl;
                 var group = path.substring(0, path.indexOf('/bills'));
+                // return not necessary
                 return res.redirect(group);
             }
             //group exists, ok to continue
